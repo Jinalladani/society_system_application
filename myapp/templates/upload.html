@@ -1,0 +1,142 @@
+{% extends 'bash.html' %}
+{% load static %}
+{% block content %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+.home-content .sales-boxes .recent-sales{
+  width: 100%;
+  background: #fff;
+  padding: 20px 30px;
+  margin: 0 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">UPLOAD EXCEL FILE</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <a href="/logout" style="margin-left:10px; text-decoration:none;"> Logout </a>
+        </div>
+    </nav>
+
+    <div class="home-content">
+
+
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+
+                <div class="title">Income-Expense Ledger Upload File</div>
+                <div class="sales-details">
+                    <form action="simple_uploadIncome_Expense_Ledger" method="post" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <table style="width:100%s" class="table table-striped table-bordered" width="100%">
+                                {% csrf_token %}
+                                <tr>
+                                    <br>
+
+                                    <inppload Excel File></inppload>
+                                    <input class="btn btn-primary" type="file" name="myfile">
+                                    <button style="margin-top:-59px;margin-left:335px;" class="btn btn-primary"
+                                            type="submit">Upload
+                                    </button>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <hr>
+                <div class="title">Expense Upload File</div>
+                <div class="sales-details">
+                    <form action="simple_upload" method="post" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <table id="bootstrapdatatable" style="width:100%s"
+                                   class="table table-striped table-bordered" width="100%">
+                                {% csrf_token %}
+                                <tr>
+                                    <br>
+
+                                    <inppload Excel File></inppload>
+                                    <input class="btn btn-primary" type="file" name="myfile">
+
+                                    <button style="margin-top:-59px;margin-left:335px;" class="btn btn-primary"
+                                            type="submit">Upload
+                                    </button>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <hr>
+                <div class="title">Income Upload File</div>
+                <div class="sales-details">
+                    <form action="simple_uploadIncome" method="post" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <table style="width:100%s" class="table table-striped table-bordered" width="100%">
+                                {% csrf_token %}
+                                <tr>
+                                    <br>
+
+                                    <inppload Excel File></inppload>
+                                    <input class="btn btn-primary" type="file" name="myfile">
+                                    <button style="margin-top:-59px;margin-left:335px;" class="btn btn-primary"
+                                            type="submit">Upload
+                                    </button>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <hr>
+                <div class="title">Members-Vendors Upload File</div>
+                <div class="sales-details">
+                    <form action="simple_uploadMembers_Vendors" method="post" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <table style="width:100%s" class="table table-striped table-bordered" width="100%">
+                                {% csrf_token %}
+                                <tr>
+                                    <br>
+                                    <inppload Excel File></inppload>
+                                    <input class="btn btn-primary" type="file" name="myfile">
+                                    <button style="margin-top:-59px;margin-left:335px;" class="btn btn-primary"
+                                            type="submit">Upload
+                                    </button>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                 <hr>
+                <div class="title">Members Details Upload File</div>
+                <div class="sales-details">
+                    <form action="simple_uploadMembersDetails" method="post" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <table style="width:100%s" class="table table-striped table-bordered" width="100%">
+                                {% csrf_token %}
+                                <tr>
+                                    <br>
+                                    <inppload Excel File></inppload>
+                                    <input class="btn btn-primary" type="file" name="myfile">
+                                    <button style="margin-top:-59px;margin-left:335px;" class="btn btn-primary"
+                                            type="submit">Upload
+                                    </button>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

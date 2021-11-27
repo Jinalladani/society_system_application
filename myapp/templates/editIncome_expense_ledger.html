@@ -1,0 +1,177 @@
+{% extends 'bash.html' %}
+{% load static %}
+{% block content %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+.home-content .sales-boxes .recent-sales{
+  width: 100%;
+  background: #fff;
+  padding: 20px 30px;
+  margin: 0 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">INCOME/EXPENSE LEDGER</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <a href="/logout" style="margin-left:10px; text-decoration:none;"> Logout </a>
+        </div>
+    </nav>
+
+    <div class="home-content">
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Update Income/Expense Ledger Details</div>
+                <hr>
+                <div class="sales-details">
+                    <form method="POST" class="post-form"
+                          action="/updateIncome_expense_ledger/{{income_expense_ledger.id}}">
+                        {% csrf_token %}
+                        <div class="container">
+                            <br>
+                            <div class="form-group row">
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Ledger Id:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="id" id="id_id" required
+                                               maxlength="20" value="{{ income_expense_ledger.id }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Date:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" dataformatas="YYYY-MM-DD" class="form-control" name="date"
+                                               forma id="id_date"
+                                               maxlength="100" value="{{ income_expense_ledger.dateOn }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Category Type:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="type" id="id_type" required
+                                               maxlength="20" value="{{ income_expense_ledger.type }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Amount :</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="amount" id="id_amount" required
+                                               maxlength="20" value="{{ income_expense_ledger.amount }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Category header :</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" name="category_header" id="id_category_header"
+                                                required maxlength="20" value=""/>
+                                        <option>{{ income_expense_ledger.category_header }}</option>
+                                        {% for listExp in type_headerList %}
+                                        <option>{{listExp.category_name}}</option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">From_or to account:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="from_or_to_account"
+                                               id="id_from_or_to_account" required maxlength="20"
+                                               value="{{ income_expense_ledger.from_or_to_account }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Transaction Type:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="transaction_type"
+                                               id="id_transaction_type" maxlength="20"
+                                               value="{{ income_expense_ledger.transaction_type }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Transaction Details:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="transaction_details"
+                                               id="id_transaction_details" maxlength="20"
+                                               value="{{ income_expense_ledger.transaction_details }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">VoucherNo or InvoiceNo :</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="voucherNo_or_invoiceNo"
+                                               id="id_voucherNo_or_invoiceNo" maxlength="20"
+                                               value="{{ income_expense_ledger.voucherNo_or_invoiceNo }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Remark :</label>
+                                    <div class="col-sm-4">
+                                        <textarea class="form-control" name="remark" id="id_remark"
+                                                  value="{{ income_expense_ledger.remark }}"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label"> Opening Balance Cash:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="opening_balance_cash"
+                                               id="opening_balance_cash" required maxlength="20"
+                                               value="{{ income_expense_ledger.opening_balance_cash }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label"> Closing Balance Cash:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="closing_balance_cash"
+                                               id="closing_balance_cash" required maxlength="20"
+                                               value="{{ income_expense_ledger.closing_balance_cash }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label"> Opening Balance Bank:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="opening_balance_bank"
+                                               id="opening_balance_bank" required maxlength="20"
+                                               value="{{ income_expense_ledger.opening_balance_bank }}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Closing Balance Bank :</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="closing_balance_bank"
+                                               id="closing_balance_bank" required maxlength="20"
+                                               value="{{ income_expense_ledger.closing_balance_bank }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-1 col-form-label"></label>
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="btn btn-success btn-lg">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

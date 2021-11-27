@@ -1,0 +1,101 @@
+{% extends 'bash.html' %}
+{% load static %}
+{% block content %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+.home-content .sales-boxes .recent-sales{
+  width: 97%;
+  background: #fff;
+  padding: 20px 30px;
+  margin: 0 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+</style>
+
+<section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">INCOME-EXPENSE LEDGER</span>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Search...">
+        <i class='bx bx-search' ></i>
+      </div>
+      <div class="profile-details">
+        <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+        <a href="/logout"  style="margin-left:10px; text-decoration:none;"> Logout </a>
+      </div>
+    </nav>
+
+    <div class="home-content">
+
+
+      <div class="sales-boxes">
+        <div class="recent-sales box">
+          <div class="title">CASH DEPOSIT</div>
+          <div class="sales-details">
+            <form method="post" class="post-form" action="/cashDepositEntryValue">
+                {% csrf_token %}
+                <div class="container">
+                <br>
+                <div class="form-group row">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Date:</label>
+                        <div class="col-sm-6">
+                          <input type="date" name="date" id="date" style="padding:5px; width:300px">
+                        </div>
+                    </div>
+                    <input type="hidden" name="type" value="CASh DEPOSIT">
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Amount:</label>
+                        <div class="col-sm-3" >
+                           <input type="text" name="amount" id="amount" style="padding:5px; width:300px">
+                        </div>
+                    </div>
+
+<!--                    <div class="form-group row">-->
+<!--                        <label class="col-sm-3 col-form-label">FromOrToAccount  :</label>-->
+<!--                        <div class="col-sm-6">-->
+<!--                          <select class="col-sm-4" name="members_value" id="members_value"  style="padding:5px; width:300px">-->
+<!--                              <option selected>&#45;&#45;&#45;&#45;select&#45;&#45;&#45;&#45;</option>-->
+<!--                            {% for inc in contextMember.memberValue %}-->
+<!--                            <option>{{inc.name}}</option>-->
+<!--                                {% endfor %}-->
+<!--                          </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Transaction Details:</label>
+                        <div class="col-sm-3">
+                          <input type="text" name="transaction_details" id="transaction_details"  style="padding:5px; width:300px">
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="obc">
+                    <input type="hidden" name="cbc">
+                    <input type="hidden" name="obb">
+                    <input type="hidden" name="cbb">
+                    <input type="hidden" name="entry_time">
+                    <div class="form-group row">
+                        <label class="col-sm-1 col-form-label"></label>
+                        <div class="col-sm-4">
+                            <button type="submit" class="btn btn-primary" >Submit</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </form>
+          </div>
+
+        </div>
+
+        </div>
+      </div>
+    </div>
+</section>
+
+{% endblock %}

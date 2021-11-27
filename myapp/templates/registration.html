@@ -1,0 +1,137 @@
+{% load static %}
+<html>
+<style>
+	/*set border to the form*/
+
+	form {
+		border: 3px solid #f1f1f1;
+		width:50%;
+		margin: 80px 0 0 320px;
+
+	}
+	/*assign full width inputs*/
+
+	input[type=text],
+	input[type=password] {
+		width: 100%;
+		padding: 12px 20px;
+		margin: 8px 0;
+		display: inline-block;
+		border: 1px solid #ccc;
+		box-sizing: border-box;
+	}
+	/*set a style for the buttons*/
+
+	button {
+		background-color: #4CAF50;
+		color: white;
+		padding: 14px 20px;
+		margin: 8px 0;
+		border: none;
+		cursor: pointer;
+		width: 100%;
+	}
+	/* set a hover effect for the button*/
+
+	button:hover {
+		opacity: 0.8;
+	}
+	/*set extra style for the cancel button*/
+
+	.cancelbtn {
+		width: auto;
+		padding: 10px 18px;
+		background-color: #f44336;
+	}
+	/*centre the display image inside the container*/
+
+	.imgcontainer {
+		text-align: center;
+		margin: 24px 0 12px 0;
+	}
+	/*set image properties*/
+
+	img.avatar {
+		width: 40%;
+		border-radius: 3px;
+	}
+	/*set padding to the container*/
+
+	.container {
+		padding: 16px;
+	}
+	/*set the forgot password text*/
+
+	span.psw {
+		float: right;
+		padding-top: 16px;
+	}
+	/*set styles for span and cancel button on small screens*/
+
+	@media screen and (max-width: 300px) {
+		span.psw {
+			display: block;
+			float: none;
+		}
+		.cancelbtn {
+			width: 100%;
+		}
+	}
+</style>
+
+<body>
+
+
+	<!--Step 1 : Adding HTML-->
+	<form action="/register" method="post">
+        <h1 align="center">Registration Form</h1>
+		{% csrf_token %}
+		<div class="imgcontainer">
+			<img src="{% static 'images/bonrix crm.png' %}"
+				alt="Avatar" class="avatar">
+		</div>
+
+		<div class="container">
+			<label><b>Contact Name</b></label>
+			<input type="text" placeholder="Enter Contact Name" name="contact_name" required>
+
+			<label><b>Email</b></label>
+			<input type="text" placeholder="Enter Email" name="email" required>
+
+			<label><b>Password</b></label>
+			<input type="password" placeholder="Enter Password" name="password" required>
+
+			<label><b>Mobile Number</b></label>
+			<input type="text" placeholder="Enter Mobile Number" name="moblie_no" required>
+
+			<label><b>Society Name</b></label>
+			<input type="text" placeholder="Enter Society Name" name="society_name" required>
+
+			<label><b>Society Address</b></label>
+			<input type="text" placeholder="Enter Socierty Address" name="society_address" required>
+
+			<label><b>City</b></label>
+			<input type="text" placeholder="Enter City" name="city" required>
+
+			<label><b>Pincode</b></label>
+			<input type="text" placeholder="Enter Pincode" name="pin_code" required>
+
+			<label><b> Country</b></label>
+			<input type="text" placeholder="Enter  Country" name="country" required>
+
+			<label><b>Society Registration Number</b></label>
+			<input type="text" placeholder="Enter Society Registration Number" name="society_registration_number" required>
+
+			<button type="submit">Registration</button>
+			<input type="checkbox" checked="checked"> Remember me
+		</div>
+
+		<div class="container" style="background-color:#f1f1f1">
+			<button type="button" class="cancelbtn">Cancel</button>
+			<span class="psw">Already Exist? <a href="/">Sign In</a></span>
+		</div>
+	</form>
+
+</body>
+
+</html>

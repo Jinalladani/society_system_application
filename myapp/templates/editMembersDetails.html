@@ -1,0 +1,143 @@
+{% extends 'bash.html' %}
+{% load static %}
+{% block content %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+.home-content .sales-boxes .recent-sales{
+  width: 100%;
+  background: #fff;
+  padding: 20px 30px;
+  margin: 0 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">MEMBERS_VENDORS</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <a href="/logout" style="margin-left:10px; text-decoration:none;"> Logout </a>
+        </div>
+    </nav>
+
+    <div class="home-content">
+
+
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Update Members-Vendor Details</div>
+                <hr>
+                <div class="sales-details">
+                    <form method="POST" class="post-form" action="/updateMembersDetails/{{membersDetails.id}}">
+                        {% csrf_token %}
+                        <div class="container">
+                            <br>
+                            <div class="form-group row">
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"> Id:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="id" id="id_id" required
+                                               maxlength="20" value="{{ membersDetails.id }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Flat No:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="flatNo" id="id_flatNo" required
+                                               maxlength="100" value="{{ membersDetails.flatNo }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Primary Name:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="primaryName" id="id_primaryName" required
+                                               maxlength="100" value="{{ membersDetails.primaryName }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Primary ContactNo:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="primaryContactNo" id="id_primaryContactNo" required
+                                               maxlength="100" value="{{ membersDetails.primaryContactNo }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Secondary Name:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="secondaryName" id="id_secondaryName" required
+                                               maxlength="100" value="{{ membersDetails.secondaryName }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Secondary ContactNo:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="secondaryContactNo" id="id_secondaryContactNo" required
+                                               maxlength="100" value="{{ membersDetails.secondaryContactNo }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Accounting Name:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="accountingName" id="id_accountingName" required
+                                               maxlength="100" value="{{ membersDetails.accountingName }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Whatsapp ContactNo:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="whatsappContactNo" id="id_whatsappContactNo" required
+                                               maxlength="100" value="{{ membersDetails.whatsappContactNo }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Email:</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="email" id="id_email"
+                                               required
+                                               maxlength="100" value="{{ membersDetails.email }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Residence</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" name="residence" id="id_residence"
+                                               required
+                                               maxlength="100" value="{{ membersDetails.residence }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-1 col-form-label"></label>
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="btn btn-success btn-lg">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends 'bash.html' %}
+{% load static %}
+{% block content %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+.home-content .sales-boxes .recent-sales{
+  width: 97%;
+  background: #fff;
+  padding: 20px 30px;
+  margin: 0 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+</style>
+
+<section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">INCOME-EXPENSE LEDGER</span>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Search...">
+        <i class='bx bx-search' ></i>
+      </div>
+      <div class="profile-details">
+        <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+        <a href="/logout"  style="margin-left:10px; text-decoration:none;"> Logout </a>
+      </div>
+    </nav>
+
+    <div class="home-content">
+
+
+      <div class="sales-boxes">
+        <div class="recent-sales box">
+          <div class="title">Income-Expense-ledger List</div>
+          <div class="sales-details">
+            <form method="post" class="post-form" action="/income_expense_ledgerValue" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="container">
+                <br>
+                <div class="form-group row">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Date:</label>
+                        <div class="col-sm-6">
+                          <input type="date" name="date" id="date" style="padding:5px; width:300px">
+                        </div>
+                    </div>
+                     <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"> Transaction Type  :</label>
+                        <div class="col-sm-6">
+                          <select id="ddl" name="transaction_type" style="padding:5px; width:300px" onchange="configureDropDownLists(this,document.getElementById('ddl2'))">
+                            <option selected disabled>--Selected--</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Bank">Bank</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Type:</label>
+                        <div class="col-sm-6">
+                          <select id="ddl2" style="padding:5px; width:300px" name="category">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Amount:</label>
+                        <div class="col-sm-3" >
+                           <input type="text" name="amount" id="amount" style="padding:5px; width:300px">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Category Header :</label>
+                        <div class="col-sm-6">
+                          <select class="col-sm-4" name="expense_value" id="expense_value" style="padding:5px; width:145px">
+                            <option selected  value="">----Expense----</option>
+                              {% for exp in context.expValue %}
+                            <option>{{exp.category_name}}</option>
+                              {% endfor %}
+
+                          </select>
+                            <select  class="col-sm-4" name="income_value" id="income_value" style="margin-left:10px;padding:5px; width:145px">
+                            <option selected  value="">----Income----</option>
+                                {% for inc in contextIncome.incValue %}
+                            <option>{{inc.category_name}}</option>
+                                {% endfor %}
+                          </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">FromOrToAccount  :</label>
+                        <div class="col-sm-6">
+                          <select class="col-sm-4" name="members_value" id="members_value"  style="padding:5px; width:300px">
+                              <option selected value="">----select----</option>
+                            {% for inc in contextMember.memberValue %}
+                            <option>{{inc.name}}</option>
+                                {% endfor %}
+                          </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Transaction Details:</label>
+                        <div class="col-sm-3">
+                          <input type="text" name="transaction_details" id="transaction_details"  style="padding:5px; width:300px">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Voucher_No Or Invoice_No  :</label>
+                        <div class="col-sm-3">
+                          <input type="text" name="voucherNo_or_invoiceNo" id="voucherNo_or_invoiceNo"  style="padding:5px; width:300px">
+                        </div>
+                    </div>
+<!--                    <div class="form-group row">-->
+<!--                        <label class="col-sm-3 col-form-label">Images :</label>-->
+<!--                        <div class="col-sm-3">-->
+<!--                            <input type="file"  placeholder="Choose File " name="image" style="padding:8px; width:300px">-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Remark :</label>
+                        <div class="col-sm-4">
+                          <textarea name="remark" id="remark" rows="5"  style="padding:5px; width:300px"></textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" name="obc">
+                    <input type="hidden" name="cbc">
+                    <input type="hidden" name="obb">
+                    <input type="hidden" name="cbb">
+                    <input type="hidden" name="entry_time">
+                    <div class="form-group row">
+                        <label class="col-sm-1 col-form-label"></label>
+                        <div class="col-sm-4">
+                            <button type="submit" class="btn btn-primary" >Submit</button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+</section>
+<script>
+    function configureDropDownLists(ddl1,ddl2) {
+    var cash = ['Expense', 'Income', 'CASH IN','CASH OUT'];
+    var bank = ['Expense', 'Income', 'CASH WITHDRAWAL','CASH DEPOSIT'];
+
+    switch (ddl1.value) {
+        case 'Cash':
+            ddl2.options.length = 0;
+            for (i = 0; i < cash.length; i++) {
+                createOption(ddl2, cash[i], cash[i],cash[i]);
+            }
+            break;
+        case 'Bank':
+            ddl2.options.length = 0;
+        for (i = 0; i < bank.length; i++) {
+            createOption(ddl2, bank[i], bank[i],bank[i]);
+            }
+            break;
+            default:
+                ddl2.options.length = 0;
+            break;
+    }
+
+}
+
+    function createOption(ddl, text, value) {
+        var opt = document.createElement('option');
+        opt.value = value;
+        opt.text = text;
+        ddl.options.add(opt);
+    }
+</script>
+{% endblock %}
