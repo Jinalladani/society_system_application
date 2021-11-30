@@ -33,13 +33,13 @@ def index(request):
     print(listExpense)
 
     expenseAmountSum = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,category_header,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Expense' GROUP BY category_header")
+        "SELECT id,category_header,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Expense' GROUP BY id,category_header")
 
     listIncome = IncomeCategory.objects.all()
     print(listIncome)
 
     incomeAmountSum = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,category_header,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Income' GROUP BY category_header")
+        "SELECT id,category_header,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Income' GROUP BY id,category_header")
 
     topExpense = Income_Expense_LedgerValue1.objects.raw(
         "select  id,from_or_to_account,category_header,transaction_type,amount from  myapp_income_expense_ledgervalue1 WHERE type='Expense' ORDER BY amount DESC LIMIT 20")
@@ -48,10 +48,10 @@ def index(request):
         "select  id,from_or_to_account,category_header,transaction_type,amount from myapp_income_expense_ledgervalue1 where type='Income' ORDER BY amount DESC LIMIT 20")
 
     topMemberExpense = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,from_or_to_account,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Expense' GROUP BY from_or_to_account ORDER BY amount DESC LIMIT 20")
+        "SELECT id,from_or_to_account,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Expense' GROUP BY id,from_or_to_account ORDER BY amount DESC LIMIT 20")
 
     topMemberIncome = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,from_or_to_account,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Income' GROUP BY from_or_to_account ORDER BY amount DESC LIMIT 20")
+        "SELECT id,from_or_to_account,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Income' GROUP BY id,from_or_to_account ORDER BY amount DESC LIMIT 20")
 
     return render(request, 'index.html',
                   {'contentBalance': contentBalance, 'totalExpense': totalExpense, 'totalIncome': totalIncome,
