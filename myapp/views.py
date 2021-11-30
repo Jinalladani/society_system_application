@@ -23,10 +23,10 @@ def index(request):
     }
     print(contentBalance)
     totalExpense = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,SUM(amount) AS TotalExpense FROM myapp_income_expense_ledgervalue1 WHERE type='Expense'")
+        "SELECT SUM(amount) AS TotalExpense FROM myapp_income_expense_ledgervalue1 WHERE type='Expense'")
     print(totalExpense)
     totalIncome = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,SUM(amount) AS TotalIncome FROM myapp_income_expense_ledgervalue1 WHERE type='Income'")
+        "SELECT SUM(amount) AS TotalIncome FROM myapp_income_expense_ledgervalue1 WHERE type='Income'")
     print(totalIncome)
 
     listExpense = ExpenseCategory.objects.all()
