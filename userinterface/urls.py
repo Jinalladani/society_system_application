@@ -83,6 +83,7 @@ urlpatterns = [
     path('updateMembersDetails/<int:id>',views.updateMembersDetails),
     path('deletedMembersDetails/<int:id>',views.destroyMembersDetails),
     path('export_users_xlsImembersDetails',views.export_users_xlsImembersDetails),
+    path('simple_uploadMembersDetails',views.simple_uploadMembersDetails),
 
 
     # path('showincome_expense_ledger2', views.showincome_expense_ledger2, name="showincome_expense_ledger2"),

@@ -65,7 +65,7 @@ class MembersDeatilsValue(models.Model):
     secondaryContactNo = models.CharField(max_length=10, null=True, blank=True)
     accountingName = models.CharField(max_length=200, null=True, blank=True)
     whatsappContactNo = models.CharField(max_length=10, null=True, blank=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
     residence = models.CharField(max_length=100)
 
 

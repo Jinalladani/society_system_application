@@ -1,4 +1,6 @@
 import csv
+
+from django.db.models import Sum
 from tablib import Dataset
 from .models import User_Society_deatils, ExpenseCategory, IncomeCategory, Income_Expense_LedgerValue1, \
     BalanceValue, \
@@ -22,36 +24,48 @@ def index(request):
         'balanceValue': balance
     }
     print(contentBalance)
-    totalExpense = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT SUM(amount) AS TotalExpense FROM myapp_income_expense_ledgervalue1 WHERE type='Expense'")
+
+    totalExpense = Income_Expense_LedgerValue1.objects.filter(type='Expense').aggregate(Sum('amount'))
     print(totalExpense)
-    totalIncome = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT SUM(amount) AS TotalIncome FROM myapp_income_expense_ledgervalue1 WHERE type='Income'")
+
+    totalIncome = Income_Expense_LedgerValue1.objects.filter(type='Income').aggregate(Sum('amount'))
     print(totalIncome)
 
     listExpense = ExpenseCategory.objects.all()
     print(listExpense)
 
-    expenseAmountSum = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,category_header,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Expense' GROUP BY id,category_header")
+    expenseAmountSum = Income_Expense_LedgerValue1.objects.values('category_header').filter(type='Expense').annotate(
+        totalamount=Sum('amount'))
+    print(expenseAmountSum)
 
     listIncome = IncomeCategory.objects.all()
     print(listIncome)
 
-    incomeAmountSum = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,category_header,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Income' GROUP BY id,category_header")
+    incomeAmountSum = Income_Expense_LedgerValue1.objects.values('category_header').filter(type='Income').annotate(
+        totalamount=Sum('amount'))
+    print(incomeAmountSum)
 
-    topExpense = Income_Expense_LedgerValue1.objects.raw(
-        "select  id,from_or_to_account,category_header,transaction_type,amount from  myapp_income_expense_ledgervalue1 WHERE type='Expense' ORDER BY amount DESC LIMIT 20")
+    topExpense = Income_Expense_LedgerValue1.objects.values('from_or_to_account', 'category_header',
+                                                            'transaction_type').annotate(amount=Sum('amount')).filter(
+        type='Expense').order_by('amount').reverse()
+    print("---------topExpense-------------", topExpense)
 
-    topIncome = Income_Expense_LedgerValue1.objects.raw(
-        "select  id,from_or_to_account,category_header,transaction_type,amount from myapp_income_expense_ledgervalue1 where type='Income' ORDER BY amount DESC LIMIT 20")
+    # topIncome = Income_Expense_LedgerValue1.objects.raw(
+    #     "select  id,from_or_to_account,category_header,transaction_type,amount from myapp_income_expense_ledgervalue1 where type='Income' ORDER BY amount DESC LIMIT 20")
 
-    topMemberExpense = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,from_or_to_account,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Expense' GROUP BY id,from_or_to_account ORDER BY amount DESC LIMIT 20")
+    topIncome = Income_Expense_LedgerValue1.objects.values('from_or_to_account', 'category_header',
+                                                           'transaction_type').annotate(amount=Sum('amount')).filter(
+        type='Income').order_by('amount').reverse()
+    print(topIncome)
 
-    topMemberIncome = Income_Expense_LedgerValue1.objects.raw(
-        "SELECT id,from_or_to_account,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Income' GROUP BY id,from_or_to_account ORDER BY amount DESC LIMIT 20")
+    topMemberExpense = Income_Expense_LedgerValue1.objects.values('from_or_to_account').annotate(
+        amount=Sum('amount')).filter(type='Expense').order_by('amount').reverse()
+
+    topMemberIncome = Income_Expense_LedgerValue1.objects.values('from_or_to_account').annotate(
+        amount=Sum('amount')).filter(type='Income').order_by('amount').reverse()
+
+    # topMemberIncome = Income_Expense_LedgerValue1.objects.raw(
+    #     "SELECT id,from_or_to_account,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Income' GROUP BY id,from_or_to_account ORDER BY amount DESC LIMIT 20")
 
     return render(request, 'index.html',
                   {'contentBalance': contentBalance, 'totalExpense': totalExpense, 'totalIncome': totalIncome,
@@ -286,7 +300,12 @@ def showincome_expense_ledger2(request):
         category_header = request.POST['category_header']
         from_or_to_account = request.POST['from_or_to_account']
         voucherNo_or_invoiceNo = request.POST['voucherNo_or_invoiceNo']
-        print('amount-------------', amount, type)
+        print('amount-------------', amount)
+        print('type----------------',type)
+        print('transaction_type------------',transaction_type)
+        print('category_header--------------',category_header)
+        print('from_or_to_account------------',from_or_to_account)
+        print('voucherNo_or_invoiceNo------',voucherNo_or_invoiceNo)
         allmembersValue = Members_Vendor_Account.objects.all()
         contextMember = {
             'memberValue': allmembersValue
@@ -1096,7 +1115,7 @@ def simple_uploadIncome(request):
         dataset = Dataset()
         new_expense = request.FILES['myfile']
 
-        imported_data = dataset.load(new_expense.read(), format='xls')
+        imported_data = dataset.load(new_expense.read(), format='xlsx')
         # print(imported_data)
         for data in imported_data:
             print(data[1])
@@ -1134,7 +1153,7 @@ def simple_uploadMembers_Vendors(request):
         dataset = Dataset()
         new_members = request.FILES['myfile']
 
-        imported_data = dataset.load(new_members.read(), format='xls')
+        imported_data = dataset.load(new_members.read(), format='xlsx')
         # print(imported_data)
         for data in imported_data:
             print(data[1])
@@ -1153,7 +1172,7 @@ def simple_uploadMembersDetails(request):
         dataset = Dataset()
         new_members = request.FILES['myfile']
 
-        imported_data = dataset.load(new_members.read(), format='xls')
+        imported_data = dataset.load(new_members.read(), format='xlsx')
         # print(imported_data)
         for data in imported_data:
             print(data[1])
@@ -1166,9 +1185,7 @@ def simple_uploadMembersDetails(request):
                 data[5],
                 data[6],
                 data[7],
-                data[8],
-                data[9],
-                data[10]
+                data[8]
             )
             value.save()
 

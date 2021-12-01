@@ -65,6 +65,7 @@
                     {% for totExp in totalExpense %}
                     <div class="number">{{totExp.TotalExpense}}</div>
                     {% endfor %}
+                    {{totalExpense}}
                     <div class="indicator">
                         <i class='bx bx-up-arrow-alt'></i>
                         <span class="text">Up from yesterday</span>
@@ -80,6 +81,7 @@
                     {% for totInc in totalIncome %}
                     <div class="number">{{totInc.TotalIncome}}</div>
                     {% endfor %}
+                    {{totalIncome}}
                     <div class="indicator">
                         <i class='bx bx-down-arrow-alt down'></i>
                         <span class="text">Down From Today</span>
