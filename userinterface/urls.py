@@ -87,7 +87,7 @@ urlpatterns = [
 
 
     # path('showincome_expense_ledger2', views.showincome_expense_ledger2, name="showincome_expense_ledger2"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 if settings.DEBUG:

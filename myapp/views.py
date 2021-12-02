@@ -46,23 +46,21 @@ def index(request):
     print(incomeAmountSum)
 
     topExpense = Income_Expense_LedgerValue1.objects.values('from_or_to_account', 'category_header',
-                                                            'transaction_type').annotate(amount=Sum('amount')).filter(
-        type='Expense').order_by('amount').reverse()
+                                                            'transaction_type','amount').filter(type='Expense').order_by('amount').reverse()[0:20]
     print("---------topExpense-------------", topExpense)
 
     # topIncome = Income_Expense_LedgerValue1.objects.raw(
     #     "select  id,from_or_to_account,category_header,transaction_type,amount from myapp_income_expense_ledgervalue1 where type='Income' ORDER BY amount DESC LIMIT 20")
 
     topIncome = Income_Expense_LedgerValue1.objects.values('from_or_to_account', 'category_header',
-                                                           'transaction_type').annotate(amount=Sum('amount')).filter(
-        type='Income').order_by('amount').reverse()
+                                                           'transaction_type','amount').filter(type='Income').order_by('amount').reverse()[0:20]
     print(topIncome)
 
     topMemberExpense = Income_Expense_LedgerValue1.objects.values('from_or_to_account').annotate(
-        amount=Sum('amount')).filter(type='Expense').order_by('amount').reverse()
+        amount=Sum('amount')).filter(type='Expense').order_by('amount').reverse()[0:20]
 
     topMemberIncome = Income_Expense_LedgerValue1.objects.values('from_or_to_account').annotate(
-        amount=Sum('amount')).filter(type='Income').order_by('amount').reverse()
+        amount=Sum('amount')).filter(type='Income').order_by('amount').reverse()[0:20]
 
     # topMemberIncome = Income_Expense_LedgerValue1.objects.raw(
     #     "SELECT id,from_or_to_account,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Income' GROUP BY id,from_or_to_account ORDER BY amount DESC LIMIT 20")
