@@ -14,7 +14,6 @@ import xlwt
 from django.http import HttpResponse
 import datetime
 
-
 # from datetime import datetime, date
 
 # Create your views here.
@@ -327,21 +326,38 @@ def showincome_expense_ledger2(request):
 
 def showincome_expense_ledger(request):
     if request.method == 'POST':
-        dateOn = request.POST['date']
+        dateOn = request.POST['from_date']
+        to_date = request.POST['to_date']
         amount = request.POST['amount']
         type = request.POST['type']
         transaction_type = request.POST['transaction_type']
         category_header = request.POST['category_header']
         from_or_to_account = request.POST['from_or_to_account']
         voucherNo_or_invoiceNo = request.POST['voucherNo_or_invoiceNo']
-        print('amount-------------', amount, type)
+        # print('amount-------------', amount, type)
         allmembersValue = Members_Vendor_Account.objects.all()
         contextMember = {
             'memberValue': allmembersValue
         }
-        print(contextMember)
-        income_expense_ledger = Income_Expense_LedgerValue1.objects.raw(
-            'select * from myapp_income_expense_ledgervalue1 where dateOn="' + dateOn + '" or type="' + type + '" or amount="' + amount + '" or transaction_type="' + transaction_type + '" or category_header="' + category_header + '" or from_or_to_account="' + from_or_to_account + '" or voucherNo_or_invoiceNo="' + voucherNo_or_invoiceNo + '"')
+        if to_date == "":
+            to_date = dateOn
+        income_expense_ledger = Income_Expense_LedgerValue1.objects.all()
+        # if dateOn != '' :
+        #     income_expense_ledger = income_expense_ledger.filter(dateOn=dateOn)
+        if dateOn != '' and to_date != '' :
+            income_expense_ledger = income_expense_ledger.filter(dateOn__range=[dateOn, to_date])
+        if transaction_type != "NULL" :
+            income_expense_ledger = income_expense_ledger.filter(transaction_type=transaction_type)
+        if amount != "":
+            income_expense_ledger = income_expense_ledger.filter(amount=amount)
+        if type != "NULL" :
+            income_expense_ledger = income_expense_ledger.filter(type=type) 
+        if category_header != "":
+            income_expense_ledger = income_expense_ledger.filter(category_header=category_header)
+        if from_or_to_account != "NULL" :
+            income_expense_ledger = income_expense_ledger.filter(from_or_to_account=from_or_to_account)
+        if voucherNo_or_invoiceNo != "":
+            income_expense_ledger = income_expense_ledger.filter(voucherNo_or_invoiceNo=voucherNo_or_invoiceNo)
         print(income_expense_ledger)
         if 'export' in request.POST:
             response = HttpResponse(content_type='text/csv')
@@ -369,7 +385,7 @@ def showincome_expense_ledger(request):
 
         return render(request, 'showIncome_expense_ledger.html',
                       {'income_expense_ledger': income_expense_ledger, 'contextMember': contextMember, 'type': type,
-                       'dateOn': dateOn, 'amount': amount, 't_type': transaction_type, 'c_header': category_header,
+                       'dateOn': dateOn,'to_date':to_date, 'amount': amount, 't_type': transaction_type, 'c_header': category_header,
                        's_member': from_or_to_account, 'v_number': voucherNo_or_invoiceNo})
     else:
         print("allincome_expense_ledger-----------")

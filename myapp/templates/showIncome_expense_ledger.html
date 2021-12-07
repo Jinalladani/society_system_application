@@ -89,7 +89,8 @@
                                 <span style="margin:0 10px 0 0"><a href="/export_csv" class="btn btn-primary">EXPORT EXCEL</a></span>
                                 <span><a href="/upload_file" class="btn btn-primary">UPLOAD EXCEL</a></span>
                                 <hr>
-                                <input type="date" style="margin:0 0 10px 10px; width:150px" name="date" {% if dateOn  %} value={{ dateOn }}{% endif %}>
+                                <span ><b>From</b></span><input type="date"  placeholder="from" style="margin:0 0 10px 10px; width:150px" name="from_date" {% if dateOn  %} value={{ dateOn }}{% endif %}>
+                                &nbsp &nbsp<span><b>To</b></span><input type="date" style="margin:0 0 10px 10px; width:150px" name="to_date" {% if to_date  %} value={{ to_date }}{% endif %}>
                                 <select id="type" name="type" style="margin:0 0 10px 10px;padding:8px; width:150px">
                                     <option  value="NULL">--search type --</option>
                                     <option value="Expense" {% if type == "Expense"  %}selected{% endif %}>Expense</option>

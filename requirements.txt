@@ -5,7 +5,7 @@ Django==3.2.7
 django-import-export==2.6.1
 et-xmlfile==1.1.0
 MarkupPy==1.14
-mysqlclient @ file:///D:/BONRIX%20PYTHON%20PROJECT/Live%20Project%20Bonrix/myenv/userinterface/mysqlclient-1.4.4-cp37-cp37m-win32.whl
+mysqlclient
 odfpy==1.4.1
 openpyxl==3.0.9
 Pillow==8.4.0
