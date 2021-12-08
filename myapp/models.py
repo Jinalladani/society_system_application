@@ -1,11 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, User
+
+
+class User(AbstractUser):
+    phone = models.CharField(unique=True, max_length=256)
 
 
 class User_Society_deatils(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=20)
     contact_name = models.CharField(max_length=500)
-    otp = models.IntegerField(default=459)
     moblie_no = models.CharField(unique=True, max_length=10)
     society_name = models.CharField(max_length=500)
     society_address = models.CharField(max_length=500)
