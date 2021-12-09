@@ -140,13 +140,14 @@ def register(request):
     society_address = request.POST['society_address']
     city = request.POST['city']
     pin_code = request.POST['pin_code']
+    state = request.POST['state']
     country = request.POST['country']
     society_registration_number = request.POST['society_registration_number']
     print("--------------->", email)
     uid = User_Society_deatils.objects.create(email=email, password=password, contact_name=contact_name,
                                               moblie_no=moblie_no,
                                               society_name=society_name,
-                                              society_address=society_address, city=city, pin_code=pin_code,
+                                              society_address=society_address, city=city, pin_code=pin_code,state=state,
                                               country=country, society_registration_number=society_registration_number)
 
     print("--------------------------> socity -> uid", uid)
@@ -368,6 +369,7 @@ def showincome_expense_ledger(request):
         if voucherNo_or_invoiceNo != "":
             income_expense_ledger = income_expense_ledger.filter(voucherNo_or_invoiceNo=voucherNo_or_invoiceNo)
         print(income_expense_ledger)
+
         if 'export' in request.POST:
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename=ledger' + str(datetime.datetime.now()) + '.csv'

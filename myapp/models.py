@@ -2,10 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, User
 
 
-class User(AbstractUser):
-    phone = models.CharField(unique=True, max_length=256)
-
-
 class User_Society_deatils(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=20)
@@ -15,6 +11,7 @@ class User_Society_deatils(models.Model):
     society_address = models.CharField(max_length=500)
     city = models.CharField(max_length=200)
     pin_code = models.CharField(max_length=10)
+    state = models.CharField(max_length=100,default='Gujarat')
     country = models.CharField(max_length=100)
     society_registration_number = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
@@ -23,18 +20,11 @@ class User_Society_deatils(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=False)
 
 
-# class Employee(models.Model):
-#     name = models.CharField(max_length=100)
-#     email = models.EmailField()
-#     contact = models.CharField(max_length=15)
-#     age = models.CharField(max_length=3)
-#     status = models.BooleanField(default=False)
-#
-#     class Meta:
-#         db_table = "employee"
-
-
 class ExpenseCategory(models.Model):
+    category_name = models.CharField(unique=True, max_length=200)
+
+
+class AssentCategory(models.Model):
     category_name = models.CharField(unique=True, max_length=200)
 
 

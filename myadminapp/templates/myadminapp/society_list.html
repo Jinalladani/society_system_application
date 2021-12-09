@@ -1,0 +1,61 @@
+{% extends 'myadminapp/bash.html' %}
+{% load static %}
+{% block content %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+.home-content .sales-boxes .recent-sales{
+  width: 100%;
+  background: #fff;
+  padding: 20px 30px;
+  margin: 0 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">SOCIETY LIST</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <a href="/logout" style="margin-left:10px; text-decoration:none;"> Logout </a>
+        </div>
+    </nav>
+    <div class="home-content">
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Society List</div>
+                <div class="sales-details">
+                    <form method="post">
+                        <div class="table-responsive">
+                            <table id="bootstrapdatatable" style="width:100%s"
+                                   class="table table-striped table-bordered" width="100%">
+                                <hr>
+                                <thead>
+                                <th>Society Name</th>
+                                <th>Status</th>
+                                </thead>
+                                {% csrf_token %}
+                                {% for sl in society_list %}
+                                <tr>
+                                    <td>{{sl.society_name}}</td>
+                                    <td><button>status</button></td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
