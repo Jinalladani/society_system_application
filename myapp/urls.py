@@ -37,6 +37,7 @@ urlpatterns = [
                   path('updateIncomeCategory/<int:id>', views.updateIncomeCategory),
                   path('deleteIncomeCategory/<int:id>', views.destroyIncomeCategory),
                   path('multi_deleteIncomeCategory', views.multi_deleteIncomeCategory),
+                  path('AssentCategory',views.AssentCategory),
                   path('addnewIncomeCategory', views.addnewIncomeCategory),
                   path('addincome_expense_ledger', views.addincome_expense_ledger),
                   path('showBalance', views.showBalance, name="showBalance"),

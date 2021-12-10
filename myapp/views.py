@@ -4,7 +4,7 @@ from django.db.models import Sum
 from tablib import Dataset
 from .models import User_Society_deatils, ExpenseCategory, IncomeCategory, Income_Expense_LedgerValue1, \
     BalanceValue, \
-    Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue
+    Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue,AssentCategory
 from .forms import ExpensiveCategoryForm, IncomeCategoryForm, Income_Expense_LedgerForm, BalanceFrom, \
     Members_Vendor_AccountForm, MembersDeatilsForm
 from .resource import ExpenseResource, IncomeResource, Members_VendoorsResource, Income_Expense_LedgerResource, \
@@ -221,6 +221,14 @@ def multi_deleteExpenseCategory(request):
             expenseCtaegory.delete()
             print(" expenseCtaegory  delete this id ----------->", id)
         return redirect('ExpensiveCategory')
+
+
+def AssentCategory(request):
+    allAssentCategory = AssentCategory.objects.all()
+    context = {
+        'assentCategory' : allAssentCategory
+    }
+    return render(request, 'AssentCategory.html',context)
 
 
 def IncomeCategoryshow(request):

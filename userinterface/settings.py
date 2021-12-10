@@ -76,9 +76,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Socity_Management_System',
-        'USER': 'root',
-        'PASSWORD': 'myr00t',
-        'HOST': 'localhost',
+        'USER': 'jinal',
+        'PASSWORD': 'jinal123',
+        'HOST': '64.227.186.69',
         'PORT': '3306',
     }
 }

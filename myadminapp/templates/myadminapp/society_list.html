@@ -2,6 +2,9 @@
 {% load static %}
 {% block content %}
 <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
 .home-content .sales-boxes .recent-sales{
   width: 100%;
@@ -36,7 +39,7 @@
                 <div class="sales-details">
                     <form method="post">
                         <div class="table-responsive">
-                            <table id="bootstrapdatatable" style="width:100%s"
+                            <table id="bootstrapdatatable" style="width:100%"
                                    class="table table-striped table-bordered" width="100%">
                                 <hr>
                                 <thead>
@@ -47,7 +50,9 @@
                                 {% for sl in society_list %}
                                 <tr>
                                     <td>{{sl.society_name}}</td>
-                                    <td><button>status</button></td>
+                                    <td><button type="submit" id="status_btn"
+                                                                                      class="btn btn-success"
+                                                value="{{sl.is_active}}">Active</button></td>
                                 </tr>
                                 {% endfor %}
                             </table>
@@ -58,4 +63,26 @@
         </div>
     </div>
 </section>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script>
+    $(document).ready(function(){
+    $('#status_btn').click(function(){
+            $.ajax({
+                        url:"statusChange",
+                        method:"POST",
+                        data:{
+                            id,
+                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        },
+                        success:function(response){
+                            alert("Deleted record")
+                            location.reload();
+                        }
+                    })
+        })
+    })
+
+
+</script>
+
 {% endblock %}
