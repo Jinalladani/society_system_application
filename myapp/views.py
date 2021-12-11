@@ -1,10 +1,10 @@
 import csv
-
+from django.contrib import auth 
 from django.db.models import Sum
 from tablib import Dataset
 from .models import User_Society_deatils, ExpenseCategory, IncomeCategory, Income_Expense_LedgerValue1, \
     BalanceValue, \
-    Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue,AssentCategory
+    Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue,AssentCategory, Society
 from .forms import ExpensiveCategoryForm, IncomeCategoryForm, Income_Expense_LedgerForm, BalanceFrom, \
     Members_Vendor_AccountForm, MembersDeatilsForm
 from .resource import ExpenseResource, IncomeResource, Members_VendoorsResource, Income_Expense_LedgerResource, \
@@ -13,11 +13,14 @@ from django.shortcuts import render, redirect
 import xlwt
 from django.http import HttpResponse
 import datetime
-
+from .check_me import check_user
+from accounts.models import User
+from django.contrib.auth.hashers import make_password
 
 # from datetime import datetime, date
 
 # Create your views here.
+
 def index(request):
     balance = BalanceValue.objects.all()
     contentBalance = {
@@ -109,58 +112,69 @@ def societyProfile(request):
 def login(request):
     email = request.POST['email']
     password = request.POST['password']
-    print("-------------------", email)
-    try:
-        uid = User_Society_deatils.objects.get(email=email)
-        print("---------------------------", uid)
-        if uid:
-            if uid.email == email and uid.password == password:
-                print("---------------------------", email)
-                print("---------------------------", password)
-                request.session['id'] = uid.id
-                request.session['email'] = uid.email
-                return redirect("index")
-            else:
-                print("--------------------------invaliad pass-")
-                return render(request, 'login.html')
-        else:
-            print("--------------------------invlid user-")
-            return render(request, 'login.html')
-    except:
-        print("---------------------------user does not exits")
-        return render(request, 'login.html')
+
+    user = auth.authenticate(email = email, password = password)
+    print(user)
+    if user:
+        auth.login(request,user)
+        return redirect('index')
+    # print("-------------------", email)
+    # try:
+    #     uid = User_Society_deatils.objects.get(email=email)
+    #     print("---------------------------", uid)
+    #     if uid:
+    #         if uid.email == email and uid.password == password:
+    #             print("---------------------------", email)
+    #             print("---------------------------", password)
+    #             request.session['id'] = uid.id
+    #             request.session['email'] = uid.email
+    #             return redirect("index")
+    #         else:
+    #             print("--------------------------invaliad pass-")
+    #             return render(request, 'login.html')
+    #     else:
+    #         print("--------------------------invlid user-")
+    #         return render(request, 'login.html')
+    # except:
+    #     print("---------------------------user does not exits")
+    return render(request, 'login.html')
 
 
 def register(request):
-    email = request.POST['email']
-    password = request.POST['password']
-    contact_name = request.POST['contact_name']
-    moblie_no = request.POST['moblie_no']
-    society_name = request.POST['society_name']
-    society_address = request.POST['society_address']
-    city = request.POST['city']
-    pin_code = request.POST['pin_code']
-    state = request.POST['state']
-    country = request.POST['country']
-    society_registration_number = request.POST['society_registration_number']
-    print("--------------->", email)
-    uid = User_Society_deatils.objects.create(email=email, password=password, contact_name=contact_name,
-                                              moblie_no=moblie_no,
-                                              society_name=society_name,
-                                              society_address=society_address, city=city, pin_code=pin_code,state=state,
-                                              country=country, society_registration_number=society_registration_number)
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = make_password(request.POST['password'])
+        contact_name = request.POST['contact_name']
+        phone_no = request.POST['phone_no']
+        society_name = request.POST['society_name']
+        society_address = request.POST['society_address']
+        city = request.POST['city']
+        pin_code = request.POST['pin_code']
+        state = request.POST['state']
+        country = request.POST['country']
+        society_registration_number = request.POST['society_registration_number']
+        uid = User.objects.create(email=email, password=password, phone_no = phone_no, name = contact_name)
 
-    print("--------------------------> socity -> uid", uid)
-    msg = "Registration successfully"
-    return render(request, 'login.html', {'msg': msg})
+        user_instance = User.objects.get(pk = uid.id)
+
+        Society.objects.create(user_key = user_instance, name = society_name, address = society_address,
+                            city = city, pincode = pin_code, state = state, country = country,
+                            registration_number = society_registration_number)
+        return redirect('loginpage')
+
+
+    return render(request, 'login.html')
 
 
 def logout(request):
-    if 'email' in request.session:
-        del request.session['email']
-        return render(request, "login.html")
-    else:
-        return render(request, 'index.html')
+    if request.method == 'POST':
+        auth.logout(request)
+    return redirect('loginpage')
+    # if 'email' in request.session:
+    #     del request.session['email']
+    #     return render(request, "login.html")
+    # else:
+    #     return render(request, 'index.html')
 
 
 def ExpensiveCategory(request):
@@ -238,7 +252,7 @@ def IncomeCategoryshow(request):
         'incomeCategory': allIncomeCategory
     }
     print(context)
-    return render(request, 'IncomeCategory.html', context)
+    return render(request, 'incomeCategory.html', context)
 
 
 def addnewIncomeCategory(request):

@@ -1,5 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
+from accounts.models import User
+
+
+
+class Society(models.Model):
+    user_key            = models.OneToOneField(User, blank = True, null = True, on_delete = models.CASCADE)
+    name                = models.CharField(max_length = 250)
+    registration_number = models.CharField(max_length = 250)
+    address             = models.TextField()
+    city                = models.CharField(max_length = 250)
+    pincode             = models.CharField(max_length = 250)
+    state               = models.CharField(max_length = 250)
+    country             = models.CharField(max_length = 250)
+    created_at          = models.DateTimeField(auto_now_add=True, blank=False)
+    updated_at          = models.DateTimeField(auto_now=True, blank=False)
+
+    def __str__(self):
+        return self.name
+
+
 
 
 class User_Society_deatils(models.Model):
@@ -18,6 +38,8 @@ class User_Society_deatils(models.Model):
     is_verfied = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, blank=False)
     updated_at = models.DateTimeField(auto_now=True, blank=False)
+
+
 
 
 class ExpenseCategory(models.Model):

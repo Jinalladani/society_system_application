@@ -83,9 +83,10 @@
 
 
 	<!--Step 1 : Adding HTML-->
-	<form action="/register" method="post">
-        <h1 align="center">Registration Form</h1>
+	<form action="{% url 'register' %}" method="post">
 		{% csrf_token %}
+
+        <h1 align="center">Registration Form</h1>
 		<div class="imgcontainer">
 			<img src="{% static 'images/bonrix crm.png' %}"
 				alt="Avatar" class="avatar">
@@ -102,7 +103,7 @@
 			<input type="password" placeholder="Enter Password" name="password" required>
 
 			<label><b>Mobile Number</b></label>
-			<input type="text" placeholder="Enter Mobile Number" name="moblie_no" required>
+			<input type="text" placeholder="Enter Mobile Number" name="phone_no" required>
 
 			<label><b>Society Name</b></label>
 			<input type="text" placeholder="Enter Society Name" name="society_name" required>
