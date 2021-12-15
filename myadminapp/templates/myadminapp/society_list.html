@@ -1,10 +1,9 @@
 {% extends 'myadminapp/bash.html' %}
 {% load static %}
 {% block content %}
-<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link
+        href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+        rel="stylesheet" id="bootstrap-css">
 <style>
 .home-content .sales-boxes .recent-sales{
   width: 100%;
@@ -14,6 +13,7 @@
   border-radius: 12px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
+
 
 </style>
 
@@ -29,7 +29,8 @@
         </div>
         <div class="profile-details">
             <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
-            <a href="/logout" style="margin-left:10px; text-decoration:none;"> Logout </a>
+            <a href="/logout" style="margin-left:10px; text-decoration:none;"> Logout
+            </a>
         </div>
     </nav>
     <div class="home-content">
@@ -50,9 +51,14 @@
                                 {% for sl in society_list %}
                                 <tr>
                                     <td>{{sl.society_name}}</td>
-                                    <td><button type="submit" id="status_btn"
-                                                                                      class="btn btn-success"
-                                                value="{{sl.is_active}}">Active</button></td>
+
+                                    {% if sl.is_active %}
+                                    <td><a class="btn btn-success" name="active" href="statusChange{{sl.id}}">
+                                        Active</a></td>
+                                    {% else %}
+                                    <td><a class="btn btn-danger" name="active"
+                                           href="statusChange{{sl.id}}">Inactive</a></td>
+                                    {% endif %}
                                 </tr>
                                 {% endfor %}
                             </table>
@@ -63,26 +69,5 @@
         </div>
     </div>
 </section>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-<script>
-    $(document).ready(function(){
-    $('#status_btn').click(function(){
-            $.ajax({
-                        url:"statusChange",
-                        method:"POST",
-                        data:{
-                            id,
-                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                        },
-                        success:function(response){
-                            alert("Deleted record")
-                            location.reload();
-                        }
-                    })
-        })
-    })
-
-
-</script>
 
 {% endblock %}

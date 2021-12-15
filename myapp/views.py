@@ -113,7 +113,7 @@ def login(request):
     try:
         uid = User_Society_deatils.objects.get(email=email)
         print("---------------------------", uid)
-        if uid:
+        if uid.is_active == 1:
             if uid.email == email and uid.password == password:
                 print("---------------------------", email)
                 print("---------------------------", password)

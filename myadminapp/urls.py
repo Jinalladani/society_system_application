@@ -19,7 +19,7 @@ from myadminapp import views
 
 urlpatterns = [
     path('dashbord',views.dashbord),
-    path('society_list',views.society_list),
-    path('statusChange',views.statusChange),
+    path('society_list',views.society_list,name='society_list'),
+    path('statusChange<int:id>',views.statusChange),
 ]
 

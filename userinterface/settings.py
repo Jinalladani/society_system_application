@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'userinterface.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Socity_Management_System',
+        'NAME': 'Socity_Management_SystemDetails',
         'USER': 'jinal',
         'PASSWORD': 'jinal123',
         'HOST': '64.227.186.69',
