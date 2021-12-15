@@ -18,6 +18,7 @@ from django.urls import path
 from myadminapp import views
 
 urlpatterns = [
+    path('',views.loginadminpage),
     path('dashbord',views.dashbord),
     path('society_list',views.society_list,name='society_list'),
     path('statusChange<int:id>',views.statusChange),

@@ -19,7 +19,8 @@ def statusChange(request, id):
         if User_Society_detail.is_active:
             User_Society_detail.is_active = False
             User_Society_detail.save()
-            return redirect('society_list')
+            society_list = User_Society_deatils.objects.all()
+            return render(request, 'myadminapp/society_list.html', {'society_list': society_list})
         else:
             User_Society_detail.is_active = True
             User_Society_detail.save()
@@ -29,3 +30,6 @@ def statusChange(request, id):
         society_list = User_Society_deatils.objects.all()
         return render(request, 'myadminapp/society_list.html', {'society_list': society_list})
 
+
+def loginadminpage(request):
+    return render(request,'myadminapp/loginadmin.html')
