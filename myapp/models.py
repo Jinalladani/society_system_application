@@ -43,18 +43,22 @@ class User_Society_deatils(models.Model):
 
 
 class ExpenseCategory(models.Model):
+    society_key   = models.ForeignKey(Society, on_delete = models.SET_NULL, null = True)
     category_name = models.CharField(unique=True, max_length=200)
 
 
 class AssentCategory(models.Model):
+    society_key   = models.ForeignKey(Society, on_delete = models.SET_NULL, null = True)
     category_name = models.CharField(unique=True, max_length=200)
 
 
 class IncomeCategory(models.Model):
+    society_key   = models.ForeignKey(Society, on_delete = models.SET_NULL, null = True)
     category_name = models.CharField(unique=True, max_length=200)
 
 
 class BalanceValue(models.Model):
+    society_key   = models.ForeignKey(Society, on_delete = models.SET_NULL, null = True, blank = True)
     account = models.CharField(unique=True, max_length=100)
     balance_amount = models.FloatField(max_length=500)
 
@@ -74,6 +78,7 @@ class MembersDeatils(models.Model):
 
 
 class MembersDeatilsValue(models.Model):
+    society_key   = models.ForeignKey(Society, on_delete = models.SET_NULL, null = True)
     flatNo = models.CharField(max_length=200)
     primaryName = models.CharField(max_length=200, null=True, blank=True)
     primaryContactNo = models.CharField(max_length=10, null=True, blank=True)
@@ -86,6 +91,7 @@ class MembersDeatilsValue(models.Model):
 
 
 class Income_Expense_LedgerValue1(models.Model):
+    society_key   = models.ForeignKey(Society, on_delete = models.SET_NULL, null = True)
     dateOn = models.DateField()
     type = models.CharField(max_length=100)
     amount = models.FloatField(max_length=100)
@@ -104,6 +110,7 @@ class Income_Expense_LedgerValue1(models.Model):
 
 
 class FileStoreValue1(models.Model):
+    society_key   = models.ForeignKey(Society, on_delete = models.SET_NULL, null = True)
     income_Expense_LedgerId = models.ForeignKey(Income_Expense_LedgerValue1, on_delete=models.CASCADE)
     text = models.CharField(max_length=100, null=True, blank=True)
     type_file = models.FileField(upload_to='filestore/', verbose_name='file', null=True, blank=True)

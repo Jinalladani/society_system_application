@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # Register your models here.
 from myapp.models import *
 
+admin.site.register(AssentCategory)
 
 admin.site.register(User_Society_deatils)
 

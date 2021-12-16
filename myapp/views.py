@@ -22,48 +22,52 @@ from django.contrib.auth.hashers import make_password
 # Create your views here.
 
 def index(request):
-    balance = BalanceValue.objects.all()
+
+
+    balance = BalanceValue.objects.filter(society_key = request.user.society)
+
+
     contentBalance = {
         'balanceValue': balance
     }
     print(contentBalance)
 
-    totalExpense = Income_Expense_LedgerValue1.objects.filter(type='Expense').aggregate(Sum('amount'))
+    totalExpense = Income_Expense_LedgerValue1.objects.filter(society_key = request.user.society,type='Expense').aggregate(Sum('amount'))
     print(totalExpense)
 
-    totalIncome = Income_Expense_LedgerValue1.objects.filter(type='Income').aggregate(Sum('amount'))
+    totalIncome = Income_Expense_LedgerValue1.objects.filter(society_key = request.user.society,type='Income').aggregate(Sum('amount'))
     print(totalIncome)
 
-    listExpense = ExpenseCategory.objects.all()
+    listExpense = ExpenseCategory.objects.filter(society_key = request.user.society)
     print(listExpense)
 
-    expenseAmountSum = Income_Expense_LedgerValue1.objects.values('category_header').filter(type='Expense').annotate(
+    expenseAmountSum = Income_Expense_LedgerValue1.objects.values('category_header').filter(society_key = request.user.society,type='Expense').annotate(
         totalamount=Sum('amount'))
     print(expenseAmountSum)
 
-    listIncome = IncomeCategory.objects.all()
+    listIncome = IncomeCategory.objects.filter(society_key = request.user.society)
     print(listIncome)
 
-    incomeAmountSum = Income_Expense_LedgerValue1.objects.values('category_header').filter(type='Income').annotate(
+    incomeAmountSum = Income_Expense_LedgerValue1.objects.values('category_header').filter(society_key = request.user.society,type='Income').annotate(
         totalamount=Sum('amount'))
     print(incomeAmountSum)
 
     topExpense = Income_Expense_LedgerValue1.objects.values('from_or_to_account', 'category_header',
-                                                            'transaction_type','amount').filter(type='Expense').order_by('amount').reverse()[0:20]
+                                                            'transaction_type','amount').filter(society_key = request.user.society,type='Expense').order_by('amount').reverse()[0:20]
     print("---------topExpense-------------", topExpense)
 
     # topIncome = Income_Expense_LedgerValue1.objects.raw(
     #     "select  id,from_or_to_account,category_header,transaction_type,amount from myapp_income_expense_ledgervalue1 where type='Income' ORDER BY amount DESC LIMIT 20")
 
     topIncome = Income_Expense_LedgerValue1.objects.values('from_or_to_account', 'category_header',
-                                                           'transaction_type','amount').filter(type='Income').order_by('amount').reverse()[0:20]
+                                                           'transaction_type','amount').filter(society_key = request.user.society,type='Income').order_by('amount').reverse()[0:20]
     print(topIncome)
 
     topMemberExpense = Income_Expense_LedgerValue1.objects.values('from_or_to_account').annotate(
-        amount=Sum('amount')).filter(type='Expense').order_by('amount').reverse()[0:20]
+        amount=Sum('amount')).filter(society_key = request.user.society,type='Expense').order_by('amount').reverse()[0:20]
 
     topMemberIncome = Income_Expense_LedgerValue1.objects.values('from_or_to_account').annotate(
-        amount=Sum('amount')).filter(type='Income').order_by('amount').reverse()[0:20]
+        amount=Sum('amount')).filter(society_key = request.user.society,type='Income').order_by('amount').reverse()[0:20]
 
     # topMemberIncome = Income_Expense_LedgerValue1.objects.raw(
     #     "SELECT id,from_or_to_account,SUM(amount) as totalamount FROM myapp_income_expense_ledgervalue1 WHERE type='Income' GROUP BY id,from_or_to_account ORDER BY amount DESC LIMIT 20")
@@ -237,8 +241,9 @@ def multi_deleteExpenseCategory(request):
         return redirect('ExpensiveCategory')
 
 
-def AssentCategory(request):
+def AssentCategoryView(request):
     allAssentCategory = AssentCategory.objects.all()
+
     context = {
         'assentCategory' : allAssentCategory
     }

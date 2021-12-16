@@ -37,7 +37,7 @@
                 <hr>
                 <div class="sales-details">
                     <form method="POST" class="post-form"
-                          action="/updateIncome_expense_ledger/{{income_expense_ledger.id}}">
+                          action="/updateIncome_expense_ledger/{{income_expense_ledger.id}}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="container">
                             <br>

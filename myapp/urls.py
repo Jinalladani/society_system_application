@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myapp import views
-from .check_me import check_user
+from .check_me import check_user, login_user
 
 urlpatterns = [
                   path('index', check_user(views.index), name="index"),
-                  path('', views.loginpage, name="loginpage"),
+                  path('', login_user(views.loginpage), name="loginpage"),
                   path('login', views.login),
                   path('logout', views.logout, name='logout'),
                   path('societyProfile',views.societyProfile),
@@ -38,7 +38,7 @@ urlpatterns = [
                   path('updateIncomeCategory/<int:id>', views.updateIncomeCategory),
                   path('deleteIncomeCategory/<int:id>', views.destroyIncomeCategory),
                   path('multi_deleteIncomeCategory', views.multi_deleteIncomeCategory),
-                  path('AssentCategory',views.AssentCategory),
+                  path('AssentCategory',views.AssentCategoryView),
                   path('addnewIncomeCategory', views.addnewIncomeCategory),
                   path('addincome_expense_ledger', views.addincome_expense_ledger),
                   path('showBalance', views.showBalance, name="showBalance"),

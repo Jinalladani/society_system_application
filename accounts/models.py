@@ -7,6 +7,7 @@ from django.conf import settings
 from datetime import date
 
 
+
 class User(AbstractUser):
   username = models.CharField(max_length = 50, blank = True, null = True, unique = True)
   email = models.EmailField(_('email address'), unique = True)
@@ -14,8 +15,6 @@ class User(AbstractUser):
   phone_no = models.CharField(max_length = 10, blank = True, null = True)
   is_active = models.BooleanField(default=True)
   is_verfied = models.BooleanField(default=False)
-  created_at = models.DateTimeField(auto_now_add=True, blank=False)
-  updated_at = models.DateTimeField(auto_now=True, blank=False)
   USERNAME_FIELD = 'email'
   REQUIRED_FIELDS = ['username']
 
