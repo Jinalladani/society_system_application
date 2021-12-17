@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myapp',
     'myadminapp',
+    'accounts'
 ]
 
 MIDDLEWARE = [
@@ -75,10 +76,10 @@ WSGI_APPLICATION = 'userinterface.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Socity_Management_SystemDetails',
-        'USER': 'jinal',
-        'PASSWORD': 'jinal123',
-        'HOST': '64.227.186.69',
+        'NAME': 'Socity_Management_System',
+        'USER': 'root',
+        'PASSWORD': 'myr00t',
+        'HOST': 'localhosts',
         'PORT': '3306',
     }
 }
@@ -100,6 +101,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
+COGNITO_USER_MODEL = "accounts.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

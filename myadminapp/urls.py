@@ -16,11 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myadminapp import views
+from myapp.check_me import check_user
 
 urlpatterns = [
-    path('',views.loginadminpage),
-    path('dashbord',views.dashbord),
+    path('',views.loginadminpage,name="loginadminpage"),
+    path('dashbord',views.dashbord , name="dashbord"),
+    path('adminlogin',views.adminlogin,name="adminlogin"),
+    # path('logout', views.logout, name='logout'),
     path('society_list',views.society_list,name='society_list'),
     path('statusChange<int:id>',views.statusChange),
+    path('editSocietyList/<int:id>', views.editSocietyList),
+    path('updateSociety_list/<int:id>', views.updateSociety_list),
+    path('destroySociety_list/<int:id>', views.destroySociety_list),
 ]
 

@@ -23,9 +23,14 @@
         <i class='bx bx-search' ></i>
       </div>
       <div class="profile-details">
-          <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
-        <a href="/logout"  style="margin-left:10px; text-decoration:none;"> Logout </a>
-      </div>
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <form action="{% url 'logout' %}" method="post" id="my_form">
+            {% csrf_token %}
+            <button type="submit" ></button>
+            <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"style="margin-left:10px; text-decoration:none;"> Logout </a>
+
+            </form>
+        </div>
     </nav>
 
     <div class="home-content">

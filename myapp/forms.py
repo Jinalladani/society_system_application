@@ -1,16 +1,6 @@
 from django import forms
 from .models import ExpenseCategory, IncomeCategory, Income_Expense_LedgerValue1, BalanceValue, \
-    Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue
-
-
-# class EmployeeForm(forms.ModelForm):
-#     class Meta:
-#         model = Employee
-#         fields = ['name', 'contact', 'email', 'age']  # https://docs.djangoproject.com/en/3.0/ref/forms/widgets/
-#         widgets = {'name': forms.TextInput(attrs={'class': 'form-control'}),
-#                    'email': forms.EmailInput(attrs={'class': 'form-control'}),
-#                    'contact': forms.TextInput(attrs={'class': 'form-control'}),
-#                    'age': forms.TextInput(attrs={'class': 'form-control'})}
+    Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue, SocietyDeatils
 
 
 class ExpensiveCategoryForm(forms.ModelForm):
@@ -34,6 +24,23 @@ class Members_Vendor_AccountForm(forms.ModelForm):
         model = Members_Vendor_Account
         fields = ['name']  # https://docs.djangoproject.com/en/3.0/ref/forms/widgets/
         widgets = {'name': forms.TextInput(attrs={'class': 'form-control'})
+                   }
+
+
+class SocietyForm(forms.ModelForm):
+    class Meta:
+        model = SocietyDeatils
+        fields = ['email','phone_no','contact_name','society_name','society_address','city','pin_code','state','country','society_registration_number']
+        widgets = {'email': forms.TextInput(attrs={'class': 'form-control'}),
+                   'phone_no': forms.TextInput(attrs={'class': 'form-control'}),
+                   'contact_name': forms.TextInput(attrs={'class': 'form-control'}),
+                   'society_name': forms.TextInput(attrs={'class': 'form-control'}),
+                   'society_address': forms.TextInput(attrs={'class': 'form-control'}),
+                   'city': forms.TextInput(attrs={'class': 'form-control'}),
+                   'pin_code': forms.TextInput(attrs={'class': 'form-control'}),
+                   'state': forms.TextInput(attrs={'class': 'form-control'}),
+                   'country': forms.TextInput(attrs={'class': 'form-control'}),
+                   'society_registration_number': forms.TextInput(attrs={'class': 'form-control'})
                    }
 
 

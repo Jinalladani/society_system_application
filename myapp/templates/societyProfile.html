@@ -27,7 +27,12 @@
         </div>
         <div class="profile-details">
             <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
-            <a href="/logout" style="margin-left:10px; text-decoration:none;"> Logout </a>
+            <form action="{% url 'logout' %}" method="post" id="my_form">
+            {% csrf_token %}
+            <button type="submit" ></button>
+            <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"style="margin-left:10px; text-decoration:none;"> Logout </a>
+
+            </form>
         </div>
     </nav>
 
@@ -70,7 +75,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4 col-form-label">Society Contact Number:</label>
                                             <div class="col-sm-4">
-                                                {{socDeatils.moblie_no}}
+                                                {{socDeatils.phone_no}}
                                             </div>
                                         </div>
 

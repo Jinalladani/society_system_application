@@ -1,23 +1,63 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
+from accounts.models import User
 
 
-class User_Society_deatils(models.Model):
+class Society(models.Model):
+    user_key = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=20)
+    phone_no = models.CharField(max_length=10, blank=True, null=True)
     contact_name = models.CharField(max_length=500)
-    moblie_no = models.CharField(unique=True, max_length=10)
     society_name = models.CharField(max_length=500)
     society_address = models.CharField(max_length=500)
     city = models.CharField(max_length=200)
     pin_code = models.CharField(max_length=10)
-    state = models.CharField(max_length=100,default='Gujarat')
+    state = models.CharField(max_length=100, default='Gujarat')
+    country = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=False)
+    updated_at = models.DateTimeField(auto_now=True, blank=False)
+
+    def __str__(self):
+        return self.name
+
+
+class SocietyDeatils(models.Model):
+    user_key = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    phone_no = models.CharField(max_length=10, blank=True, null=True)
+    contact_name = models.CharField(max_length=500)
+    society_name = models.CharField(max_length=500)
+    society_address = models.CharField(max_length=500)
+    city = models.CharField(max_length=200)
+    pin_code = models.CharField(max_length=10)
+    state = models.CharField(max_length=100, default='Gujarat')
     country = models.CharField(max_length=100)
     society_registration_number = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
-    is_verfied = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, blank=False)
     updated_at = models.DateTimeField(auto_now=True, blank=False)
+
+    # def __str__(self):
+    #     return self.name
+
+
+# class User_Society_deatils(models.Model):
+#     email = models.EmailField(unique=True)
+#     password = models.CharField(max_length=20)
+#     contact_name = models.CharField(max_length=500)
+#     moblie_no = models.CharField(unique=True, max_length=10)
+#     society_name = models.CharField(max_length=500)
+#     society_address = models.CharField(max_length=500)
+#     city = models.CharField(max_length=200)
+#     pin_code = models.CharField(max_length=10)
+#     state = models.CharField(max_length=100, default='Gujarat')
+#     country = models.CharField(max_length=100)
+#     society_registration_number = models.CharField(max_length=100)
+#     is_active = models.BooleanField(default=True)
+#     is_verfied = models.BooleanField(default=False)
+#     created_at = models.DateTimeField(auto_now_add=True, blank=False)
+#     updated_at = models.DateTimeField(auto_now=True, blank=False)
 
 
 class ExpenseCategory(models.Model):

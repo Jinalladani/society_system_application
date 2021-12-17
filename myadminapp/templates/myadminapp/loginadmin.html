@@ -83,14 +83,14 @@
 
 
 	<!--Step 1 : Adding HTML-->
-	<form action="/login" method="post">
+	<form action="adminlogin" method="post">
         <h1 align="center">Admin Login Form</h1>
 		{% csrf_token %}
 		<div class="imgcontainer">
 			<img src="{% static 'images/bonrix crm.png' %}"
 				alt="Avatar" class="avatar">
 		</div>
-
+		{{request.user}}
 		<div class="container">
 			<label><b>Email</b></label>
 			<input type="text" placeholder="Enter Email" name="email" required>

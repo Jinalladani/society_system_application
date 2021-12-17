@@ -16,16 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myapp import views
+from .check_me import check_user
 
 urlpatterns = [
-                  path('index', views.index, name="index"),
                   path('', views.loginpage, name="loginpage"),
                   path('login', views.login),
-                  path('logout', views.logout),
+                  path('logout', views.logout,name="logout"),
                   path('societyProfile',views.societyProfile),
-                  # path('multi_delete', views.multi_delete),
                   path('registrationpage', views.registrationpage),
                   path('register', views.register),
+                  path('index', views.index, name="index"),
                   path('ExpensiveCategory', views.ExpensiveCategory, name="ExpensiveCategory"),
                   path('editExpensiveCategory/<int:id>', views.editExpensiveCategory),
                   path('updateExpensiveCategory/<int:id>', views.updateExpensiveCategory),
