@@ -6,7 +6,7 @@ from myapp.models import *
 
 admin.site.register(AssentCategory)
 
-admin.site.register(User_Society_deatils)
+admin.site.register(Society)
 
 admin.site.register(ExpenseCategory)
 

@@ -1,0 +1,147 @@
+{% extends 'myadminapp/bash.html' %}
+{% load static %}
+{% block content %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+.home-content .sales-boxes .recent-sales{
+  width: 100%;
+  background: #fff;
+  padding: 20px 30px;
+  margin: 0 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">EXPENSE</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+         <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <form action="{% url 'logout' %}" method="post" id="my_form">
+            {% csrf_token %}
+            <button type="submit" ></button>
+            <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"style="margin-left:10px; text-decoration:none;"> Logout </a>
+
+            </form>
+        </div>
+    </nav>
+
+    <div class="home-content">
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Update Expense Category Details</div>
+                <hr>
+                <div class="sales-details">
+                    <form method="POST" class="post-form" action="updateSociety_list/{{society_list.id}}">
+                        {% csrf_token %}
+                        <div class="container">
+                            <br>
+                            <div class="form-group row">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Email:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" disabled name="category_name" id="id_name"
+                                               required maxlength="100" value="{{ society_list.email }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Phone No:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" disabled name="phone_no"
+                                               id="id_phone_no"
+                                               required maxlength="100" value="{{ society_list.phone_no }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Contact Name:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="contact_name" id="id_contact_name"
+                                               required maxlength="100" value="{{ society_list.contact_name }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Society Name:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="society_name" id="society_name"
+                                               required maxlength="100" value="{{ society_list.society_name }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Society Address:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="society_address" id="society_address"
+                                               required maxlength="100" value="{{ society_list.society_address }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">City:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="city" id="city"
+                                               required maxlength="100" value="{{ society_list.city }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Pin Code:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="pin_code" id="pin_code"
+                                               required maxlength="100" value="{{ society_list.pin_code }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">State:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="state" id="state"
+                                               required maxlength="100" value="{{ society_list.state }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Country:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="country" id="country"
+                                               required maxlength="100" value="{{ society_list.country }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Society Registration Number:</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="society_registration_number" id="society_registration_number"
+                                               required maxlength="100" value="{{ society_list.society_registration_number }}"/>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label class="col-sm-1 col-form-label"></label>
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="btn btn-success btn-lg">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
