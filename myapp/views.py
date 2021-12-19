@@ -96,9 +96,9 @@ def upload_file(request):
     return render(request, 'upload.html')
 
 
-def societyProfile(request):
-    societyDeatils = User_Society_deatils.objects.all()
-    return render(request,'societyProfile.html',{'societyDeatils':societyDeatils})
+# def societyProfile(request):
+#     societyDeatils = User_Society_deatils.objects.all()
+#     return render(request,'societyProfile.html',{'societyDeatils':societyDeatils})
 
 #
 # def multi_delete(request):
@@ -919,7 +919,7 @@ def multi_deleteMembers_vendor(request):
 
 def showMembersDetails(request):
     print("show MembersDetails-----------")
-    allMembersDetails = MembersDeatilsValue.objects.all()
+    allMembersDetails = MembersDeatilsValue.objects.filter(society_key = request.user.society)
     context = {
         'membersMembersDetails': allMembersDetails
     }
@@ -1476,21 +1476,30 @@ def export_csv(request):
     return response
 
 
-def file_store(request):
-    income_Expense_LedgerId = request.POST['income_Expense_LedgerId']
-    text = request.POST['text']
-    filestore = request.FILES['filestore']
-    print("--------------", text, income_Expense_LedgerId, filestore)
-    fileid = FileStoreValue1.objects.create(text=text, type_file=filestore,
-                                            income_Expense_LedgerId_id=income_Expense_LedgerId)
-    showfiles = FileStoreValue1.objects.filter(income_Expense_LedgerId_id=income_Expense_LedgerId)
-    # return redirect('/showincome_expense_ledger')
-    return render(request, 'demo.html', {'showfiles': showfiles})
+# def file_store(request):
+#     income_Expense_LedgerId = request.POST['income_Expense_LedgerId']
+#     text = request.POST['text']
+#     filestore = request.FILES['filestore']
+#     print("--------------", text, income_Expense_LedgerId, filestore)
+#     fileid = FileStoreValue1.objects.create(society_key = request.user.society, text=text, type_file=filestore,
+#                                             income_Expense_LedgerId_id=income_Expense_LedgerId)
+#     showfiles = FileStoreValue1.objects.filter(income_Expense_LedgerId_id=income_Expense_LedgerId)
+#     # return redirect('/showincome_expense_ledger')
+#     return render(request, 'demo.html', {'showfiles': showfiles})
 
 
 def demo(request, id):
+
     income_Expense_Ledger = Income_Expense_LedgerValue1.objects.get(id=id)
-    showfiles = FileStoreValue1.objects.filter(income_Expense_LedgerId_id=income_Expense_Ledger)
+
+    if request.method == 'POST':
+        text = request.POST['text']
+        filestore = request.FILES['filestore']
+        FileStoreValue1.objects.create(society_key = request.user.society, text=text, type_file=filestore,
+                                            income_Expense_LedgerId_id=income_Expense_Ledger.id)
+        return redirect('demo', id)
+
+    showfiles = FileStoreValue1.objects.filter(society_key = request.user.society, income_Expense_LedgerId_id=income_Expense_Ledger)
     return render(request, 'demo.html', {'income_Expense_Ledger': income_Expense_Ledger, 'showfiles': showfiles})
 
 
