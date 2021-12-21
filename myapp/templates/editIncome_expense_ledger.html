@@ -42,7 +42,7 @@
                 <hr>
                 <div class="sales-details">
                     <form method="POST" class="post-form"
-                          action="/updateIncome_expense_ledger/{{income_expense_ledger.id}}">
+                          action="/editIncome_expense_ledger/{{income_expense_ledger.id}}">
                         {% csrf_token %}
                         <div class="container">
                             <br>
@@ -58,7 +58,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Date:</label>
                                     <div class="col-sm-4">
-                                        <input type="text" dataformatas="YYYY-MM-DD" class="form-control" name="date"
+                                        <input type="date" dataformatas="YYYY-MM-DD" class="form-control" name="date"
                                                forma id="id_date"
                                                maxlength="100" value="{{ income_expense_ledger.dateOn }}"/>
                                     </div>

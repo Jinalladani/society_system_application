@@ -69,29 +69,29 @@ class BalanceFrom(forms.ModelForm):
                    }
 
 
-class Income_Expense_LedgerForm(forms.ModelForm):
-    class Meta:
-        model = Income_Expense_LedgerValue1
-        fields = ['dateOn', 'type', 'amount', 'category_header', 'from_or_to_account', 'transaction_type',
-                  'transaction_details',
-                  'voucherNo_or_invoiceNo', 'remark', 'opening_balance_cash', 'closing_balance_cash',
-                  'opening_balance_bank',
-                  'closing_balance_bank']
-        widgets = {'dateOn': forms.DateInput(attrs={'class': 'form-control'}),
-                   'type': forms.TextInput(attrs={'class': 'form-control'}),
-                   'amount': forms.TextInput(attrs={'class': 'form-control'}),
-                   'category_header': forms.TextInput(attrs={'class': 'form-control'}),
-                   'from_or_to_account': forms.TextInput(attrs={'class': 'form-control'}),
-                   'transaction_type': forms.TextInput(attrs={'class': 'form-control'}),
-                   'transaction_details': forms.TextInput(attrs={'class': 'form-control'}),
-                   'voucherNo_or_invoiceNo': forms.TextInput(attrs={'class': 'form-control'}),
-                   'remark': forms.Textarea(attrs={'class': 'form-control'}),
-                   'opening_balance_cash': forms.TextInput(attrs={'class': 'form-control'}),
-                   'closing_balance_cash': forms.TextInput(attrs={'class': 'form-control'}),
-                   'opening_balance_bank': forms.TextInput(attrs={'class': 'form-control'}),
-                   'closing_balance_bank': forms.TextInput(attrs={'class': 'form-control'}),
-                   'entry_time': forms.DateInput(attrs={'class': 'form-control'})
-                   }
+# class Income_Expense_LedgerForm(forms.ModelForm):
+#     class Meta:
+#         model = Income_Expense_LedgerValue1
+#         fields = ['dateOn', 'type', 'amount', 'category_header', 'from_or_to_account', 'transaction_type',
+#                   'transaction_details',
+#                   'voucherNo_or_invoiceNo', 'remark', 'opening_balance_cash', 'closing_balance_cash',
+#                   'opening_balance_bank',
+#                   'closing_balance_bank']
+#         widgets = {'dateOn': forms.DateInput(attrs={'class': 'form-control'}),
+#                    'type': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'amount': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'category_header': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'from_or_to_account': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'transaction_type': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'transaction_details': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'voucherNo_or_invoiceNo': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'remark': forms.Textarea(attrs={'class': 'form-control'}),
+#                    'opening_balance_cash': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'closing_balance_cash': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'opening_balance_bank': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'closing_balance_bank': forms.TextInput(attrs={'class': 'form-control'}),
+#                    'entry_time': forms.DateInput(attrs={'class': 'form-control'})
+#                    }
 
 
 class FileStoreForm(forms.ModelForm):

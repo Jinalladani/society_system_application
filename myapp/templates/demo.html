@@ -82,7 +82,7 @@
                 <hr>
                 <div class="sales-details">
 
-                    <form action="file_store" method="post" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="col-sm-3">
@@ -115,9 +115,9 @@
                                     <tbody>
                                     {% for sfile in showfiles%}
                                         <tr>
-                                            <td> {{sfile.id}}</td>
+                                            <td>{{ forloop.counter }}</td>
                                             <td>{{sfile.text}}</td>
-                                            <td><a href="{{sfile.type_file}}">{{sfile.type_file}}</a></td>
+                                            <td><a href="{{sfile.type_file.url}}">{{sfile.type_file}}</a></td>
                                             <td><a href="/destroyFile/{{sfile.id}}"><i class="fa fa-remove"></i></a> </td>
                                         </tr>
                                     {% endfor %}

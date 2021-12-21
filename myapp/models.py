@@ -3,23 +3,23 @@ from django.contrib.auth.models import AbstractUser, User
 from accounts.models import User
 
 
-class Society(models.Model):
-    user_key = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
-    email = models.EmailField(unique=True)
-    phone_no = models.CharField(max_length=10, blank=True, null=True)
-    contact_name = models.CharField(max_length=500)
-    society_name = models.CharField(max_length=500)
-    society_address = models.CharField(max_length=500)
-    city = models.CharField(max_length=200)
-    pin_code = models.CharField(max_length=10)
-    state = models.CharField(max_length=100, default='Gujarat')
-    country = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=False)
-    updated_at = models.DateTimeField(auto_now=True, blank=False)
-
-    def __str__(self):
-        return self.name
+# class Society(models.Model):
+#     user_key = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
+#     email = models.EmailField(unique=True)
+#     phone_no = models.CharField(max_length=10, blank=True, null=True)
+#     contact_name = models.CharField(max_length=500)
+#     society_name = models.CharField(max_length=500)
+#     society_address = models.CharField(max_length=500)
+#     city = models.CharField(max_length=200)
+#     pin_code = models.CharField(max_length=10)
+#     state = models.CharField(max_length=100, default='Gujarat')
+#     country = models.CharField(max_length=100)
+#     is_active = models.BooleanField(default=True)
+#     created_at = models.DateTimeField(auto_now_add=True, blank=False)
+#     updated_at = models.DateTimeField(auto_now=True, blank=False)
+#
+#     def __str__(self):
+#         return self.name
 
 
 class SocietyDeatils(models.Model):
@@ -38,46 +38,47 @@ class SocietyDeatils(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=False)
     updated_at = models.DateTimeField(auto_now=True, blank=False)
 
-    # def __str__(self):
-    #     return self.name
 
-
-# class User_Society_deatils(models.Model):
-#     email = models.EmailField(unique=True)
-#     password = models.CharField(max_length=20)
-#     contact_name = models.CharField(max_length=500)
-#     moblie_no = models.CharField(unique=True, max_length=10)
-#     society_name = models.CharField(max_length=500)
-#     society_address = models.CharField(max_length=500)
-#     city = models.CharField(max_length=200)
-#     pin_code = models.CharField(max_length=10)
-#     state = models.CharField(max_length=100, default='Gujarat')
-#     country = models.CharField(max_length=100)
-#     society_registration_number = models.CharField(max_length=100)
-#     is_active = models.BooleanField(default=True)
-#     is_verfied = models.BooleanField(default=False)
-#     created_at = models.DateTimeField(auto_now_add=True, blank=False)
-#     updated_at = models.DateTimeField(auto_now=True, blank=False)
+class Society(models.Model):
+    user_key = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    phone_no = models.CharField(max_length=10, blank=True, null=True)
+    contact_name = models.CharField(max_length=500)
+    society_name = models.CharField(max_length=500)
+    society_address = models.CharField(max_length=500)
+    city = models.CharField(max_length=200)
+    pin_code = models.CharField(max_length=10)
+    state = models.CharField(max_length=100, default='Gujarat')
+    country = models.CharField(max_length=100)
+    society_registration_number = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=False)
+    updated_at = models.DateTimeField(auto_now=True, blank=False)
 
 
 class ExpenseCategory(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
     category_name = models.CharField(unique=True, max_length=200)
 
 
 class AssentCategory(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
     category_name = models.CharField(unique=True, max_length=200)
 
 
 class IncomeCategory(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
     category_name = models.CharField(unique=True, max_length=200)
 
 
 class BalanceValue(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
     account = models.CharField(unique=True, max_length=100)
     balance_amount = models.FloatField(max_length=500)
 
 
 class Members_Vendor_Account(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
 
 
@@ -92,6 +93,7 @@ class MembersDeatils(models.Model):
 
 
 class MembersDeatilsValue(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
     flatNo = models.CharField(max_length=200)
     primaryName = models.CharField(max_length=200, null=True, blank=True)
     primaryContactNo = models.CharField(max_length=10, null=True, blank=True)
@@ -104,6 +106,7 @@ class MembersDeatilsValue(models.Model):
 
 
 class Income_Expense_LedgerValue1(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
     dateOn = models.DateField()
     type = models.CharField(max_length=100)
     amount = models.FloatField(max_length=100)
@@ -122,6 +125,7 @@ class Income_Expense_LedgerValue1(models.Model):
 
 
 class FileStoreValue1(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
     income_Expense_LedgerId = models.ForeignKey(Income_Expense_LedgerValue1, on_delete=models.CASCADE)
     text = models.CharField(max_length=100, null=True, blank=True)
     type_file = models.FileField(upload_to='filestore/', verbose_name='file', null=True, blank=True)

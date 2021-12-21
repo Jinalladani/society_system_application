@@ -79,7 +79,7 @@ DATABASES = {
         'NAME': 'Socity_Management_System',
         'USER': 'root',
         'PASSWORD': 'myr00t',
-        'HOST': 'localhosts',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

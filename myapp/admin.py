@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from myapp.models import *
 
 
-admin.site.register(Society)
+admin.site.register(SocietyDeatils)
 
 admin.site.register(ExpenseCategory)
 
