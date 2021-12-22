@@ -92,7 +92,8 @@
                                 <span style="margin:0 10px 0 0"><a href="/cashWithdrawal" class="btn btn-primary">CASH WITHDRAWAL</a></span>
                                 <span style="margin:0 10px 0 0"><a href="/cashDeposit" class="btn btn-primary">CASH DEPOSIT</a></span>
                                 <span style="margin:0 10px 0 0"><a href="/export_csv" class="btn btn-primary">EXPORT EXCEL</a></span>
-                                <span><a href="/upload_file" class="btn btn-primary">UPLOAD EXCEL</a></span>
+                                <span style="margin:0 10px 0 0"><a href="/upload_file" class="btn btn-primary">UPLOAD EXCEL</a></span>
+                                <button type="submit" id="delete_btn" class="btn btn-primary">Delete All</button>
                                 <hr>
 <!--                                <input type="date" style="margin:0 0 10px 10px; width:150px" name="date" {% if dateOn  %} value={{ dateOn }}{% endif %}>-->
                                 <span ><b>From</b></span><input type="date"  placeholder="from" style="margin:0 0 10px 10px; width:150px" name="from_date" {% if dateOn  %} value={{ dateOn }}{% endif %}>
@@ -141,7 +142,7 @@
 
                                 <thead>
                                 <th>&nbsp;</th>
-                                <th>ID</th>
+<!--                                <th>ID</th>-->
                                 <th>DateOn</th>
                                 <th>Category Type</th>
                                 <th>Amount</th>
@@ -165,7 +166,7 @@
                                 <tr id="{{IELVal.id}}">
                                     <td><input type="checkbox" name="income_expense_ledger[]" value="{{IELVal.id}}"
                                                id="delete_income_expense_ledger"/></td>
-                                    <td>{{ IELVal.id }}</td>
+<!--                                    <td>{{ IELVal.id }}</td>-->
                                     <td>{{ IELVal.dateOn }}</td>
                                     <td>{{IELVal.type}}</td>
                                     <td>{{IELVal.amount}}</td>
@@ -197,7 +198,6 @@
                                 </tr>
                                 {% endfor %}
                             </table>
-                            <button type="submit" id="delete_btn" class="btn btn-primary">All delete</button>
                         </div>
                     </form>
                 </div>

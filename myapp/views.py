@@ -97,7 +97,7 @@ def upload_file(request):
 def societyProfile(request):
     # societyDeatils = Society.objects.filter(society_key=request.user.society)
     societyDeatils = Society.objects.all()
-    return render(request, 'societyProfile.html',{'societyDeatils':societyDeatils})
+    return render(request, 'societyProfile.html', {'societyDeatils': societyDeatils})
 
 
 # def multi_delete(request):
@@ -394,7 +394,7 @@ def income_expense_ledgerValue(request):
     entry_time = request.POST['entry_time']
 
     amount1 = float(amount)
-    balance_set = BalanceValue.objects.filter(society_key=request.user.society,account='Cash')
+    balance_set = BalanceValue.objects.filter(society_key=request.user.society, account='Cash')
     print("balance ------------>", balance_set)
     for balance in balance_set:
         bal_amount = float(balance.balance_amount)
@@ -402,7 +402,7 @@ def income_expense_ledgerValue(request):
     obc = bal_amount
     cbc = obc
 
-    balance_set = BalanceValue.objects.filter(society_key=request.user.society,account='Bank')
+    balance_set = BalanceValue.objects.filter(society_key=request.user.society, account='Bank')
     print("balance ------------>", balance_set)
     for balance in balance_set:
         bal_amountBank = float(balance.balance_amount)
@@ -494,17 +494,17 @@ def income_expense_ledgerValue(request):
                                                      closing_balance_bank=cbb, entry_time=entry_time,
                                                      society_key=request.user.society)
     print(uid)
-    updateBalanceValue(cbc, cbb)
+    updateBalanceValue(cbc, cbb, request)
     return redirect('showincome_expense_ledger')
 
 
-def updateBalanceValue(cbc, cbb):
-    caseObject = BalanceValue.objects.get(account='Cash')
+def updateBalanceValue(cbc, cbb, request):
+    caseObject = BalanceValue.objects.get(society_key=request.user.society, account='Cash')
     print("cbc -------------", cbc)
     print(caseObject)
     caseObject.balance_amount = cbc
     caseObject.save()
-    bankObject = BalanceValue.objects.get(account='Bank')
+    bankObject = BalanceValue.objects.get(society_key=request.user.society, account='Bank')
     print('cbb--------------', cbb)
     print(bankObject)
     bankObject.balance_amount = cbb
@@ -528,7 +528,7 @@ def cashWithdrawEntryValue(request):
     entry_time = datetime.datetime.now()
 
     amount1 = float(amount)
-    balance_set = BalanceValue.objects.filter(society_key=request.user.society,account='Cash')
+    balance_set = BalanceValue.objects.filter(society_key=request.user.society, account='Cash')
     print("balance ------------>", balance_set)
     for balance in balance_set:
         bal_amount = float(balance.balance_amount)
@@ -536,7 +536,7 @@ def cashWithdrawEntryValue(request):
     obc = bal_amount
     cbc = obc
 
-    balance_set = BalanceValue.objects.filter(society_key=request.user.society,account='Bank')
+    balance_set = BalanceValue.objects.filter(society_key=request.user.society, account='Bank')
     print("balance ------------>", balance_set)
     for balance in balance_set:
         bal_amountBank = float(balance.balance_amount)
@@ -558,8 +558,8 @@ def cashWithdrawEntryValue(request):
                                                                    closing_balance_bank=cbb,
                                                                    entry_time=entry_time,
                                                                    society_key=request.user.society)
-    updateBalanceValue(cbc, cbb)
-    balance_set = BalanceValue.objects.filter(society_key=request.user.society,account='Bank')
+    updateBalanceValue(cbc, cbb, request)
+    balance_set = BalanceValue.objects.filter(society_key=request.user.society, account='Bank')
     print("balance ------------>", balance_set)
     for balance in balance_set:
         bal_amountBank = float(balance.balance_amount)
@@ -581,7 +581,7 @@ def cashWithdrawEntryValue(request):
                                                                    closing_balance_bank=cbb,
                                                                    entry_time=entry_time,
                                                                    society_key=request.user.society)
-    updateBalanceValue(cbc, cbb)
+    updateBalanceValue(cbc, cbb, request)
     return redirect('showincome_expense_ledger')
 
 
@@ -602,7 +602,7 @@ def cashDepositEntryValue(request):
     entry_time = datetime.datetime.now()
 
     amount1 = float(amount)
-    balance_set = BalanceValue.objects.filter(society_key=request.user.society,account='Cash')
+    balance_set = BalanceValue.objects.filter(society_key=request.user.society, account='Cash')
     print("balance ------------>", balance_set)
     bal_amount = 0
     for balance in balance_set:
@@ -611,7 +611,7 @@ def cashDepositEntryValue(request):
     obc = bal_amount
     cbc = obc
 
-    balance_set = BalanceValue.objects.filter(society_key=request.user.society,account='Bank')
+    balance_set = BalanceValue.objects.filter(society_key=request.user.society, account='Bank')
     print("balance ------------>", balance_set)
     for balance in balance_set:
         bal_amountBank = float(balance.balance_amount)
@@ -633,8 +633,8 @@ def cashDepositEntryValue(request):
                                                                    closing_balance_bank=cbb,
                                                                    entry_time=entry_time,
                                                                    society_key=request.user.society)
-    updateBalanceValue(cbc, cbb)
-    balance_set = BalanceValue.objects.filter(society_key=request.user.society,account='Cash')
+    updateBalanceValue(cbc, cbb, request)
+    balance_set = BalanceValue.objects.filter(society_key=request.user.society, account='Cash')
     print("balance ------------>", balance_set)
     for balance in balance_set:
         bal_amount = float(balance.balance_amount)
@@ -655,7 +655,7 @@ def cashDepositEntryValue(request):
                                                                    closing_balance_bank=cbb,
                                                                    entry_time=entry_time,
                                                                    society_key=request.user.society)
-    updateBalanceValue(cbc, cbb)
+    updateBalanceValue(cbc, cbb, request)
     return redirect('showincome_expense_ledger')
 
 
@@ -697,37 +697,6 @@ def editIncome_expense_ledger(request, id):
                   {'income_expense_ledger': income_expense_ledger, 'type_headerList': type_headerList})
 
 
-# def updateIncome_expense_ledger(request, id):
-#     if request.POST:
-#         dateOn = request.POST['date']
-#         type = request.POST['type']
-#         amount = request.POST['amount']
-#         category_header = request.POST['category_header']
-#         from_or_to_account = request.POST['from_or_to_account']
-#         transaction_type = request.POST['transaction_type']
-#         transaction_details = request.POST['transaction_details']
-#         voucherNo_or_invoiceNo = request.POST['voucherNo_or_invoiceNo']
-#         remark = request.POST['remark']
-#         income_expense_ledger = Income_Expense_LedgerValue1.objects.get(id=id)
-#         income_expense_ledger.dateOn = dateOn
-#         income_expense_ledger.type = type
-#         income_expense_ledger.amount = amount
-#         income_expense_ledger.category_header = category_header
-#         income_expense_ledger.from_or_to_account = from_or_to_account
-#         income_expense_ledger.transaction_type = transaction_type
-#         income_expense_ledger.transaction_details = transaction_details
-#         income_expense_ledger.voucherNo_or_invoiceNo = voucherNo_or_invoiceNo
-#         income_expense_ledger.remark = remark
-#         income_expense_ledger.save()
-#         return redirect('showincome_expense_ledger')
-#     else:
-#         # print("update Income_expense_ledger-------------")
-#         income_expense_ledger = Income_Expense_LedgerValue1.objects.get(id=id)
-#         print('income_expense_ledger', income_expense_ledger)
-#         form = Income_Expense_LedgerForm(request.POST, instance=income_expense_ledger)
-#         return render(request, 'editIncome_expense_ledger.html', {'income_expense_ledger': income_expense_ledger})
-
-
 def destroyIncome_expense_ledger(request, id):
     print("destroyIncome_expense_ledger-----------")
     income_expense_ledger = Income_Expense_LedgerValue1.objects.get(id=id)
@@ -762,8 +731,12 @@ def addnewBalance(request):
     if request.method == 'POST':
         account = request.POST['type']
         balance_amount = request.POST['balnce_amount']
-        BalanceValue.objects.create(account=account, balance_amount=balance_amount,
-                                    society_key=request.user.society)
+        data = BalanceValue.objects.filter(society_key=request.user.society, account__iexact=account)
+        if data:
+            print("already there")
+        else:
+            BalanceValue.objects.create(society_key=request.user.society, account=account,
+                                        balance_amount=balance_amount)
         return redirect('showBalance')
 
     return render(request, 'addBalance.html')
@@ -908,16 +881,16 @@ def destroyMembersDetails(request, id):
     return redirect("showMembersDetails")
 
 
-def multi_deleteMembers_vendor(request):
-    print("Member-vendor multi delete -------------")
+def multi_deleteMembersDetails(request):
+    print("Member  multi delete -------------")
     if request.method == "POST":
         product_ids = request.POST.getlist('id[]')
         print("delete this id ----------->", product_ids)
         for id in product_ids:
-            member_vendor = Members_Vendor_Account.objects.get(pk=id)
-            member_vendor.delete()
-            print(" IncomeCtaegory  delete this id ----------->", id)
-        return redirect('showMembers_vendor')
+            membersDetails = MembersDeatilsValue.objects.get(pk=id)
+            membersDetails.delete()
+            print(" membersDetails  delete this id ----------->", id)
+        return redirect('showMembersDetails')
 
 
 def export_users_xls(request):
@@ -1106,13 +1079,23 @@ def simple_upload(request):
 
         imported_data = dataset.load(new_income.read(), format='xlsx')
         for data in imported_data:
-            print(data[0])
-            value = ExpenseCategory(
-                data[0],
-                data[1]
-            )
-            value.save()
+            ExpenseCategory.objects.create(society_key=request.user.society, category_name=data[0])
         return redirect('ExpensiveCategory')
+
+    # if request.method == 'POST':
+    #     emp_resource = ExpenseResource()
+    #     dataset = Dataset()
+    #     new_income = request.FILES['myfile']
+    #
+    #     imported_data = dataset.load(new_income.read(), format='xlsx')
+    #     for data in imported_data:
+    #         print(data[0])
+    #         value = ExpenseCategory(
+    #             data[0],
+    #             data[1]
+    #         )
+    #         value.save()
+    #     return redirect('ExpensiveCategory')
 
 
 def simple_uploadIncome(request):
@@ -1122,16 +1105,10 @@ def simple_uploadIncome(request):
         new_expense = request.FILES['myfile']
 
         imported_data = dataset.load(new_expense.read(), format='xlsx')
-        # print(imported_data)
         for data in imported_data:
-            print(data[1])
-            value = ExpenseCategory(
-                data[0],
-                data[1]
-            )
-            value.save()
+            IncomeCategory.objects.create(society_key=request.user.society, category_name=data[0])
 
-    return redirect('ExpensiveCategory')
+        return redirect('incomeCategory')
 
 
 # def simple_uploadIncome(request):
@@ -1160,16 +1137,10 @@ def simple_uploadMembers_Vendors(request):
         new_members = request.FILES['myfile']
 
         imported_data = dataset.load(new_members.read(), format='xlsx')
-        # print(imported_data)
         for data in imported_data:
-            print(data[1])
-            value = Members_Vendor_Account(
-                data[0],
-                data[1]
-            )
-            value.save()
+            Members_Vendor_Account.objects.create(society_key=request.user.society, name=data[0])
 
-    return redirect('showMembers_Vendor')
+        return redirect('showMembers_Vendor')
 
 
 def simple_uploadMembersDetails(request):
@@ -1179,23 +1150,27 @@ def simple_uploadMembersDetails(request):
         new_members = request.FILES['myfile']
 
         imported_data = dataset.load(new_members.read(), format='xlsx')
-        # print(imported_data)
         for data in imported_data:
-            print(data[1])
-            value = MembersDeatilsValue(
-                data[0],
-                data[1],
-                data[2],
-                data[3],
-                data[4],
-                data[5],
-                data[6],
-                data[7],
-                data[8]
-            )
-            value.save()
-
-    return redirect('showMembersDetails')
+            MembersDeatilsValue.objects.create(society_key=request.user.society, flatNo=data[0], primaryName=data[1],
+                                               primaryContactNo=data[2], secondaryName=data[3],
+                                               secondaryContactNo=data[4], accountingName=data[5],
+                                               whatsappContactNo=data[6], email=data[7],
+                                               residence=data[8])
+        return redirect('showMembersDetails')
+        # for data in imported_data:
+        #     print(data[1])
+        #     value = MembersDeatilsValue(
+        #         data[0],
+        #         data[1],
+        #         data[2],
+        #         data[3],
+        #         data[4],
+        #         data[5],
+        #         data[6],
+        #         data[7],
+        #         data[8]
+        #     )
+        #     value.save()
 
 
 def simple_uploadIncome_Expense_Ledger(request):
@@ -1208,22 +1183,17 @@ def simple_uploadIncome_Expense_Ledger(request):
         # print(imported_data)
         excelValue = []
         for data in imported_data:
-            print(data[1])
-            value = Income_Expense_LedgerValue1(
-                data[0],
-                data[1],
-                data[2],
-                data[3],
-                data[4],
-                data[5],
-                data[6],
-                data[7],
-                data[8],
-                data[9],
-                0,
-                0,
-                0,
-                0
+            value = Income_Expense_LedgerValue1.objects.create(
+                society_key=request.user.society,
+                dateOn=data[0],
+                type=data[1],
+                amount=data[2],
+                category_header=data[3],
+                from_or_to_account=data[4],
+                transaction_type=data[5],
+                transaction_details=data[6],
+                voucherNo_or_invoiceNo=data[7],
+                remark=data[8],
             )
             excelValue.append(value)
 
@@ -1246,16 +1216,16 @@ def simple_uploadIncome_Expense_Ledger(request):
 
             amount1 = float(valueUpdate.amount)
 
-            balance_set = BalanceValue.objects.all().filter(account='Cash')
-            for balance in balance_set:
-                bal_amount = float(balance.balance_amount)
+            balance_set = BalanceValue.objects.get(society_key=request.user.society, account='Cash')
+            print('-----balance_set---', balance_set)
+            bal_amount = float(balance_set.balance_amount)
+
 
             valueUpdate.opening_balance_cash = bal_amount
             valueUpdate.closing_balance_cash = valueUpdate.opening_balance_cash
 
-            balance_set = BalanceValue.objects.all().filter(account='Bank')
-            for balance in balance_set:
-                bal_amountBank = float(balance.balance_amount)
+            balance_set = BalanceValue.objects.get(society_key=request.user.society, account='Bank')
+            bal_amountBank = float(balance_set.balance_amount)
             valueUpdate.opening_balance_bank = bal_amountBank
             valueUpdate.closing_balance_bank = valueUpdate.opening_balance_bank
 
@@ -1300,25 +1270,31 @@ def simple_uploadIncome_Expense_Ledger(request):
 
             valueUpdate.entry_time = datetime.datetime.now()
 
-            if Members_Vendor_Account.objects.all().filter(name=valueUpdate.from_or_to_account):
+            if Members_Vendor_Account.objects.filter(name__icontains=valueUpdate.from_or_to_account,
+                                                     society_key=request.user.society):
                 print("record found")
             else:
                 print("record not found")
-                checkmember = Members_Vendor_Account.objects.create(name=valueUpdate.from_or_to_account)
+                checkmember = Members_Vendor_Account.objects.create(name=valueUpdate.from_or_to_account,
+                                                                    society_key=request.user.society)
 
             if valueUpdate.type == 'Expense':
-                if ExpenseCategory.objects.all().filter(category_name=valueUpdate.category_header):
+                if ExpenseCategory.objects.filter(category_name__icontains=valueUpdate.category_header,
+                                                  society_key=request.user.society):
                     print("record found")
                 else:
                     print("record not found")
-                    checkexpense = ExpenseCategory.objects.create(category_name=valueUpdate.category_header)
+                    checkexpense = ExpenseCategory.objects.create(category_name=valueUpdate.category_header,
+                                                                  society_key=request.user.society)
 
             if valueUpdate.type == 'Income':
-                if IncomeCategory.objects.all().filter(category_name=valueUpdate.category_header):
+                if IncomeCategory.objects.filter(category_name__icontains=valueUpdate.category_header,
+                                                 society_key=request.user.society):
                     print("record found")
                 else:
                     print("record not found")
-                    checkexpense = IncomeCategory.objects.create(category_name=valueUpdate.category_header)
+                    checkexpense = IncomeCategory.objects.create(category_name=valueUpdate.category_header,
+                                                                 society_key=request.user.society)
 
             print("-------------update value-date ", valueUpdate.dateOn)
             print("-------------- list", valueUpdate.type)
@@ -1340,19 +1316,18 @@ def simple_uploadIncome_Expense_Ledger(request):
 
             valueUpdate.save()
             updateBalanceValueUploadFile(valueUpdate.closing_balance_cash
-                                         , valueUpdate.closing_balance_bank)
+                                         , valueUpdate.closing_balance_bank, request)
         # value.save()
 
     return redirect('showincome_expense_ledger')
 
-
-def updateBalanceValueUploadFile(cbc, cbb):
-    caseObject = BalanceValue.objects.get(account='Cash')
+def updateBalanceValueUploadFile(cbc, cbb, request):
+    caseObject = BalanceValue.objects.get(account='Cash', society_key=request.user.society)
     print("cbc -------------", cbc)
     print(caseObject)
     caseObject.balance_amount = cbc
     caseObject.save()
-    bankObject = BalanceValue.objects.get(account='Bank')
+    bankObject = BalanceValue.objects.get(account='Bank', society_key=request.user.society)
     print('cbb--------------', cbb)
     print(bankObject)
     bankObject.balance_amount = cbb
@@ -1429,30 +1404,6 @@ def export_csv(request):
 
     return response
 
-
-# def file_store(request):
-#     income_Expense_LedgerId = request.POST['income_Expense_LedgerId']
-#     text = request.POST['text']
-#     filestore = request.FILES['filestore']
-#     print("--------------", text, income_Expense_LedgerId, filestore)
-#     fileid = FileStoreValue1.objects.create(text=text, type_file=filestore,
-#                                             income_Expense_LedgerId_id=income_Expense_LedgerId)
-#     showfiles = FileStoreValue1.objects.filter(income_Expense_LedgerId_id=income_Expense_LedgerId)
-#     # return redirect('/showincome_expense_ledger')
-#     return render(request, 'demo.html', {'showfiles': showfiles})
-#
-#
-# def demo(request, id):
-#     income_Expense_Ledger = Income_Expense_LedgerValue1.objects.get(id=id)
-#     showfiles = FileStoreValue1.objects.filter(income_Expense_LedgerId_id=income_Expense_Ledger)
-#     return render(request, 'demo.html', {'income_Expense_Ledger': income_Expense_Ledger, 'showfiles': showfiles})
-#
-#
-# def destroyFile(request, id):
-#     print("destroy showfiles -----------")
-#     showfiles = FileStoreValue1.objects.get(id=id)
-#     showfiles.delete()
-#     return redirect('/demo')
 
 def demo(request, id):
     income_Expense_Ledger = Income_Expense_LedgerValue1.objects.get(id=id)

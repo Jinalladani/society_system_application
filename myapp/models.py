@@ -58,7 +58,7 @@ class Society(models.Model):
 
 class ExpenseCategory(models.Model):
     society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
-    category_name = models.CharField(unique=True, max_length=200)
+    category_name = models.CharField(max_length=200)
 
 
 class AssentCategory(models.Model):
@@ -68,12 +68,12 @@ class AssentCategory(models.Model):
 
 class IncomeCategory(models.Model):
     society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
-    category_name = models.CharField(unique=True, max_length=200)
+    category_name = models.CharField(max_length=200)
 
 
 class BalanceValue(models.Model):
     society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
-    account = models.CharField(unique=True, max_length=100)
+    account = models.CharField(max_length=100)
     balance_amount = models.FloatField(max_length=500)
 
 
@@ -117,10 +117,10 @@ class Income_Expense_LedgerValue1(models.Model):
     voucherNo_or_invoiceNo = models.CharField(max_length=100, null=True, blank=True)
     image = models.ImageField(upload_to='images/', verbose_name='image', null=True, blank=True)
     remark = models.TextField(max_length=500, null=True, blank=True)
-    opening_balance_cash = models.FloatField(max_length=100)
-    closing_balance_cash = models.FloatField(max_length=100)
-    opening_balance_bank = models.FloatField(max_length=100)
-    closing_balance_bank = models.FloatField(max_length=100)
+    opening_balance_cash = models.FloatField(max_length=100, blank=True, null=True)
+    closing_balance_cash = models.FloatField(max_length=100, blank=True, null=True)
+    opening_balance_bank = models.FloatField(max_length=100, blank=True, null=True)
+    closing_balance_bank = models.FloatField(max_length=100, blank=True, null=True)
     entry_time = models.DateTimeField(null=True, blank=True)
 
 
