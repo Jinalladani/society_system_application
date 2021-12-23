@@ -18,6 +18,7 @@ from accounts.models import User
 from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator
 
+
 def index(request):
     balance = BalanceValue.objects.filter(society_key=request.user.society)
 
@@ -92,6 +93,8 @@ def otpVerified(request):
 
 def upload_file(request):
     return render(request, 'upload.html')
+
+
 
 
 def societyProfile(request):
@@ -1227,7 +1230,6 @@ def simple_uploadIncome_Expense_Ledger(request):
             print('-----balance_set---', balance_set)
             bal_amount = float(balance_set.balance_amount)
 
-
             valueUpdate.opening_balance_cash = bal_amount
             valueUpdate.closing_balance_cash = valueUpdate.opening_balance_cash
 
@@ -1328,6 +1330,7 @@ def simple_uploadIncome_Expense_Ledger(request):
 
     return redirect('showincome_expense_ledger')
 
+
 def updateBalanceValueUploadFile(cbc, cbb, request):
     caseObject = BalanceValue.objects.get(account='Cash', society_key=request.user.society)
     print("cbc -------------", cbc)
@@ -1395,7 +1398,7 @@ def export_csv(request):
     response['Content-Disposition'] = 'attachment; filename=ledger' + str(datetime.datetime.now()) + '.csv'
 
     writer = csv.writer(response)
-    writer.writerow([ 'dateOn', 'type', 'amount', 'category_header', 'from_or_to_account', 'transaction_type',
+    writer.writerow(['dateOn', 'type', 'amount', 'category_header', 'from_or_to_account', 'transaction_type',
                      'transaction_details', 'voucherNo_or_invoiceNo', 'remark', 'opening_balance_cash',
                      'closing_balance_cash',
                      'opening_balance_bank', 'closing_balance_bank',
@@ -1404,7 +1407,7 @@ def export_csv(request):
     valuestore = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.society)
 
     for exp in valuestore:
-        writer.writerow([ exp.dateOn, exp.type, exp.amount, exp.category_header, exp.from_or_to_account,
+        writer.writerow([exp.dateOn, exp.type, exp.amount, exp.category_header, exp.from_or_to_account,
                          exp.transaction_type,
                          exp.transaction_details, exp.voucherNo_or_invoiceNo, exp.remark, exp.opening_balance_cash,
                          exp.closing_balance_cash, exp.opening_balance_bank, exp.closing_balance_bank, exp.entry_time])
