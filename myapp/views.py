@@ -16,7 +16,7 @@ import datetime
 from .check_me import check_user
 from accounts.models import User
 from django.contrib.auth.hashers import make_password
-
+from django.core.paginator import Paginator
 
 def index(request):
     balance = BalanceValue.objects.filter(society_key=request.user.society)
@@ -218,8 +218,12 @@ def multi_deleteExpenseCategory(request):
 def IncomeCategoryshow(request):
     print("allIncomeCategory-----------")
     allIncomeCategory = IncomeCategory.objects.filter(society_key=request.user.society)
+    paginator = Paginator(allIncomeCategory, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'incomeCategory': allIncomeCategory
+        'incomeCategory': page_obj
     }
     print(context)
     return render(request, 'incomeCategory.html', context)
@@ -231,7 +235,7 @@ def addnewIncomeCategory(request):
         category_name = request.POST['category_name']
 
         IncomeCategory.objects.create(category_name=category_name, society_key=request.user.society)
-        return redirect('IncomeCategory')
+        return redirect('IncomeCategoryshow')
 
     return render(request, 'addIncomeCategory.html')
 
@@ -347,11 +351,14 @@ def showincome_expense_ledger(request):
     else:
         print("allincome_expense_ledger-----------")
         allincome_expense_ledger = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.society)
+        paginator = Paginator(allincome_expense_ledger, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         context = {
-            'income_expense_ledger': allincome_expense_ledger
+            'income_expense_ledger': page_obj
         }
         print(context)
-        print("else")
         return render(request, 'showIncome_expense_ledger.html', context)
 
 
@@ -1388,16 +1395,16 @@ def export_csv(request):
     response['Content-Disposition'] = 'attachment; filename=ledger' + str(datetime.datetime.now()) + '.csv'
 
     writer = csv.writer(response)
-    writer.writerow(['id', 'dateOn', 'type', 'amount', 'category_header', 'from_or_to_account', 'transaction_type',
+    writer.writerow([ 'dateOn', 'type', 'amount', 'category_header', 'from_or_to_account', 'transaction_type',
                      'transaction_details', 'voucherNo_or_invoiceNo', 'remark', 'opening_balance_cash',
                      'closing_balance_cash',
                      'opening_balance_bank', 'closing_balance_bank',
                      'entry_time'])
 
-    valuestore = Income_Expense_LedgerValue1.objects.all()
+    valuestore = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.society)
 
     for exp in valuestore:
-        writer.writerow([exp.id, exp.dateOn, exp.type, exp.amount, exp.category_header, exp.from_or_to_account,
+        writer.writerow([ exp.dateOn, exp.type, exp.amount, exp.category_header, exp.from_or_to_account,
                          exp.transaction_type,
                          exp.transaction_details, exp.voucherNo_or_invoiceNo, exp.remark, exp.opening_balance_cash,
                          exp.closing_balance_cash, exp.opening_balance_bank, exp.closing_balance_bank, exp.entry_time])

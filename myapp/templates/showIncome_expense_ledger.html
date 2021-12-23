@@ -142,7 +142,7 @@
 
                                 <thead>
                                 <th>&nbsp;</th>
-<!--                                <th>ID</th>-->
+                                <th>ID</th>
                                 <th>DateOn</th>
                                 <th>Category Type</th>
                                 <th>Amount</th>
@@ -166,7 +166,7 @@
                                 <tr id="{{IELVal.id}}">
                                     <td><input type="checkbox" name="income_expense_ledger[]" value="{{IELVal.id}}"
                                                id="delete_income_expense_ledger"/></td>
-<!--                                    <td>{{ IELVal.id }}</td>-->
+                                    <td>{{ forloop.counter0|add:income_expense_ledger.start_index   }}</td>
                                     <td>{{ IELVal.dateOn }}</td>
                                     <td>{{IELVal.type}}</td>
                                     <td>{{IELVal.amount}}</td>
@@ -201,6 +201,23 @@
                         </div>
                     </form>
                 </div>
+                <div class="pagination">
+        <span class="step-links">
+        {% if income_expense_ledger.has_previous %}
+            <a href="?page={{ income_expense_ledger.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ income_expense_ledger.number }} of {{ income_expense_ledger.paginator.num_pages }}.
+        </span>
+
+        {% if income_expense_ledger.has_next %}
+            <a href="?page={{ income_expense_ledger.next_page_number }}">next</a>
+
+        {% endif %}
+    </span>
+</div>
+
 
             </div>
         </div>
