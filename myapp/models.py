@@ -61,9 +61,33 @@ class ExpenseCategory(models.Model):
     category_name = models.CharField(max_length=200)
 
 
-class AssentCategory(models.Model):
+class AssentCategory1(models.Model):
     society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
-    category_name = models.CharField(unique=True, max_length=200)
+    category_name = models.CharField(max_length=200)
+
+
+class Asset_InventoryCategoryValue(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    itemName = models.CharField(max_length=200, null=True, blank=True)
+    assetCategory = models.CharField(max_length=200, null=True, blank=True)
+    quantity = models.FloatField(max_length=200, null=True, blank=True)
+    purchasePrice = models.FloatField(max_length=200, null=True, blank=True)
+    deprecatedPrice = models.FloatField(max_length=200, null=True, blank=True)
+    onDate = models.DateField(null=True, blank=True)
+    totalCost = models.FloatField(max_length=200, null=True, blank=True)
+    marketValue = models.FloatField(max_length=200, null=True, blank=True)
+
+
+class Asset_InventoryCategoryValue1(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    itemName =models.CharField(max_length=200, null=True, blank=True)
+    assetCategory = models.CharField(max_length=200, null=True, blank=True)
+    quantity = models.FloatField(max_length=200, null=True, blank=True)
+    purchasePrice = models.FloatField(max_length=200, null=True, blank=True)
+    deprecatedPrice = models.FloatField(max_length=200, null=True, blank=True)
+    onDate = models.DateField(null=True, blank=True)
+    totalCost = models.FloatField(max_length=200, null=True, blank=True)
+    marketValue = models.FloatField(max_length=200, null=True, blank=True)
 
 
 class IncomeCategory(models.Model):
@@ -82,14 +106,14 @@ class Members_Vendor_Account(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
 
 
-class MembersDeatils(models.Model):
-    flatNo = models.CharField(max_length=200)
-    primaryName = models.CharField(max_length=200, null=True, blank=True)
-    primaryContactNo = models.CharField(max_length=10, null=True, blank=True)
-    secondaryName = models.CharField(max_length=200, null=True, blank=True)
-    secondaryContactNo = models.CharField(max_length=10, null=True, blank=True)
-    accountingName = models.CharField(max_length=200, null=True, blank=True)
-    whatsappContactNo = models.CharField(max_length=10, null=True, blank=True)
+class subUser(models.Model):
+    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    contact_name = models.CharField(max_length=200, null=True, blank=True)
+    email = models.CharField(unique=True, max_length=200, null=True, blank=True)
+    phone_no = models.CharField(max_length=10, blank=True, null=True)
+    Type = models.CharField(max_length=200, null=True, blank=True)
+    access_rights = models.CharField(max_length=200, null=True, blank=True)
+    status = models.CharField(max_length=200, null=True, blank=True)
 
 
 class MembersDeatilsValue(models.Model):

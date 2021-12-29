@@ -1,12 +1,15 @@
 import csv
+from random import randint
+from django.core.mail import send_mail
 from django.contrib import auth
 from django.db.models import Sum
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from tablib import Dataset
-from .models import SocietyDeatils, ExpenseCategory, IncomeCategory, Income_Expense_LedgerValue1, \
+from .models import ExpenseCategory, IncomeCategory, Income_Expense_LedgerValue1, \
     BalanceValue, \
-    Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue, AssentCategory, Society
-from .forms import ExpensiveCategoryForm, IncomeCategoryForm, BalanceFrom, \
-    Members_Vendor_AccountForm, MembersDeatilsForm
+    Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue, Society, subUser, AssentCategory1, \
+    Asset_InventoryCategoryValue1
 from .resource import ExpenseResource, IncomeResource, Members_VendoorsResource, Income_Expense_LedgerResource, \
     MembersDetailsResource
 from django.shortcuts import render, redirect
@@ -95,8 +98,6 @@ def upload_file(request):
     return render(request, 'upload.html')
 
 
-
-
 def societyProfile(request):
     # societyDeatils = Society.objects.filter(society_key=request.user.society)
     societyDeatils = Society.objects.all()
@@ -119,8 +120,8 @@ def login(request):
     email = request.POST['email']
     password = request.POST['password']
 
-    user = auth.authenticate(email=email, password=password)
-    print(user)
+    user = User.objects.get(email=email, password=password)
+    print("--------------", user)
     if user:
         auth.login(request, user)
         return redirect('index')
@@ -140,7 +141,8 @@ def register(request):
         state = request.POST['state']
         country = request.POST['country']
         society_registration_number = request.POST['society_registration_number']
-        uid = User.objects.create(email=email, password=password, phone_no=phone_no)
+        user_type = request.POST['society_admin']
+        uid = User.objects.create(email=email, password=password, phone_no=phone_no, user_type=user_type)
 
         user_instance = User.objects.get(pk=uid.id)
 
@@ -152,6 +154,56 @@ def register(request):
         return redirect('loginpage')
 
     return render(request, 'login.html')
+
+
+def forgot_password(request):
+    return render(request, 'forgot_password.html')
+
+
+def send_otp(request):
+    email = request.POST['email']
+    generate_otp = randint(1111, 9999)
+    uid = User.objects.get(email=email)
+    if uid:
+        uid.otp = generate_otp
+        uid.save()  # update
+        sendmail(" Forgot Password ", "mail_template", email, {'otp': generate_otp, 'uid': uid})
+        return render(request, 'reset_password.html', {'email': email, 'otp': generate_otp})
+    else:
+        e_msg = "Email does not exist"
+        return render(request, 'forgot_password.html', {'e_msg': e_msg})
+
+
+def sendmail(subject, template, to, context):
+    template_str = template + '.html'
+    html_message = render_to_string(template_str, {'data': context})
+    plain_message = strip_tags(html_message)
+    from_email = 'bonrix@gmail.com'
+    send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+
+
+def reset_password(request):
+    try:
+        email = request.POST['email']
+        otp = request.POST['otp']
+        otp1 = request.POST['otp1']
+        password = request.POST['password']
+        cpassword = request.POST['cpassword']
+        uid = User.objects.get(email=email)
+        print("-----------", email)
+        if uid:
+            if otp1 == otp and password == cpassword:
+
+                uid.password = password
+                uid.save()
+                s_msg = "password reset succesfully"
+                return render(request, 'login.html', {'s_msg': s_msg})
+            else:
+                s_msg = "invalid otp or password"
+                return render(request, 'reset_password.html', {'s_msg': s_msg})
+    except:
+        s_msg = "invalid Email"
+        return render(request, 'login.html', {'s_msg': s_msg})
 
 
 def logout(request):
@@ -354,12 +406,12 @@ def showincome_expense_ledger(request):
     else:
         print("allincome_expense_ledger-----------")
         allincome_expense_ledger = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.society)
-        paginator = Paginator(allincome_expense_ledger, 10)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
+        # paginator = Paginator(allincome_expense_ledger, 10)
+        # page_number = request.GET.get('page')
+        # page_obj = paginator.get_page(page_number)
 
         context = {
-            'income_expense_ledger': page_obj
+            'income_expense_ledger': allincome_expense_ledger
         }
         print(context)
         return render(request, 'showIncome_expense_ledger.html', context)
@@ -1092,21 +1144,6 @@ def simple_upload(request):
             ExpenseCategory.objects.create(society_key=request.user.society, category_name=data[0])
         return redirect('ExpensiveCategory')
 
-    # if request.method == 'POST':
-    #     emp_resource = ExpenseResource()
-    #     dataset = Dataset()
-    #     new_income = request.FILES['myfile']
-    #
-    #     imported_data = dataset.load(new_income.read(), format='xlsx')
-    #     for data in imported_data:
-    #         print(data[0])
-    #         value = ExpenseCategory(
-    #             data[0],
-    #             data[1]
-    #         )
-    #         value.save()
-    #     return redirect('ExpensiveCategory')
-
 
 def simple_uploadIncome(request):
     if request.method == 'POST':
@@ -1119,25 +1156,6 @@ def simple_uploadIncome(request):
             IncomeCategory.objects.create(society_key=request.user.society, category_name=data[0])
 
         return redirect('incomeCategory')
-
-
-# def simple_uploadIncome(request):
-#     if request.method == 'POST':
-#         emp_resource = IncomeResource()
-#         dataset = Dataset()
-#         new_income = request.FILES['myfile']
-#
-#         imported_data = dataset.load(new_income.read(), format='xlsx')
-#         # print(imported_data)
-#         for data in imported_data:
-#             print(data[0])
-#             value = IncomeCategory(
-#                 data[0],
-#                 data[1]
-#             )
-#             value.save()
-#
-#     return redirect('IncomeCategoryshow')
 
 
 def simple_uploadMembers_Vendors(request):
@@ -1167,20 +1185,6 @@ def simple_uploadMembersDetails(request):
                                                whatsappContactNo=data[6], email=data[7],
                                                residence=data[8])
         return redirect('showMembersDetails')
-        # for data in imported_data:
-        #     print(data[1])
-        #     value = MembersDeatilsValue(
-        #         data[0],
-        #         data[1],
-        #         data[2],
-        #         data[3],
-        #         data[4],
-        #         data[5],
-        #         data[6],
-        #         data[7],
-        #         data[8]
-        #     )
-        #     value.save()
 
 
 def simple_uploadIncome_Expense_Ledger(request):
@@ -1435,3 +1439,162 @@ def destroyFile(request, id):
     showfiles = FileStoreValue1.objects.get(id=id)
     showfiles.delete()
     return redirect('/demo')
+
+
+def showSubUser(request):
+    print("allExpensiveCategory-----------")
+    allsubUser = subUser.objects.filter(society_key=request.user.society)
+    context = {
+        'subUser': allsubUser
+    }
+    print(context)
+    return render(request, 'showSubUser.html', context)
+
+
+def addnewSubUser(request):
+    print("add new subUser--------------------")
+    if request.method == 'POST':
+        contact_name = request.POST['contact_name']
+        email = request.POST['email']
+        password = request.POST['password']
+        phone_no = request.POST['phone_no ']
+        Type = request.POST['Type']
+        access_rights = request.POST['access_rights']
+        status = request.POST['status']
+        user_type = request.POST['sub_user']
+
+        uid = User.objects.create(email=email, password=password, phone_no=phone_no, user_type=user_type)
+        user_instance = User.objects.get(pk=uid.id)
+        subUser.objects.create(user_key=user_instance, contact_name=contact_name, email=email, phone_no=phone_no,
+                               Type=Type, access_rights=access_rights, status=status,
+                               society_key=request.user.society)
+        return redirect('showSubUser')
+    return render(request, 'addnewSubUser.html')
+
+
+def AssetCategory(request):
+    print("allAssetCategory-----------")
+    allAssetCategory = AssentCategory1.objects.filter(society_key=request.user.society)
+    context = {
+        'AssetCategory': allAssetCategory
+    }
+    print(context)
+    return render(request, 'AssetCategory.html', context)
+
+
+def addnewAssetCategory(request):
+    if request.method == 'POST':
+        category_name = request.POST['category_name']
+
+        AssentCategory1.objects.create(category_name=category_name, society_key=request.user.society)
+        return redirect('AssetCategory')
+    return render(request, 'addAssetCategory.html')
+
+
+def editAssetCategory(request, id):
+    AssetCategory = AssentCategory1.objects.get(id=id)
+
+    if request.method == 'POST':
+        category_name = request.POST['category_name']
+        AssetCategory.category_name = category_name
+        AssetCategory.save()
+        return redirect('AssetCategory')
+
+    return render(request, 'editAssetCategory.html', {'AssetCategory': AssetCategory})
+
+
+def deleteAssetCategory(request, id):
+    print("destroy Asset category-----------")
+    AssetCategory = AssentCategory1.objects.get(id=id).delete()
+    return redirect("AssetCategory")
+
+
+def multi_deleteAssetCategory(request):
+    print("Asset multi delete -------------")
+    if request.method == "POST":
+        product_ids = request.POST.getlist('id[]')
+        print("delete this id ----------->", product_ids)
+        for id in product_ids:
+            AssetCtaegory = AssentCategory1.objects.get(pk=id)
+            AssetCtaegory.delete()
+            print(" AssetCtaegory  delete this id ----------->", id)
+        return redirect('AssetCategory')
+
+
+def Asset_InventoryCategory(request):
+    print("allAsset_InventoryCategory-----------")
+    allAsset_InventoryCategory = Asset_InventoryCategoryValue1.objects.filter(society_key=request.user.society)
+    context = {
+        'assetinventorycategory': allAsset_InventoryCategory
+    }
+    print(context)
+    return render(request, 'Asset_InventoryCategory.html', context)
+
+
+def addnewAsset_InventoryCategory(request):
+    allAsset = AssentCategory1.objects.filter(society_key=request.user.society)
+    context = {
+        'allasset': allAsset
+    }
+    print(context)
+    return render(request, 'addAsset_InventoryCategory.html', context)
+
+
+def addNewRecordAssent_Inventory(request):
+    itemName = request.POST['itemName']
+    assetCategory = request.POST['assetCategory']
+    quantity = request.POST['quantity']
+    purchasePrice = request.POST['purchasePrice']
+    deprecatedPrice = request.POST['deprecatedPrice']
+    onDate = request.POST['onDate']
+
+    totalCost = float(purchasePrice) * float(quantity)
+    marketValue = float(deprecatedPrice) * float(quantity)
+
+    Asset_InventoryCategoryValue1.objects.create(itemName=itemName, assetCategory=assetCategory, quantity=quantity,
+                                                 purchasePrice=purchasePrice, deprecatedPrice=deprecatedPrice,
+                                                 onDate=onDate,
+                                                 totalCost=totalCost, marketValue=marketValue,
+                                                 society_key=request.user.society)
+    return redirect('Asset_InventoryCategory')
+
+
+def editAsset_InventoryCategory(request, id):
+    assetinventorycategory = Asset_InventoryCategoryValue1.objects.get(id=id)
+
+    if request.method == 'POST':
+        itemName = request.POST['itemName']
+        assetCategory = request.POST['assetCategory']
+        quantity = request.POST['quantity']
+        purchasePrice = request.POST['purchasePrice']
+        deprecatedPrice = request.POST['deprecatedPrice']
+        onDate = request.POST['onDate']
+
+        assetinventorycategory.itemName = itemName
+        assetinventorycategory.assetCategory = assetCategory
+        assetinventorycategory.quantity = quantity
+        assetinventorycategory.purchasePrice = purchasePrice
+        assetinventorycategory.deprecatedPrice = deprecatedPrice
+        assetinventorycategory.onDate = onDate
+        assetinventorycategory.save()
+        return redirect('Asset_InventoryCategory')
+
+    return render(request, 'editAsset_InventoryCategory.html', {'assetinventorycategory': assetinventorycategory})
+
+
+def destroyAsset_InventoryCategory(request, id):
+    print("destroy Asset Inventory category-----------")
+    assetinventorycategory = Asset_InventoryCategoryValue1.objects.get(id=id).delete()
+    return redirect("Asset_InventoryCategory")
+
+
+def multi_deleteAsset_InventoryCategory(request):
+    print("Asset Inventory multi delete -------------")
+    if request.method == "POST":
+        product_ids = request.POST.getlist('id[]')
+        print("delete this id ----------->", product_ids)
+        for id in product_ids:
+            assetinventorycategory = Asset_InventoryCategoryValue1.objects.get(pk=id)
+            assetinventorycategory.delete()
+            print(" Asset_InventoryCtaegory  delete this id ----------->", id)
+        return redirect('Asset_InventoryCategory')

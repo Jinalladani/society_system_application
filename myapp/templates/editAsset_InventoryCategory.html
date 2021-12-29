@@ -1,0 +1,108 @@
+{% extends 'bash.html' %}
+{% load static %}
+{% block content %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+.home-content .sales-boxes .recent-sales{
+  width: 100%;
+  background: #fff;
+  padding: 20px 30px;
+  margin: 0 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">EXPENSE</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <form action="{% url 'logout' %}" method="post" id="my_form">
+            {% csrf_token %}
+            <button type="submit" ></button>
+            <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"style="margin-left:10px; text-decoration:none;"> Logout </a>
+
+            </form>
+        </div>
+    </nav>
+
+    <div class="home-content">
+
+
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Edit Asset Inventory Category Added</div>
+                <hr>
+                <div class="sales-details">
+                    <form method="POST" class="post-form" action="/addNewRecordAssent_Inventory">
+                        {% csrf_token %}
+                        <div class="container">
+                            <br>
+                            <div class="form-group row">
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Item Name:</label>
+                                    <input type="text" name="itemName" id="itemName">
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Asset Category:</label>
+<!--                                    <input type="text" name="assetCategory" id="assetCategory">-->
+                                    <select class="col-sm-2" name="assetCategory">
+                                        <option selected  value="">----Select----</option>
+                                        {% for assCate in allasset %}
+                                            <option>{{assCate.category_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Quantity:</label>
+                                    <input type="text" name="quantity" id="quantity">
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Purchase Price:</label>
+                                    <input type="text" name="purchasePrice" id="purchasePrice">
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Deprecated Price:</label>
+                                    <input type="text" name="deprecatedPrice" id="deprecatedPrice">
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">On Date:</label>
+                                    <input type="date" name="onDate" id="onDate">
+                                </div>
+
+<!--                                <input type="hidden" name="totalCost">-->
+<!--                                <input type="hidden" name="marketValue">-->
+
+                                <div class="form-group row">
+                                    <label class="col-sm-1 col-form-label"></label>
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

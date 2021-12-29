@@ -117,10 +117,17 @@ USE_L10N = True
 
 USE_TZ = True
 
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'anjali.20.learn@gmail.com'
+# EMAIL_HOST_PASSWORD = 'tops@123'
+# EMAIL_PORT = 587
+
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'anjali.20.learn@gmail.com'
-EMAIL_HOST_PASSWORD = 'tops@123'
+EMAIL_HOST_USER = 'societyfunds@gmail.com'
+EMAIL_HOST_PASSWORD = 'Bonrix@#123'
 EMAIL_PORT = 587
 
 # Static files (CSS, JavaScript, Images)

@@ -126,13 +126,17 @@
 			<label><b>Society Registration Number</b></label>
 			<input type="text" placeholder="Enter Society Registration Number" name="society_registration_number" required>
 
+			<input type="hidden" name="society_admin" value="society admin">
+
 			<button type="submit">Registration</button>
 			<input type="checkbox" checked="checked"> Remember me
 		</div>
 
 		<div class="container" style="background-color:#f1f1f1">
 			<button type="button" class="cancelbtn">Cancel</button>
-			<span class="psw">Already Exist? <a href="/">Sign In</a></span>
+			<button style="width:50%;float:right" class="psw">
+				<a style="color: white;text-decoration: none;" href="/">Already Exist?</a></button>
+<!--			<span class="psw">Already Exist? <a href="/">Sign In</a></span>-->
 		</div>
 	</form>
 
