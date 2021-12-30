@@ -43,56 +43,68 @@
                 <div class="title">Edit Asset Inventory Category Added</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/addNewRecordAssent_Inventory">
+                    <form method="POST" class="post-form" action="/editAsset_InventoryCategory/{{assetinventorycategory.id}}">
                         {% csrf_token %}
                         <div class="container">
                             <br>
                             <div class="form-group row">
 
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Item Name:</label>
-                                    <input type="text" name="itemName" id="itemName">
+                                    <label class="col-sm-2 col-form-label">Item Name::</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="itemName" id="itemName" required
+                                               maxlength="20" value="{{assetinventorycategory.itemName}}"/>
+                                    </div>
                                 </div>
+
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Asset Category:</label>
-<!--                                    <input type="text" name="assetCategory" id="assetCategory">-->
-                                    <select class="col-sm-2" name="assetCategory">
-                                        <option selected  value="">----Select----</option>
+                                    <div class="col-sm-4">
+                                    <select class="form-control" name="assetCategory">
+                                        <option selected  value="{{assetinventorycategory.assetCategory}}">{{assetinventorycategory.assetCategory}}</option>
                                         {% for assCate in allasset %}
                                             <option>{{assCate.category_name}}</option>
                                         {% endfor %}
                                     </select>
+                                    </div>
                                 </div>
 
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Quantity:</label>
-                                    <input type="text" name="quantity" id="quantity">
+                                    <div class="col-sm-4">
+                                    <input type="text" class="form-control"  name="quantity" id="quantity" value="{{assetinventorycategory.quantity}}">
+                                    </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Purchase Price:</label>
-                                    <input type="text" name="purchasePrice" id="purchasePrice">
+                                    <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="purchasePrice" id="purchasePrice" value="{{assetinventorycategory.purchasePrice}}">
+                                    </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Deprecated Price:</label>
-                                    <input type="text" name="deprecatedPrice" id="deprecatedPrice">
+                                    <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="deprecatedPrice" id="deprecatedPrice" value="{{assetinventorycategory.deprecatedPrice}}">
+                                    </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">On Date:</label>
-                                    <input type="date" name="onDate" id="onDate">
+                                    <div class="col-sm-4">
+                                        <input type="date" dataformatas="YYYY-MM-DD" class="form-control" name="onDate"
+                                               forma id="onDate"
+                                               maxlength="100" value="{{assetinventorycategory.onDate|date:'Y-m-d'}}"/>
+                                    </div>
                                 </div>
-
-<!--                                <input type="hidden" name="totalCost">-->
-<!--                                <input type="hidden" name="marketValue">-->
 
                                 <div class="form-group row">
                                     <label class="col-sm-1 col-form-label"></label>
                                     <div class="col-sm-4">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="submit" class="btn btn-success btn-lg">Update</button>
                                     </div>
                                 </div>
                             </div>

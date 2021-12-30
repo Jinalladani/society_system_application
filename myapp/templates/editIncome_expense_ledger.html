@@ -55,8 +55,8 @@
                                     <label class="col-sm-2 col-form-label">Date:</label>
                                     <div class="col-sm-4">
                                         <input type="date" dataformatas="YYYY-MM-DD" class="form-control" name="date"
-                                                id="id_date"
-                                               maxlength="100" value="{{ income_expense_ledger.dateOn }}"/>
+                                               forma id="id_date"
+                                               maxlength="100" value="{{income_expense_ledger.dateOn|date:'Y-m-d'}}"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -78,7 +78,7 @@
                                     <label class="col-sm-2 col-form-label">Category header :</label>
                                     <div class="col-sm-4">
                                         <select class="form-control" name="category_header" id="id_category_header"
-                                                required maxlength="20" value=""/>
+                                                 maxlength="20" value="">
                                         <option>{{ income_expense_ledger.category_header }}</option>
                                         {% for listExp in type_headerList %}
                                         <option>{{listExp.category_name}}</option>
@@ -91,7 +91,7 @@
                                     <label class="col-sm-2 col-form-label">From_or to account:</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="from_or_to_account"
-                                               id="id_from_or_to_account" required maxlength="20"
+                                               id="id_from_or_to_account"  maxlength="20"
                                                value="{{ income_expense_ledger.from_or_to_account }}"/>
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@
                                     <label class="col-sm-2 col-form-label">Remark :</label>
                                     <div class="col-sm-4">
                                         <textarea class="form-control" name="remark" id="id_remark"
-                                                  value="{{ income_expense_ledger.remark }}"></textarea>
+                                                 > {{ income_expense_ledger.remark }}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">

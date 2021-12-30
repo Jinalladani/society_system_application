@@ -54,6 +54,7 @@
 
 </style>
 
+{% if request.user.userpermission.is_edit or request.user.userpermission.is_society_admin %}
 <section class="home-section">
     <nav>
         <div class="sidebar-button">
@@ -126,13 +127,68 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
 </section>
+{% else %}
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">INCOME/EXPENSE LEDGER</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <form action="{% url 'logout' %}" method="post" id="my_form">
+            {% csrf_token %}
+            <button type="submit" ></button>
+            <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"style="margin-left:10px; text-decoration:none;"> Logout </a>
+
+            </form>
+        </div>
+    </nav>
+
+    <div class="home-content">
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">File Store</div>
+                <hr>
+
+                    <div class="table-responsive">
+                                <table id="bootstrapdatatable" style="width:100%"
+                                       class="table table-striped table-bordered" width="100%">
+                                    <thead>
+                                    <th>ID</th>
+                                    <th>Text</th>
+                                    <th>Files</th>
+
+                                    </thead>
+                                    <tbody>
+                                    {% for sfile in showfiles%}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{sfile.text}}</td>
+                                            <td><a href="{{sfile.type_file.url}}">{{sfile.type_file}}</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 

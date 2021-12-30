@@ -159,6 +159,52 @@
                         </div>
                     </form>
                 </div>
+                <hr>
+                <div class="title">Assent Category Upload File</div>
+                <div class="sales-details">
+                    <form action="simple_uploadAssentCategory" method="post" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <table style="width:100%s" class="table table-striped table-bordered" width="100%">
+                                {% csrf_token %}
+                                <tr>
+                                    <br>
+                                    <inppload Excel File></inppload>
+                                    <input class="btn btn-primary" type="file" name="myfile">
+                                    <button style="margin-top:-59px;margin-left:335px;" class="btn btn-primary"
+                                            type="submit">Upload
+                                    </button>
+<!--                                    <a href="{% static 'excel/Member_Details.xlsx' %}" download="excel">-->
+<!--                                        <button style="margin-top:-59px;margin-left:100px;" class="btn btn-primary"-->
+<!--                                                type="button">Download Sample Excel</button>-->
+<!--                                     </a>-->
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <hr>
+                <div class="title">Assent Inventory Category Upload File</div>
+                <div class="sales-details">
+                    <form action="simple_uploadAssentInventoryCategory" method="post" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <table style="width:100%s" class="table table-striped table-bordered" width="100%">
+                                {% csrf_token %}
+                                <tr>
+                                    <br>
+                                    <inppload Excel File></inppload>
+                                    <input class="btn btn-primary" type="file" name="myfile">
+                                    <button style="margin-top:-59px;margin-left:335px;" class="btn btn-primary"
+                                            type="submit">Upload
+                                    </button>
+<!--                                    <a href="{% static 'excel/Member_Details.xlsx' %}" download="excel">-->
+<!--                                        <button style="margin-top:-59px;margin-left:100px;" class="btn btn-primary"-->
+<!--                                                type="button">Download Sample Excel</button>-->
+<!--                                     </a>-->
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

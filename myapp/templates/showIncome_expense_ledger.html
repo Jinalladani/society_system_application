@@ -50,10 +50,10 @@
   text-decoration: none;
   cursor: pointer;
 }
-
-
 </style>
 
+
+{% if request.user.userpermission.is_edit or request.user.userpermission.is_society_admin %}
 <section class="home-section">
     <nav>
         <div class="sidebar-button">
@@ -88,6 +88,7 @@
                                 <span style="margin:0 10px 0 0"><a href="/cashDeposit" class="btn btn-primary">CASH DEPOSIT</a></span>
                                 <span style="margin:0 10px 0 0"><a href="/export_csv" class="btn btn-primary">EXPORT EXCEL</a></span>
                                 <span><a href="/upload_file" class="btn btn-primary">UPLOAD EXCEL</a></span>
+                                <button type="submit" id="delete_btn" class="btn btn-primary">All delete</button>
                                 <hr>
 <!--                                <input type="date" style="margin:0 0 10px 10px; width:150px" name="date" {% if dateOn  %} value={{ dateOn }}{% endif %}>-->
                                 <span ><b>From</b></span><input type="date"  placeholder="from" style="margin:0 0 10px 10px; width:150px" name="from_date" {% if dateOn  %} value={{ dateOn }}{% endif %}>
@@ -192,7 +193,6 @@
                                 </tr>
                                 {% endfor %}
                             </table>
-                            <button type="submit" id="delete_btn" class="btn btn-primary">All delete</button>
                         </div>
                     </form>
                 </div>
@@ -201,6 +201,137 @@
         </div>
     </div>
 </section>
+{% else %}
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">INCOME/EXPENSE LEDGER</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <a href="/logout" style="margin-left:10px; text-decoration:none;"> Logout </a>
+        </div>
+    </nav>
+
+    <div class="home-content">
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Income/Expense Ledger List</div>
+                <hr>
+                <div class="sales-details">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="table-responsive">
+
+                            <table id="bootstrapdatatable" style="width:100%s"
+                                   class="table table-striped table-bordered" width="100%">
+                               <span style="margin:0 0 0 900px"><a href="/export_csv" class="btn btn-primary">EXPORT EXCEL</a></span>
+
+                                <hr>
+
+                                <span ><b>From</b></span><input type="date"  placeholder="from" style="margin:0 0 10px 10px; width:150px" name="from_date" {% if dateOn  %} value={{ dateOn }}{% endif %}>
+                                &nbsp &nbsp<span><b>To</b></span><input type="date" style="margin:0 0 10px 10px; width:150px" name="to_date" {% if to_date  %} value={{ to_date }}{% endif %}>
+                                <select id="type" name="type" style="margin:0 0 10px 10px;padding:8px; width:150px">
+                                    <option  value="NULL">--search type --</option>
+                                    <option value="Expense" {% if type == "Expense"  %}selected{% endif %}>Expense</option>
+                                    <option value="Income" {% if type == "Income"  %}selected{% endif %}>Income</option>
+                                    <option value="CASH IN" {% if type == "CASH IN"  %}selected{% endif %}>CASH
+                                    IN</option>
+                                    <option value="CASH OUT" {% if type == "CASH OUT"  %}selected{% endif %}>CASH
+                                    OUT</option>
+                                    <option value="CASH WITHDRAWAL" {% if type == "CASH WITHDRAWAL"  %}selected{% endif %}>CASH WITHDRAWAL</option>
+                                    <option value="CASH DEPOSIT" {% if type == "CASH DEPOSIT"  %}selected{% endif %}>CASH DEPOSIT</option>
+                                </select>
+                                <input type="text" name="amount"
+                                       style="margin:0 0 10px 10px;padding:8px; width:150px"
+                                       placeholder="Sort By Amount...."{% if amount %}value="{{ amount }}"{% endif %} >
+                                <select name="transaction_type" style="margin:0 0 10px 10px;padding:8px; width:250px">
+                                    <option selected value="NULL">--search Transaction Type --</option>
+                                    <option value="Cash" {% if t_type == "Cash"  %}selected{% endif %}>Cash</option>
+                                    <option value="Bank" {% if t_type == "Bank"  %}selected{% endif %}>Bank</option>
+                                </select>
+                                    <br>
+                                <input type="text" name="category_header" placeholder="Search category_header..."
+                                       id="category_header" {% if c_header %} value="{{ c_header }}"{% endif %}
+                            style="margin:0 0 10px 10px;padding:8px; width:250px">
+
+                                <select name="from_or_to_account" id="from_or_to_account"
+                                        style="margin:0 0 10px 10px;padding:8px; width:180px">
+                                    <option value="NULL">--search Member --</option>
+                                    {% for memList in contextMember.memberValue%}
+                                    <option {% if s_member == memList.name %}selected{% endif %}>{{memList.name}}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <input type="text" name="voucherNo_or_invoiceNo"
+                                       style="margin:0 0 10px 10px;padding:8px; width:150px"
+                                       placeholder="Sort By vocherNo...." {% if v_number %}value="{{ v_number }}"{% endif %}>
+                                <input class="btn btn-primary" type="submit" name="search" value="search"
+                                       style="border:2px solid black;margin:0 0 0 10px;padding:8px 25px">
+                                <input class="btn btn-primary" id="clear_btn" type="btn" value="clear"
+                                       style="border:2px solid black;margin:0 0 0 10px;padding:8px 0px">
+                                <input class="btn btn-primary" type="submit" name="export" value="export"
+                                       style="border:2px solid black;margin:0 0 0 10px;padding:8px 25px">
+
+                                <thead>
+                                <th>&nbsp;</th>
+                                <th>ID</th>
+                                <th>DateOn</th>
+                                <th>Category Type</th>
+                                <th>Amount</th>
+                                <th>Category Header</th>
+                                <th>From or to Account</th>
+                                <th>Transaction Type</th>
+                                <th>Transaction Details</th>
+                                <th>Voucher_No / Invoice_no</th>
+                                <th>Remark</th>
+                                <th>Opening Balance Case</th>
+                                <th>Closing Balance Case</th>
+                                <th>Opening Balance Bank</th>
+                                <th>Closing Balance Bank</th>
+                                <th>Entry Time</th>
+                                <th>Files</th>
+                                </thead>
+                                {% csrf_token %}
+                                {% for IELVal in income_expense_ledger %}
+                                <tr id="{{IELVal.id}}">
+                                    <td><input type="checkbox" name="income_expense_ledger[]" value="{{IELVal.id}}"
+                                               id="delete_income_expense_ledger"/></td>
+                                    <td>{{ IELVal.id }}</td>
+                                    <td>{{ IELVal.dateOn }}</td>
+                                    <td>{{IELVal.type}}</td>
+                                    <td>{{IELVal.amount}}</td>
+                                    <td>{{IELVal.category_header}}</td>
+                                    <td>{{IELVal.from_or_to_account}}</td>
+                                    <td>{{IELVal.transaction_type}}</td>
+                                    <td>{{IELVal.transaction_details}}</td>
+                                    <td>{{IELVal.voucherNo_or_invoiceNo}}</td>
+                                    <!--        <td><img src="{{IELVal.image}}"></td>-->
+                                    <td>{{IELVal.remark}}</td>
+                                    <td>{{IELVal.opening_balance_cash}}</td>
+                                    <td>{{IELVal.closing_balance_cash}}</td>
+                                    <td>{{IELVal.opening_balance_bank}}</td>
+                                    <td>{{IELVal.closing_balance_bank}}</td>
+                                    <td>{{IELVal.entry_time}}</td>
+
+                                    <td><a href="/demo/{{ IELVal.id }}"><input type="button" value="ADD" class="btn btn-primary"></a> </td>
+
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 

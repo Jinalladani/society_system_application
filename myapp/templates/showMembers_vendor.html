@@ -11,9 +11,9 @@
   border-radius: 12px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
-
-
 </style>
+
+{% if request.user.userpermission.is_edit or request.user.userpermission.is_society_admin %}
 <section class="home-section">
     <nav>
         <div class="sidebar-button">
@@ -84,8 +84,67 @@
             </div>
         </div>
     </div>
+</section>
+{% else %}
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">MEMBERS-VENDORS</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <form action="{% url 'logout' %}" method="post" id="my_form">
+                {% csrf_token %}
+                <button type="submit"></button>
+                <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"
+                   style="margin-left:10px; text-decoration:none;"> Logout </a>
+
+            </form>
+        </div>
+    </nav>
+
+    <div class="home-content">
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Members or Vendors List</div>
+                <div class="sales-details">
+                    <form method="post">
+                        <div class="table-responsive">
+                            <table id="bootstrapdatatable" style="width:100%s"
+                                   class="table table-striped table-bordered" width="100%">
+                                <span><a style="margin:0 0 0 900px" href="/export_users_xlsImembers"
+                                         class="btn btn-primary">Export Excel</a></span>
+                                <hr>
+
+                                <thead>
+                                <th>&nbsp;</th>
+                                <!--                <th>ID</th>-->
+                                <th>Members-Vendors Name</th>
+                                </thead>
+                                {% csrf_token %}
+                                {% for mv in members_vendor %}
+                                <tr id="{{mv.id}}">
+                                    <td><input type="checkbox" name="employee_id[]" value="{{mv.id}}"
+                                               id="delete_members_vendor"/></td>
+                                    <td>{{ mv.name }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+{% endif %}
+
+
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
 <script>

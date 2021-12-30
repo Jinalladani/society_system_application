@@ -13,7 +13,6 @@ class User(AbstractUser):
     name = models.CharField(max_length=250, blank=True, null=True)
     phone_no = models.CharField(max_length=10, blank=True, null=True)
     otp = models.CharField(max_length=6, default=359)
-    user_type = models.CharField(max_length=100, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_verfied = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, blank=False)

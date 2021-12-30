@@ -435,109 +435,80 @@ nav .profile-details i{
     </div>
       <ul class="nav-links">
         <li>
-          <a href="index" class="active">
+          <a href="{% url 'index' %}" class="active">
             <i class='bx bx-grid-alt' ></i>
             <span class="links_name">Dashboard</span>
           </a>
         </li>
 
         <li>
-          <a href="societyProfile">
+          <a href="{% url 'societyProfile' %}">
             <i class="fas fa-address-card"></i>
             <span class="links_name">Society Profile</span>
           </a>
         </li>
 
         <li>
-          <a href="ExpensiveCategory">
+          <a href="{% url 'showBalance' %}">
+            <i class='bx bx-book-alt' ></i>
+            <span class="links_name">Balance</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{% url 'showincome_expense_ledger' %}">
+            <i class='bx bx-message' ></i>
+            <span class="links_name">Income/Expense Ledger</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{% url 'showMembersDetails' %}">
+            <i class='bx bx-user' ></i>
+            <span class="links_name">Members Deatils</span>
+          </a>
+        </li>
+        {% if request.user.userpermission.is_society_admin %}
+        <li>
+          <a href="{% url 'showSubUser' %}">
+            <i class='bx bx-user' ></i>
+            <span class="links_name">Add Sub User</span>
+          </a>
+        </li>
+        {% endif %}
+
+        <li>
+          <a href="{% url 'showMembers_vendor' %}">
+            <i class='bx bx-coin-stack' ></i>
+            <span class="links_name">Members-Vendor</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{% url 'ExpensiveCategory' %}">
             <i class='bx bx-list-ul' ></i>
             <span class="links_name">Expense Category</span>
           </a>
         </li>
         <li>
-          <a href="IncomeCategoryshow">
+          <a href="{% url 'IncomeCategoryshow' %}">
             <i class='bx bx-list-ul' ></i>
             <span class="links_name">Income Category</span>
           </a>
         </li>
-<!--        <li>-->
-<!--          <a href="AssentCategory">-->
-<!--            <i class='bx bx-list-ul' ></i>-->
-<!--            <span class="links_name">Assent Category</span>-->
-<!--          </a>-->
-<!--        </li>-->
+
         <li>
-          <a href="showMembers_vendor">
-            <i class='bx bx-coin-stack' ></i>
-            <span class="links_name">Members-Vendor</span>
-          </a>
-        </li>
-        <li>
-          <a href="showMembersDetails">
-            <i class='bx bx-user' ></i>
-            <span class="links_name">Members Deatils</span>
-          </a>
-        </li>
-        <li>
-          <a href="/showBalance">
-            <i class='bx bx-book-alt' ></i>
-            <span class="links_name">Balance</span>
-          </a>
-        </li>
-        <li>
-          <a href="/showincome_expense_ledger">
-            <i class='bx bx-message' ></i>
-            <span class="links_name">Income/Expense Ledger</span>
-          </a>
-        </li>
-        <li>
-          <a href="/showSubUser">
-            <i class='bx bx-message' ></i>
-            <span class="links_name">Sub User</span>
-          </a>
-        </li>
-        <li>
-          <a href="/AssetCategory">
-            <i class='bx bx-message' ></i>
+          <a href="{% url 'AssetCategory' %}">
+            <i class='bx bx-list-ul' ></i>
             <span class="links_name">Asset Category</span>
           </a>
         </li>
         <li>
-          <a href="/Asset_InventoryCategory">
-            <i class='bx bx-message' ></i>
+          <a href="{% url 'Asset_InventoryCategory' %}">
+            <i class='bx bx-list-ul' ></i>
             <span class="links_name">Asset Inventory Category</span>
           </a>
         </li>
-
-<!--        <li>-->
-<!--          <a href="/sample_Excel">-->
-<!--            <i class='bx bx-pie-chart-alt-2' ></i>-->
-<!--            <span class="links_name">View Sample ExcelFiles</span>-->
-<!--          </a>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a href="#">-->
-<!--            <i class='bx bx-heart' ></i>-->
-<!--            <span class="links_name">Favrorites</span>-->
-<!--          </a>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a href="#">-->
-<!--            <i class='bx bx-cog' ></i>-->
-<!--            <span class="links_name">Setting</span>-->
-<!--          </a>-->
-<!--        </li>-->
-<!--        <li class="log_out">-->
-<!--            <form action="{% url 'logout' %}" method="post" id="my_form">-->
-<!--            {% csrf_token %}-->
-<!--            <button type="submit" ></button>-->
-<!--            <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"style="margin-left:10px; text-decoration:none;"> Logout </a>-->
-<!--            <i class='bx bx-log-out'></i>-->
-<!--            </form>-->
-
-<!--            <span class="links_name">Log out</span>-->
-<!--          </a>-->
-<!--        </li>-->
       </ul>
   </div>
 

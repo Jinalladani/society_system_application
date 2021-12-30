@@ -41,7 +41,7 @@ class SocietyDeatils(models.Model):
 
 class Society(models.Model):
     user_key = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, blank=True, null=True)
     phone_no = models.CharField(max_length=10, blank=True, null=True)
     contact_name = models.CharField(max_length=500)
     society_name = models.CharField(max_length=500)
@@ -66,21 +66,9 @@ class AssentCategory1(models.Model):
     category_name = models.CharField(max_length=200)
 
 
-class Asset_InventoryCategoryValue(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
-    itemName = models.CharField(max_length=200, null=True, blank=True)
-    assetCategory = models.CharField(max_length=200, null=True, blank=True)
-    quantity = models.FloatField(max_length=200, null=True, blank=True)
-    purchasePrice = models.FloatField(max_length=200, null=True, blank=True)
-    deprecatedPrice = models.FloatField(max_length=200, null=True, blank=True)
-    onDate = models.DateField(null=True, blank=True)
-    totalCost = models.FloatField(max_length=200, null=True, blank=True)
-    marketValue = models.FloatField(max_length=200, null=True, blank=True)
-
-
 class Asset_InventoryCategoryValue1(models.Model):
     society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
-    itemName =models.CharField(max_length=200, null=True, blank=True)
+    itemName = models.CharField(max_length=200, null=True, blank=True)
     assetCategory = models.CharField(max_length=200, null=True, blank=True)
     quantity = models.FloatField(max_length=200, null=True, blank=True)
     purchasePrice = models.FloatField(max_length=200, null=True, blank=True)
@@ -106,14 +94,18 @@ class Members_Vendor_Account(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True)
 
 
-class subUser(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
-    contact_name = models.CharField(max_length=200, null=True, blank=True)
-    email = models.CharField(unique=True, max_length=200, null=True, blank=True)
-    phone_no = models.CharField(max_length=10, blank=True, null=True)
-    Type = models.CharField(max_length=200, null=True, blank=True)
-    access_rights = models.CharField(max_length=200, null=True, blank=True)
-    status = models.CharField(max_length=200, null=True, blank=True)
+class UserPermission(models.Model):
+    user_key = models.OneToOneField(User, on_delete=models.CASCADE, null = True, blank = True)
+    society_key = models.ForeignKey(Society, blank=True, null=True, on_delete=models.CASCADE)
+    is_society_admin = models.BooleanField(default=False)
+    role = models.CharField(max_length=250)
+    is_active = models.BooleanField(default=False)
+    is_edit = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, blank=False)
+    updated_at = models.DateTimeField(auto_now=True, blank=False)
+
+    def _str_(self):
+        return str(self.user_key)
 
 
 class MembersDeatilsValue(models.Model):

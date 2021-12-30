@@ -40,10 +40,10 @@
 
         <div class="sales-boxes">
             <div class="recent-sales box">
-                <div class="title">New Sub User Added</div>
+                <div class="title">Edit Sub User Added</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="{% url 'subuser' %}">
+                    <form method="POST" class="post-form" action="/editSubUser/{{subUser.id}}">
                         {% csrf_token %}
                         <div class="container">
                             <br>
@@ -53,7 +53,7 @@
                                     <label class="col-sm-2 col-form-label">Contact Name:</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="contact_name" id="contact_name" required
-                                               maxlength="20" />
+                                               maxlength="20" value="{{ subUser.user_key.name }}"/>
                                     </div>
                                 </div>
 
@@ -61,7 +61,7 @@
                                     <label class="col-sm-2 col-form-label">Email:</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="email" id="email" required
-                                               maxlength="20"/>
+                                               maxlength="20" value="{{ subUser.user_key.email }}"/>
                                     </div>
                                 </div>
 
@@ -69,25 +69,23 @@
                                     <label class="col-sm-2 col-form-label">Phone No:</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" name="phone_no" id="phone_no" required
-                                               maxlength="20"/>
+                                               maxlength="20" value="{{ subUser.user_key.phone_no }}"/>
                                     </div>
                                 </div>
-
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Type</label>
                                     <div class="col-sm-4">
                                     <select  class="form-control" name="Type">
-                                            <option selected>----select-----</option>
-                                            <option value="Accountant">Accountant</option>
-                                            <option value="CA">CA</option>
-                                            <option value="Auditor">Auditor</option>
-                                            <option value="Member">Member</option>
-                                            <option value="Chairman">Chairman</option>
-                                            <option value="Secretary">Secretary</option>
-                                            <option value="Treasurer">Treasurer</option>
-                                            <option value="Vice-Chairman">Vice-Chairman</option>
-                                            <option value="Other">Other</option>
+                                            <option value="CA" {% if subUser.role == "CA" %} selected {% endif %}>CA</option>
+                                            <option value="Accountant"  {% if subUser.role == "Accountant" %} selected {% endif %}>Accountant</option>
+                                            <option value="Auditor"  {% if subUser.role == "Auditor" %} selected {% endif %}>Auditor</option>
+                                            <option value="Member"  {% if subUser.role == "Member" %} selected {% endif %}>Member</option>
+                                            <option value="Chairman"  {% if subUser.role == "Chairman" %} selected {% endif %}>Chairman</option>
+                                            <option value="Secretary"  {% if subUser.role == "Secretary" %} selected {% endif %}>Secretary</option>
+                                            <option value="Treasurer"  {% if subUser.role == "Tresurer" %} selected {% endif %}>Treasurer</option>
+                                            <option value="Vice-Chairman"  {% if subUser.role == "Vice-Chairman" %} selected {% endif %}>Vice-Chairman</option>
+                                            <option value="Other"  {% if subUser.role == "Other" %} selected {% endif %}>Other</option>
                                     </select>
                                     </div>
                                 </div>
@@ -96,9 +94,14 @@
                                     <label class="col-sm-2 col-form-label">Access Rights</label>
                                     <div class="col-sm-4">
                                     <select  class="form-control" name="access_rights">
-                                            <option selected>----select-----</option>
-                                            <option value="Edit">Edit</option>
-                                            <option value="Read-only">Read-only</option>
+                                            {% if subUser.is_edit %}
+                                            <option value="Edit"  selected >Edit</option>
+                                            <option value="Read-only" >Read-only</option>
+                                            {% else %}
+                                            <option value="Read-only" selected>Read-only</option>
+                                            <option value="Edit"  >Edit</option>
+                                            {% endif %}
+
                                     </select>
                                     </div>
                                 </div>
@@ -108,12 +111,16 @@
                                     <div class="col-sm-4">
                                     <select  class="form-control" name="status">
                                             <option selected>----select-----</option>
+                                            {% if subUser.is_active %}
+                                            <option value="Active" selected>Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                            {% else %}
                                             <option value="Active">Active</option>
-                                            <option value="Read-only">Read-only</option>
+                                            <option value="Inactive" selected>Inactive</option>
+                                            {% endif %}
                                     </select>
                                     </div>
                                 </div>
-
                                 <div class="form-group row">
                                     <label class="col-sm-1 col-form-label"></label>
                                     <div class="col-sm-4">
