@@ -76,10 +76,10 @@ WSGI_APPLICATION = 'userinterface.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Society_Management_Application',
-        'USER': 'jinal',
-        'PASSWORD': 'jinal123',
-        'HOST': '64.227.186.69',
+        'NAME': 'Society_Management_System',
+        'USER': 'root',
+        'PASSWORD': 'myr00t',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
