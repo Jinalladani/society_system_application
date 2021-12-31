@@ -76,9 +76,9 @@ WSGI_APPLICATION = 'userinterface.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Society_Management_System',
-        'USER': 'root',
-        'PASSWORD': 'myr00t',
+        'NAME': 'Society_Management_Application',
+        'USER': 'jinal',
+        'PASSWORD': 'jinal123',
         'HOST': '64.227.186.69',
         'PORT': '3306',
     }
@@ -116,12 +116,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'anjali.20.learn@gmail.com'
-# EMAIL_HOST_PASSWORD = 'tops@123'
-# EMAIL_PORT = 587
 
 
 EMAIL_USE_TLS = True
