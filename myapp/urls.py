@@ -35,12 +35,14 @@ urlpatterns = [
     path('deleteExpensiveCategory/<int:id>', views.destroyExpensiveCategory, name="deleteExpensiveCategory"),
     path('addnewExpensiveCategory', views.addnewExpensiveCategory, name="addnewExpensiveCategory"),
     path('multi_deleteExpenseCategory', views.multi_deleteExpenseCategory, name="multi_deleteExpenseCategory"),
+    path('all_deleteExpenseCategory',views.all_deleteExpenseCategory,name="all_deleteExpenseCategory"),
 
     path('IncomeCategoryshow', views.IncomeCategoryshow, name="IncomeCategoryshow"),
     path('editIncomeCategory/<int:id>', views.editIncomeCategory,name="editIncomeCategory"),
     path('deleteIncomeCategory/<int:id>', views.destroyIncomeCategory,name="deleteIncomeCategory"),
     path('multi_deleteIncomeCategory', views.multi_deleteIncomeCategory,name="multi_deleteIncomeCategory"),
     path('addnewIncomeCategory', views.addnewIncomeCategory,name="addnewIncomeCategory"),
+    path('all_deleteIncomeCategory',views.all_deleteIncomeCategory,name="all_deleteIncomeCategory"),
 
     path('addincome_expense_ledger', views.addincome_expense_ledger,name="addincome_expense_ledger"),
 
@@ -54,6 +56,7 @@ urlpatterns = [
     path('deleteMembers_vendor/<int:id>', views.destroyMembers_vendor,name="deleteMembers_vendor"),
     path('addnewMembers_vendor', views.addnewMembers_vendor),
     path('multi_deleteMembers_vendor', views.multi_deleteMembers_vendor),
+    path('all_deleteMembers_vendor',views.all_deleteMembers_vendor,name="all_deleteMembers_vendor"),
 
     path('export_users_xls', views.export_users_xls),
     path('export_users_xlsImcome', views.export_users_xlsImcome),
@@ -71,6 +74,7 @@ urlpatterns = [
     path('export_users_xlsLedger', views.export_users_xlsLedger),
     path('multi_deleteIncome_Expense_Ledger', views.multi_deleteIncome_Expense_Ledger),
     path('simple_uploadIncome_Expense_Ledger', views.simple_uploadIncome_Expense_Ledger),
+    path('all_deleteIncome_Expense_Ledger',views.all_deleteIncome_Expense_Ledger,name="all_deleteIncome_Expense_Ledger"),
 
     path('demo/<int:id>', views.demo, name='demo'),
 
@@ -89,6 +93,7 @@ urlpatterns = [
     path('editMembersDetails/<int:id>', views.editMembersDetails),
     path('deletedMembersDetails/<int:id>', views.destroyMembersDetails),
     path('multi_deleteMembersDetails', views.multi_deleteMembersDetails),
+    path('all_deleteMembers',views.all_deleteMembers,name="all_deleteMembers"),
     path('export_users_xlsImembersDetails', views.export_users_xlsImembersDetails),
     path('simple_uploadMembersDetails', views.simple_uploadMembersDetails),
 
@@ -97,12 +102,14 @@ urlpatterns = [
     path('editSubUser/<int:id>', views.editSubUser),
     path('deleteSubUser/<int:id>', views.deleteSubUser),
     path('multi_deleteSubUser', views.multi_deleteSubUser),
+    path('all_deleteSubUser',views.all_deleteSubUser,name="all_deleteSubUser"),
 
     path('AssetCategory', views.AssetCategory, name="AssetCategory"),
     path('addnewAssetCategory', views.addnewAssetCategory),
     path('editAssetCategory/<int:id>', views.editAssetCategory),
     path('deleteAssetCategory/<int:id>', views.deleteAssetCategory, name="deleteAssetCategory"),
     path('multi_deleteAssetCategory', views.multi_deleteAssetCategory),
+    path('all_deleteAssetCategory',views.all_deleteAssetCategory,name="all_deleteAssetCategory"),
     path('export_users_xlsIassetCategory',views.export_users_xlsIassetCategory),
     path('simple_uploadAssentCategory',views.simple_uploadAssentCategory),
 
@@ -113,6 +120,7 @@ urlpatterns = [
     path('destroyAsset_InventoryCategory/<int:id>', views.destroyAsset_InventoryCategory,
          name="deleteAsset_InventoryCategory"),
     path('multi_deleteAsset_InventoryCategory', views.multi_deleteAsset_InventoryCategory),
+    path('all_deleteAsset_InventoryCategory',views.all_deleteAsset_InventoryCategory,name="all_deleteAsset_InventoryCategory"),
     path('export_users_xlsIassetInventory',views.export_users_xlsIassetInventory),
     path('simple_uploadAssentInventoryCategory',views.simple_uploadAssentInventoryCategory),
 

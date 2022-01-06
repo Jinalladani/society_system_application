@@ -44,11 +44,13 @@
                         <div class="table-responsive">
                             <table id="bootstrapdatatable" style="width:100%s"
                                    class="table table-striped table-bordered" width="100%">
-                                <span style="margin:0 10px 0 500px"><a href="/addnewAssetCategory"
+                                <span style="margin:0 10px 0 400px"><a href="/addnewAssetCategory"
                                                                        class="btn btn-primary">Add New Record</a></span>
                                 <span style="margin:0 10px 0 0"><a href="/export_users_xlsIassetCategory" class="btn btn-primary">Export Excel</a></span>
                                 <span style="margin:0 10px 0 0"><a href="/upload_file" class="btn btn-primary">Upload Excel</a></span>
-                                <button type="submit" id="delete_btn" class="btn btn-primary">Delete All</button>
+                                <button style="margin:0 10px 0 0" type="submit" id="delete_btn" class="btn btn-primary">Delete</button>
+                                <button style="margin:0 10px 0 0" type="submit" id="deleteall_btn" class="btn btn-primary">Delete
+                                All</button>
                                 <hr>
                                 <thead>
                                 <th>&nbsp;</th>
@@ -174,6 +176,28 @@ $(document).ready(function(){
         })
     })
 
+$(document).ready(function(){
+    $('#deleteall_btn').click(function(){
+        if(confirm("Are you sure you want to delete this item ?")){
+            var id = [];
+            var csrf=$('input[name=csrfmiddlewaretoken').val();
+            console.log(csrf)
+                   console.log(id)
+                    $.ajax({
+                        url:"all_deleteAssetCategory",
+                        method:"POST",
+                        data:{
+                            id,
+                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        },
+                        success:function(response){
+                            alert("Deleted record")
+                            windows.reload();
+                        }
+                    })
+            }
+        })
+    })
 </script>
 
 {% endblock %}

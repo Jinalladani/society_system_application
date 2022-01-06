@@ -74,11 +74,40 @@ def index(request):
         amount=Sum('amount')).filter(society_key=request.user.userpermission.society_key, type='Income').order_by(
         'amount').reverse()[0:20]
 
+    total_expense_data = []
+    total_income_data = []
+
+    months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october',
+              'november', 'december']
+
+    j = 1
+    for i in months:
+        totalExpense = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
+                                                                  type='Expense', dateOn__month=j).aggregate(
+            Sum('amount'))
+        total_expense_data.append(totalExpense['amount__sum'])
+
+        totalIncome = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
+                                                                 type='Income', dateOn__month=j).aggregate(
+            Sum('amount'))
+
+        total_income_data.append(totalIncome['amount__sum'])
+
+        # form_data.append(str(i) + "is" + "totalExpense:" + str(totalExpense) + "totalIncome" + str(totalIncome))
+        j += 1
+
+    # MontlytotalExpense = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
+    #                                                           type='Expense', dateOn__month=10).aggregate(Sum('amount'))
+    # print("-----m-------------",MontlytotalExpense)
+
     return render(request, 'index.html',
                   {'contentBalance': contentBalance, 'totalExpense': totalExpense, 'totalIncome': totalIncome,
                    'listExpense': listExpense, 'listIncome': listIncome, 'expenseAmountSum': expenseAmountSum,
                    'incomeAmountSum': incomeAmountSum, 'topExpense': topExpense, 'topIncome': topIncome,
-                   'topMemberExpense': topMemberExpense, 'topMemberIncome': topMemberIncome
+                   'topMemberExpense': topMemberExpense, 'topMemberIncome': topMemberIncome,
+                   'total_expense_data': total_expense_data,
+                   'total_income_data': total_income_data,
+
                    })
 
 
@@ -100,10 +129,10 @@ def upload_file(request):
 
 def societyProfile(request):
     # societyDeatils = Society.objects.filter(society_key=request.user.userpermission.society_key)
-    socDeatils =  Society.objects.get(pk=request.user.userpermission.society_key.id)
-        
+    socDeatils = Society.objects.get(pk=request.user.userpermission.society_key.id)
+
     context = {
-        'socDeatils':socDeatils
+        'socDeatils': socDeatils
     }
 
     return render(request, 'societyProfile.html', context)
@@ -115,7 +144,7 @@ def login(request):
 
     user = auth.authenticate(email=email, password=password)
 
-    user_permission = UserPermission.objects.get(user_key = user)
+    user_permission = UserPermission.objects.get(user_key=user)
 
     if user_permission:
         if user_permission.is_active:
@@ -152,7 +181,7 @@ def register(request):
                                              society_registration_number=society_registration_number,
                                              contact_name=contact_name)
 
-        UserPermission.objects.create(society_key=society_obj, user_key=uid, is_society_admin=True, is_active = True)
+        UserPermission.objects.create(society_key=society_obj, user_key=uid, is_society_admin=True, is_active=True)
 
         return redirect('loginpage')
 
@@ -190,13 +219,12 @@ def reset_password(request):
         email = request.POST['email']
         otp = request.POST['otp']
         otp1 = request.POST['otp1']
-        password =  make_password(request.POST['password'])
-        cpassword =  make_password(request.POST['password'])
+        password = request.POST['password']
+        cpassword = request.POST['password']
         uid = User.objects.get(email=email)
         print("-----------", email)
         if uid:
             if otp1 == otp and password == cpassword:
-
                 uid.password = password
                 uid.save()
                 s_msg = "password reset succesfully"
@@ -265,6 +293,13 @@ def multi_deleteExpenseCategory(request):
         return redirect('ExpensiveCategory')
 
 
+def all_deleteExpenseCategory(request):
+    print("Expense multi delete -------------")
+    if request.method == "POST":
+        expenseCtaegory = ExpenseCategory.objects.filter(society_key=request.user.userpermission.society_key)
+        expenseCtaegory.delete()
+        print(" expenseCtaegory  delete this id ----------->")
+        return redirect('ExpensiveCategory')
 
 
 def IncomeCategoryshow(request):
@@ -320,7 +355,7 @@ def multi_deleteIncomeCategory(request):
             incomeCtaegory = IncomeCategory.objects.get(pk=id)
             incomeCtaegory.delete()
             print(" IncomeCtaegory  delete this id ----------->", id)
-        return redirect('IncomeCategory')
+        return redirect('IncomeCategoryshow')
 
 
 def multipleSearch(request):
@@ -332,6 +367,15 @@ def multipleSearch(request):
     else:
         allincome_expense_ledger = Income_Expense_LedgerValue1.objects.all()
         return redirect('showIncome_expense_ledger')
+
+
+def all_deleteIncomeCategory(request):
+    print("Expense multi delete -------------")
+    if request.method == "POST":
+        incomeCtaegory = IncomeCategory.objects.filter(society_key=request.user.userpermission.society_key)
+        incomeCtaegory.delete()
+        print(" incomeCtaegory  delete this id ----------->")
+        return redirect('IncomeCategoryshow')
 
 
 def showincome_expense_ledger(request):
@@ -353,7 +397,8 @@ def showincome_expense_ledger(request):
 
         if to_date == "":
             to_date = dateOn
-        income_expense_ledger = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key)
+        income_expense_ledger = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key)
 
         if dateOn != '' and to_date != '':
             income_expense_ledger = income_expense_ledger.filter(dateOn__range=[dateOn, to_date])
@@ -402,7 +447,8 @@ def showincome_expense_ledger(request):
                        's_member': from_or_to_account, 'v_number': voucherNo_or_invoiceNo})
     else:
         print("allincome_expense_ledger-----------")
-        allincome_expense_ledger = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key)
+        allincome_expense_ledger = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key)
         # paginator = Paginator(allincome_expense_ledger, 10)
         # page_number = request.GET.get('page')
         # page_obj = paginator.get_page(page_number)
@@ -773,7 +819,17 @@ def multi_deleteIncome_Expense_Ledger(request):
             employee = Income_Expense_LedgerValue1.objects.get(pk=id)
             employee.delete()
             print(" employe  delete this id ----------->", id)
-        return redirect('show')
+        return redirect('showincome_expense_ledger')
+
+
+def all_deleteIncome_Expense_Ledger(request):
+    print("income_expense_ledger all delete -------------")
+    if request.method == "POST":
+        income_expense_ledger = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key)
+        income_expense_ledger.delete()
+        print(" income_expense_ledger  delete this id ----------->")
+        return redirect('showincome_expense_ledger')
 
 
 def showBalance(request):
@@ -873,6 +929,17 @@ def multi_deleteMembers_vendor(request):
         return redirect('showMembers_vendor')
 
 
+def all_deleteMembers_vendor(request):
+    print("Members_vendor all delete -------------")
+    if request.method == "POST":
+        member_vendor = Members_Vendor_Account.objects.filter(
+            society_key=request.user.userpermission.society_key)
+        member_vendor.delete()
+        print(" Members_vendor  delete this id ----------->")
+        return redirect('showMembers_vendor')
+
+
+
 def showMembersDetails(request):
     print("show MembersDetails-----------")
     allMembersDetails = MembersDeatilsValue.objects.filter(society_key=request.user.userpermission.society_key)
@@ -953,6 +1020,17 @@ def multi_deleteMembersDetails(request):
         return redirect('showMembersDetails')
 
 
+def all_deleteMembers(request):
+    print("MembersDetails all delete -------------")
+    if request.method == "POST":
+        membersDetails = MembersDeatilsValue.objects.filter(
+            society_key=request.user.userpermission.society_key)
+        membersDetails.delete()
+        print(" MembersDetails  delete this id ----------->")
+        return redirect('showMembersDetails')
+
+
+
 def export_users_xls(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="expense.xls"'
@@ -974,7 +1052,8 @@ def export_users_xls(request):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    rows = ExpenseCategory.objects.filter(society_key=request.user.userpermission.society_key).values_list('id', 'category_name')
+    rows = ExpenseCategory.objects.filter(society_key=request.user.userpermission.society_key).values_list('id',
+                                                                                                           'category_name')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -1005,7 +1084,8 @@ def export_users_xlsImcome(request):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    rows = IncomeCategory.objects.filter(society_key=request.user.userpermission.society_key).values_list('id', 'category_name')
+    rows = IncomeCategory.objects.filter(society_key=request.user.userpermission.society_key).values_list('id',
+                                                                                                          'category_name')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -1036,7 +1116,8 @@ def export_users_xlsImembers(request):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    rows = Members_Vendor_Account.objects.filter(society_key=request.user.userpermission.society_key).values_list('id', 'name')
+    rows = Members_Vendor_Account.objects.filter(society_key=request.user.userpermission.society_key).values_list('id',
+                                                                                                                  'name')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -1068,14 +1149,16 @@ def export_users_xlsImembersDetails(request):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    rows = MembersDeatilsValue.objects.filter(society_key=request.user.userpermission.society_key).values_list('id', 'flatNo',
-                                                                                            'primaryName',
-                                                                                            'primaryContactNo',
-                                                                                            'secondaryName',
-                                                                                            'secondaryContactNo',
-                                                                                            'accountingName',
-                                                                                            'whatsappContactNo',
-                                                                                            'email', 'residence')
+    rows = MembersDeatilsValue.objects.filter(society_key=request.user.userpermission.society_key).values_list('id',
+                                                                                                               'flatNo',
+                                                                                                               'primaryName',
+                                                                                                               'primaryContactNo',
+                                                                                                               'secondaryName',
+                                                                                                               'secondaryContactNo',
+                                                                                                               'accountingName',
+                                                                                                               'whatsappContactNo',
+                                                                                                               'email',
+                                                                                                               'residence')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -1109,18 +1192,19 @@ def export_users_xlsLedger(request):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    rows = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key).values_list('id', 'dateOn',
-                                                                                                    'type', 'amount',
-                                                                                                    'category_header',
-                                                                                                    'from_or_to_account',
-                                                                                                    'transaction_type',
-                                                                                                    'transaction_details',
-                                                                                                    'voucherNo_or_invoiceNo',
-                                                                                                    'remark',
-                                                                                                    'opening_balance_cash',
-                                                                                                    'closing_balance_cash',
-                                                                                                    'opening_balance_bank',
-                                                                                                    'closing_balance_bank')
+    rows = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key).values_list(
+        'id', 'dateOn',
+        'type', 'amount',
+        'category_header',
+        'from_or_to_account',
+        'transaction_type',
+        'transaction_details',
+        'voucherNo_or_invoiceNo',
+        'remark',
+        'opening_balance_cash',
+        'closing_balance_cash',
+        'opening_balance_bank',
+        'closing_balance_bank')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -1153,7 +1237,7 @@ def simple_uploadIncome(request):
         for data in imported_data:
             IncomeCategory.objects.create(society_key=request.user.userpermission.society_key, category_name=data[0])
 
-        return redirect('incomeCategory')
+        return redirect('IncomeCategoryshow')
 
 
 def simple_uploadMembers_Vendors(request):
@@ -1177,7 +1261,8 @@ def simple_uploadMembersDetails(request):
 
         imported_data = dataset.load(new_members.read(), format='xlsx')
         for data in imported_data:
-            MembersDeatilsValue.objects.create(society_key=request.user.userpermission.society_key, flatNo=data[0], primaryName=data[1],
+            MembersDeatilsValue.objects.create(society_key=request.user.userpermission.society_key, flatNo=data[0],
+                                               primaryName=data[1],
                                                primaryContactNo=data[2], secondaryName=data[3],
                                                secondaryContactNo=data[4], accountingName=data[5],
                                                whatsappContactNo=data[6], email=data[7],
@@ -1423,7 +1508,8 @@ def demo(request, id):
     if request.method == 'POST':
         text = request.POST['text']
         filestore = request.FILES['filestore']
-        FileStoreValue1.objects.create(society_key=request.user.userpermission.society_key, text=text, type_file=filestore,
+        FileStoreValue1.objects.create(society_key=request.user.userpermission.society_key, text=text,
+                                       type_file=filestore,
                                        income_Expense_LedgerId_id=income_Expense_Ledger.id)
         return redirect('demo', id)
 
@@ -1441,7 +1527,8 @@ def destroyFile(request, id):
 
 def showSubUser(request):
     print("allExpensiveCategory-----------")
-    allsubUser = UserPermission.objects.filter(society_key=request.user.userpermission.society_key, is_society_admin = False)
+    allsubUser = UserPermission.objects.filter(society_key=request.user.userpermission.society_key,
+                                               is_society_admin=False)
     context = {
         'subUser': allsubUser
     }
@@ -1486,7 +1573,7 @@ def editSubUser(request, id):
         access_rights = request.POST['access_rights']
         status = request.POST['status']
 
-        user_data = User.objects.get(pk = subUser.user_key.id)
+        user_data = User.objects.get(pk=subUser.user_key.id)
         user_data.email = email
         user_data.phone_no = phone_no
         user_data.name = contact_name
@@ -1523,6 +1610,17 @@ def multi_deleteSubUser(request):
             subUser.delete()
             print(" subUser  delete this id ----------->", id)
         return redirect('showSubUser')
+
+
+def all_deleteSubUser(request):
+    print("subUser all delete -------------")
+    if request.method == "POST":
+        subUser = UserPermission.objects.filter(
+            society_key=request.user.userpermission.society_key)
+        subUser.delete()
+        print(" subUser  delete this id ----------->")
+        return redirect('showSubUser')
+
 
 
 def AssetCategory(request):
@@ -1574,6 +1672,17 @@ def multi_deleteAssetCategory(request):
         return redirect('AssetCategory')
 
 
+def all_deleteAssetCategory(request):
+    print("AssetCategory all delete -------------")
+    if request.method == "POST":
+        assetCategory = AssentCategory1.objects.filter(
+            society_key=request.user.userpermission.society_key)
+        assetCategory.delete()
+        print(" AssetCategory  delete this id ----------->")
+        return redirect('AssetCategory')
+
+
+
 def export_users_xlsIassetCategory(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="assetCategory.xls"'
@@ -1593,7 +1702,8 @@ def export_users_xlsIassetCategory(request):
 
     font_style = xlwt.XFStyle()
 
-    rows = AssentCategory1.objects.filter(society_key=request.user.userpermission.society_key).values_list('id', 'category_name')
+    rows = AssentCategory1.objects.filter(society_key=request.user.userpermission.society_key).values_list('id',
+                                                                                                           'category_name')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -1618,7 +1728,8 @@ def simple_uploadAssentCategory(request):
 
 def Asset_InventoryCategory(request):
     print("allAsset_InventoryCategory-----------")
-    allAsset_InventoryCategory = Asset_InventoryCategoryValue1.objects.filter(society_key=request.user.userpermission.society_key)
+    allAsset_InventoryCategory = Asset_InventoryCategoryValue1.objects.filter(
+        society_key=request.user.userpermission.society_key)
     context = {
         'assetinventorycategory': allAsset_InventoryCategory
     }
@@ -1695,6 +1806,16 @@ def multi_deleteAsset_InventoryCategory(request):
         return redirect('Asset_InventoryCategory')
 
 
+def all_deleteAsset_InventoryCategory(request):
+    print("assetinventorycategory all delete -------------")
+    if request.method == "POST":
+        assetinventorycategory = Asset_InventoryCategoryValue1.objects.filter(
+            society_key=request.user.userpermission.society_key)
+        assetinventorycategory.delete()
+        print(" assetinventorycategory  delete this id ----------->")
+        return redirect('Asset_InventoryCategory')
+
+
 def export_users_xlsIassetInventory(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="assetInventory.xls"'
@@ -1717,14 +1838,15 @@ def export_users_xlsIassetInventory(request):
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
 
-    rows = Asset_InventoryCategoryValue1.objects.filter(society_key=request.user.userpermission.society_key).values_list('id', 'itemName',
-                                                                                                      'assetCategory',
-                                                                                                      'quantity',
-                                                                                                      'purchasePrice',
-                                                                                                      'deprecatedPrice',
-                                                                                                      'onDate',
-                                                                                                      'totalCost',
-                                                                                                      'marketValue')
+    rows = Asset_InventoryCategoryValue1.objects.filter(
+        society_key=request.user.userpermission.society_key).values_list('id', 'itemName',
+                                                                         'assetCategory',
+                                                                         'quantity',
+                                                                         'purchasePrice',
+                                                                         'deprecatedPrice',
+                                                                         'onDate',
+                                                                         'totalCost',
+                                                                         'marketValue')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -1743,7 +1865,8 @@ def simple_uploadAssentInventoryCategory(request):
         imported_data = dataset.load(new_members.read(), format='xlsx')
         excelValue = []
         for data in imported_data:
-            value = Asset_InventoryCategoryValue1.objects.create(society_key=request.user.userpermission.society_key, itemName=data[0],
+            value = Asset_InventoryCategoryValue1.objects.create(society_key=request.user.userpermission.society_key,
+                                                                 itemName=data[0],
                                                                  assetCategory=data[1],
                                                                  quantity=data[2], purchasePrice=data[3],
                                                                  deprecatedPrice=data[4],
