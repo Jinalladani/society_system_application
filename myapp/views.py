@@ -30,14 +30,14 @@ def index(request):
     }
     print(contentBalance)
 
-    totalExpense = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
+    totalExpenseAmount = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
                                                               type='Expense').aggregate(Sum('amount'))
-    print(totalExpense)
+    print(totalExpenseAmount)
 
-    totalIncome = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
+    totalIncomeAmount = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
                                                              type='Income').aggregate(
         Sum('amount'))
-    print(totalIncome)
+    print(totalIncomeAmount)
 
     listExpense = ExpenseCategory.objects.filter(society_key=request.user.userpermission.society_key)
     print(listExpense)
@@ -101,7 +101,7 @@ def index(request):
     # print("-----m-------------",MontlytotalExpense)
 
     return render(request, 'index.html',
-                  {'contentBalance': contentBalance, 'totalExpense': totalExpense, 'totalIncome': totalIncome,
+                  {'contentBalance': contentBalance, 'totalExpenseAmount': totalExpenseAmount, 'totalIncomeAmount': totalIncomeAmount,
                    'listExpense': listExpense, 'listIncome': listIncome, 'expenseAmountSum': expenseAmountSum,
                    'incomeAmountSum': incomeAmountSum, 'topExpense': topExpense, 'topIncome': topIncome,
                    'topMemberExpense': topMemberExpense, 'topMemberIncome': topMemberIncome,

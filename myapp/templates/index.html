@@ -67,8 +67,8 @@
             <div class="box">
                 <div class="right-side">
                     <div class="box-topic">Total Expense</div>
-                    {% for totExp in totalExpense %}
-                    <div class="number">{{totalExpense.amount__sum}}</div>
+                    {% for totExp in totalExpenseAmount %}
+                    <div class="number">{{totalExpenseAmount.amount__sum}}</div>
                     {% endfor %}
                     <div class="indicator">
                         <i class='bx bx-up-arrow-alt'></i>
@@ -82,8 +82,8 @@
             <div class="box">
                 <div class="right-side">
                     <div class="box-topic">Total Income</div>
-                    {% for totInc in totalIncome %}
-                    <div class="number">{{totalIncome.amount__sum}}</div>
+                    {% for totInc in totalIncomeAmount %}
+                    <div class="number">{{totalIncomeAmount.amount__sum}}</div>
                     {% endfor %}
                     <div class="indicator">
                         <i class='bx bx-down-arrow-alt down'></i>
