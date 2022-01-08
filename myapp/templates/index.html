@@ -1,6 +1,8 @@
 {% extends 'bash.html' %}
 {% load static %}
 {% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <style>
 .home-content .sales-boxes .recent-sales{
   width: 47.5%;
@@ -256,57 +258,59 @@
                 </div>
             </div>
         </div>
+
         <br>
         <div class="sales-boxes" style="width:2250px;margin-right:-100px">
             <div class="recent-sales box">
                 <div class="title">MONTHLY EXPENSE-INCOME</div>
-                <br>
-                <div class="sales-details">
-                    <ul class="details">
-                        <li class="topic">Month</li>
-                        <hr style="border: 1px solid;">
-
-                        <li>January</li>
-                         <li>February</li>
-                         <li>March</li>
-                         <li>April</li>
-                         <li>May</li>
-                         <li>June</li>
-                         <li>July</li>
-                         <li>August</li>
-                         <li>September</li>
-                         <li>October</li>
-                         <li>November</li>
-                         <li>December</li>
-                    </ul>
-                    <ul class="details">
-                        <li class="topic">Expense</li>
-                        <hr style="border: 1px solid;">
-                        {% for topExp in total_expense_data %}
-                        {% if topExp is None %}
-                        <li>0</li>
-                        {% else %}
-                        <li>{{topExp}}</li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
-                    <ul class="details">
-                        <li class="topic">Income</li>
-                        <hr style="border: 1px solid;">
-                        {% for topExp in total_income_data %}
-                        {% if topExp is None %}
-                        <li>0</li>
-                        {% else %}
-                        <li>{{topExp}}</li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
-
-                </div>
+                <canvas id="myChart" ></canvas>
             </div>
         </div>
 
     </div>
 </section>
+
+
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+    labels: ['January','February','March','April','May','June','July','August','September','October','November', 'December'],
+    datasets: [{
+        data: {{total_exp}},
+        label: "Total Expense",
+        backgroundColor: 'rgb(255,0,0)',
+        borderColor: 'rgb(255,0,0)',
+        fill: false
+      }, {
+        data: {{total_inco}},
+        label: "Total Income",
+        backgroundColor: 'rgb(124,252,0)',
+        borderColor: 'rgb(124,252,0)',
+        fill: false
+      },
+    ]
+  },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Total Income And Expense of Year {{current_year}}',
+                padding: {
+                    top: 10,
+                    bottom: 30
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+</script>
 
 {% endblock %}

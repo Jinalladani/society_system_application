@@ -20,6 +20,7 @@ from .check_me import check_user
 from accounts.models import User
 from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator
+from datetime import date
 
 
 def index(request):
@@ -31,11 +32,11 @@ def index(request):
     print(contentBalance)
 
     totalExpenseAmount = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
-                                                              type='Expense').aggregate(Sum('amount'))
+                                                                    type='Expense').aggregate(Sum('amount'))
     print(totalExpenseAmount)
 
     totalIncomeAmount = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
-                                                             type='Income').aggregate(
+                                                                   type='Income').aggregate(
         Sum('amount'))
     print(totalIncomeAmount)
 
@@ -74,40 +75,47 @@ def index(request):
         amount=Sum('amount')).filter(society_key=request.user.userpermission.society_key, type='Income').order_by(
         'amount').reverse()[0:20]
 
-    total_expense_data = []
-    total_income_data = []
+    total_exp = []
+    total_inco = []
 
-    months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october',
-              'november', 'december']
+    today_date = date.today()
+
+    current_year = today_date.year
 
     j = 1
-    for i in months:
+    for i in range(12):
         totalExpense = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
-                                                                  type='Expense', dateOn__month=j).aggregate(
+                                                                  type='Expense', dateOn__month=j,
+                                                                  dateOn__year=current_year).aggregate(
             Sum('amount'))
-        total_expense_data.append(totalExpense['amount__sum'])
-
         totalIncome = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
-                                                                 type='Income', dateOn__month=j).aggregate(
+                                                                 type='Income', dateOn__month=j,
+                                                                 dateOn__year=current_year).aggregate(
             Sum('amount'))
 
-        total_income_data.append(totalIncome['amount__sum'])
+        if totalExpense['amount__sum'] is None:
+            total_exp.append(0)
+        else:
+            total_exp.append(totalExpense['amount__sum'])
 
-        # form_data.append(str(i) + "is" + "totalExpense:" + str(totalExpense) + "totalIncome" + str(totalIncome))
+        if totalIncome['amount__sum'] is None:
+            total_inco.append(0)
+        else:
+            total_inco.append(totalIncome['amount__sum'])
         j += 1
 
-    # MontlytotalExpense = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
-    #                                                           type='Expense', dateOn__month=10).aggregate(Sum('amount'))
-    # print("-----m-------------",MontlytotalExpense)
+    print(total_inco)
+    print(total_exp)
 
     return render(request, 'index.html',
-                  {'contentBalance': contentBalance, 'totalExpenseAmount': totalExpenseAmount, 'totalIncomeAmount': totalIncomeAmount,
+                  {'contentBalance': contentBalance, 'totalExpenseAmount': totalExpenseAmount,
+                   'totalIncomeAmount': totalIncomeAmount,
                    'listExpense': listExpense, 'listIncome': listIncome, 'expenseAmountSum': expenseAmountSum,
                    'incomeAmountSum': incomeAmountSum, 'topExpense': topExpense, 'topIncome': topIncome,
                    'topMemberExpense': topMemberExpense, 'topMemberIncome': topMemberIncome,
-                   'total_expense_data': total_expense_data,
-                   'total_income_data': total_income_data,
-
+                   'total_exp': total_exp,
+                   'total_inco': total_inco,
+                   'current_year': current_year,
                    })
 
 
@@ -939,7 +947,6 @@ def all_deleteMembers_vendor(request):
         return redirect('showMembers_vendor')
 
 
-
 def showMembersDetails(request):
     print("show MembersDetails-----------")
     allMembersDetails = MembersDeatilsValue.objects.filter(society_key=request.user.userpermission.society_key)
@@ -1028,7 +1035,6 @@ def all_deleteMembers(request):
         membersDetails.delete()
         print(" MembersDetails  delete this id ----------->")
         return redirect('showMembersDetails')
-
 
 
 def export_users_xls(request):
@@ -1622,7 +1628,6 @@ def all_deleteSubUser(request):
         return redirect('showSubUser')
 
 
-
 def AssetCategory(request):
     print("allAssetCategory-----------")
     allAssetCategory = AssentCategory1.objects.filter(society_key=request.user.userpermission.society_key)
@@ -1680,7 +1685,6 @@ def all_deleteAssetCategory(request):
         assetCategory.delete()
         print(" AssetCategory  delete this id ----------->")
         return redirect('AssetCategory')
-
 
 
 def export_users_xlsIassetCategory(request):
