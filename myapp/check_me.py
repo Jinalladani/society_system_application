@@ -6,6 +6,7 @@ def check_user(function):
         user = request.user
         if not user.is_authenticated:
             return redirect('loginpage')
+
         elif user.is_authenticated:
             return function(request, *args, **kwargs)
         return function(request, *args, **kwargs)

@@ -120,6 +120,8 @@ class MembersDeatilsValue(models.Model):
     email = models.EmailField(unique=True, null=True, blank=True)
     residence = models.CharField(max_length=100)
 
+    def _str_(self):
+        return str(self.society_key)
 
 class Income_Expense_LedgerValue1(models.Model):
     society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
@@ -138,6 +140,9 @@ class Income_Expense_LedgerValue1(models.Model):
     opening_balance_bank = models.FloatField(max_length=100, blank=True, null=True)
     closing_balance_bank = models.FloatField(max_length=100, blank=True, null=True)
     entry_time = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return  str(self.society_key)
 
 
 class FileStoreValue1(models.Model):

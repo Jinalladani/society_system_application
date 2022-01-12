@@ -28,7 +28,7 @@ urlpatterns = [
     path('forgot_password', views.forgot_password),
     path('send_otp', views.send_otp, name="send-otp"),
     path('reset_password', views.reset_password, name="reset-password"),
-    path('index', views.index, name="index"),
+    path('index', check_user( views.index), name="index"),
 
     path('ExpensiveCategory', views.ExpensiveCategory, name="ExpensiveCategory"),
     path('editExpensiveCategory/<int:id>', views.editExpensiveCategory, name='editExpensiveCategory'),

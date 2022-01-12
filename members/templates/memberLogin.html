@@ -81,63 +81,24 @@
 
 <body>
 
-
 	<!--Step 1 : Adding HTML-->
-	<form action="{% url 'register' %}" method="post">
+	<form action="{% url 'memberlogin'  %}" method="post">
 		{% csrf_token %}
-
-        <h1 align="center">Registration Form</h1>
+        <h1 align="center">Member Login</h1>
+		{% csrf_token %}
 		<div class="imgcontainer">
 			<img src="{% static 'images/bonrix crm.png' %}"
 				alt="Avatar" class="avatar">
 		</div>
-
 		<div class="container">
-			<label><b>Contact Name</b></label>
-			<input type="text" placeholder="Enter Contact Name" name="contact_name" required>
-
-			<label><b>Email</b></label>
-			<input type="text" placeholder="Enter Email" name="email" required>
-
-			<label><b>Password</b></label>
-			<input type="password" placeholder="Enter Password" name="password" required>
-
-			<label><b>Mobile Number</b></label>
-			<input type="text" placeholder="Enter Mobile Number" name="phone_no" required>
-
-			<label><b>Society Name</b></label>
-			<input type="text" placeholder="Enter Society Name" name="society_name" required>
-
-			<label><b>Society Address</b></label>
-			<input type="text" placeholder="Enter Socierty Address" name="society_address" required>
-
-			<label><b>City</b></label>
-			<input type="text" placeholder="Enter City" name="city" required>
-
-			<label><b>Pincode</b></label>
-			<input type="text" placeholder="Enter Pincode" name="pin_code" required>
-
-			<label><b>State</b></label>
-			<input type="text" placeholder="Enter State" name="state" required>
-
-			<label><b> Country</b></label>
-			<input type="text" placeholder="Enter  Country" name="country" required>
-
-			<label><b>Society Registration Number</b></label>
-			<input type="text" placeholder="Enter Society Registration Number" name="society_registration_number" required>
-
-			<button type="submit">Registration</button>
-			<input type="checkbox" checked="checked"> Remember me
+			<label><b>Phone Number</b></label>
+			<input type="text" placeholder="Enter Phone Number...." name="phone_no" required>
+			<button type="submit">Send OTP</button>
 		</div>
-
 		<div class="container" style="background-color:#f1f1f1">
 			<button style="margin-right:40px" type="button" class="cancelbtn"><a style="color: white;text-decoration: none;" href="/"> Cancel</a></button>
-			<button style="width:50%;float:right" class="psw">
-				<a style="color: white;text-decoration: none;" href="/">Already Exist?</a></button>
-<!--			<span class="psw">Already Exist? <a href="/">Sign In</a></span>-->
 		</div>
 	</form>
-
 </body>
 
 </html>

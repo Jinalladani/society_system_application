@@ -20,11 +20,19 @@ from .check_me import check_user
 from accounts.models import User
 from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator
-from datetime import date
+from datetime import datetime, date
 
 
 def index(request):
     balance = BalanceValue.objects.filter(society_key=request.user.userpermission.society_key)
+
+    today_date = datetime.today()
+
+    if request.method == 'POST':
+        current_year = request.POST['datepicker']
+    else:
+        current_year = today_date.year
+
 
     contentBalance = {
         'balanceValue': balance
@@ -78,9 +86,6 @@ def index(request):
     total_exp = []
     total_inco = []
 
-    today_date = date.today()
-
-    current_year = today_date.year
 
     j = 1
     for i in range(12):
@@ -104,8 +109,6 @@ def index(request):
             total_inco.append(totalIncome['amount__sum'])
         j += 1
 
-    print(total_inco)
-    print(total_exp)
 
     return render(request, 'index.html',
                   {'contentBalance': contentBalance, 'totalExpenseAmount': totalExpenseAmount,
@@ -151,6 +154,13 @@ def login(request):
     password = request.POST['password']
 
     user = auth.authenticate(email=email, password=password)
+
+    if user is None:
+        message = "Enter Valid Data"
+        data = {
+            'message': message
+        }
+        return render(request, 'login.html', data)
 
     user_permission = UserPermission.objects.get(user_key=user)
 
@@ -203,7 +213,8 @@ def forgot_password(request):
 def send_otp(request):
     email = request.POST['email']
     generate_otp = randint(1111, 9999)
-    uid = User.objects.get(email=email)
+    uid = User.objects.filter(email=email)
+
     if uid:
         uid.otp = generate_otp
         uid.save()  # update
@@ -230,10 +241,9 @@ def reset_password(request):
         password = request.POST['password']
         cpassword = request.POST['password']
         uid = User.objects.get(email=email)
-        print("-----------", email)
         if uid:
             if otp1 == otp and password == cpassword:
-                uid.password = password
+                uid.password = make_password(password)
                 uid.save()
                 s_msg = "password reset succesfully"
                 return render(request, 'login.html', {'s_msg': s_msg})
@@ -1887,3 +1897,4 @@ def simple_uploadAssentInventoryCategory(request):
             valueUpdate.save()
 
         return redirect('Asset_InventoryCategory')
+

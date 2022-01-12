@@ -23,6 +23,7 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('',include('myapp.urls')),
                   path('myadmin/',include('myadminapp.urls')),
+                  path('members/',include('members.urls')),
               ]
 
 if settings.DEBUG:
