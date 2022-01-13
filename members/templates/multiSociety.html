@@ -1,0 +1,16 @@
+<h1>Select Society</h1>
+<br>
+<br>
+
+
+{% for society in member_data %}
+
+<form action="{% url 'multisociety' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="member_data" value="{{member_data}}">
+    <input type="hidden" name="society" value="{{society.society_key.id}}">
+    <input type="hidden" name="phone_no" value="{{phone_no}}">
+    <button type="submit"> {{society.society_key.society_name}}<br></button>
+</form>
+
+{% endfor %}

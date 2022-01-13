@@ -1,4 +1,5 @@
 import csv
+import requests
 from random import randint
 from django.core.mail import send_mail
 from django.contrib import auth
@@ -165,7 +166,9 @@ def login(request):
     user_permission = UserPermission.objects.get(user_key=user)
 
     if user_permission:
-        if user_permission.is_active:
+        if user_permission.is_active and user_permission.is_member:
+            return redirect('loginpage')
+        elif user_permission.is_active:
             auth.login(request, user)
             return redirect('index')
         else:
@@ -197,12 +200,11 @@ def register(request):
         society_obj = Society.objects.create(society_name=society_name, society_address=society_address,
                                              city=city, pin_code=pin_code, state=state, country=country,
                                              society_registration_number=society_registration_number,
-                                             contact_name=contact_name)
+                                             contact_name=contact_name, email=email,  phone_no=phone_no)
 
         UserPermission.objects.create(society_key=society_obj, user_key=uid, is_society_admin=True, is_active=True)
 
         return redirect('loginpage')
-
     return render(request, 'login.html')
 
 
@@ -216,13 +218,13 @@ def send_otp(request):
     uid = User.objects.filter(email=email)
 
     if uid:
-        uid.otp = generate_otp
-        uid.save()  # update
+        uid.update(otp = generate_otp)
+        # uid.save()  # update
         sendmail(" Forgot Password ", "mail_template", email, {'otp': generate_otp, 'uid': uid})
         return render(request, 'reset_password.html', {'email': email, 'otp': generate_otp})
     else:
-        e_msg = "Email does not exist"
-        return render(request, 'forgot_password.html', {'e_msg': e_msg})
+        message = "Email does not exist"
+        return render(request, 'forgot_password.html', {'message': message})
 
 
 def sendmail(subject, template, to, context):
@@ -245,14 +247,14 @@ def reset_password(request):
             if otp1 == otp and password == cpassword:
                 uid.password = make_password(password)
                 uid.save()
-                s_msg = "password reset succesfully"
-                return render(request, 'login.html', {'s_msg': s_msg})
+                message = "password reset succesfully"
+                return redirect('loginpage')
             else:
-                s_msg = "invalid otp or password"
-                return render(request, 'reset_password.html', {'s_msg': s_msg})
+                message = "invalid otp or password"
+                return render(request, 'reset_password.html', {'message': message})
     except:
-        s_msg = "invalid Email"
-        return render(request, 'login.html', {'s_msg': s_msg})
+        message = "invalid Email"
+        return render(request, 'login.html', {'message': message})
 
 
 def logout(request):
@@ -603,7 +605,7 @@ def income_expense_ledgerValue(request):
         print("----------------------cbc ", cbc)
         print("----------------------cbb ", cbb)
 
-    entry_time = datetime.datetime.now()
+    entry_time = datetime.now()
 
     uid = Income_Expense_LedgerValue1.objects.create(dateOn=date, type=category, amount=amount,
                                                      category_header=comCategory,
@@ -648,7 +650,7 @@ def cashWithdrawEntryValue(request):
     obb = request.POST['obb']
     cbb = request.POST['cbb']
     entry_time = request.POST['entry_time']
-    entry_time = datetime.datetime.now()
+    entry_time = datetime.now()
 
     amount1 = float(amount)
     balance_set = BalanceValue.objects.filter(society_key=request.user.userpermission.society_key, account='Cash')
@@ -722,7 +724,7 @@ def cashDepositEntryValue(request):
     obb = request.POST['obb']
     cbb = request.POST['cbb']
     entry_time = request.POST['entry_time']
-    entry_time = datetime.datetime.now()
+    entry_time = datetime.now()
 
     amount1 = float(amount)
     balance_set = BalanceValue.objects.filter(society_key=request.user.userpermission.society_key, account='Cash')
@@ -1380,7 +1382,7 @@ def simple_uploadIncome_Expense_Ledger(request):
                 valueUpdate.closing_balance_cash = bal_amtWithdrawCash
                 valueUpdate.closing_balance_bank = bal_amountBank
 
-            valueUpdate.entry_time = datetime.datetime.now()
+            valueUpdate.entry_time = datetime.now()
 
             if Members_Vendor_Account.objects.filter(name__icontains=valueUpdate.from_or_to_account,
                                                      society_key=request.user.userpermission.society_key):
@@ -1498,7 +1500,7 @@ def download_excel_data(request):
 
 def export_csv(request):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=ledger' + str(datetime.datetime.now()) + '.csv'
+    response['Content-Disposition'] = 'attachment; filename=ledger' + str(datetime.now()) + '.csv'
 
     writer = csv.writer(response)
     writer.writerow(['dateOn', 'type', 'amount', 'category_header', 'from_or_to_account', 'transaction_type',
@@ -1544,7 +1546,7 @@ def destroyFile(request, id):
 def showSubUser(request):
     print("allExpensiveCategory-----------")
     allsubUser = UserPermission.objects.filter(society_key=request.user.userpermission.society_key,
-                                               is_society_admin=False)
+                                               is_society_admin=False, is_member = False)
     context = {
         'subUser': allsubUser
     }
@@ -1558,7 +1560,7 @@ def addnewSubUser(request):
         email = request.POST['email']
         password = make_password(request.POST['password'])
         phone_no = request.POST['phone_no']
-        role = request.POST['Role']
+        role = request.POST['Type']
         access_rights = request.POST['access_rights']
         status = request.POST['status']
 
@@ -1584,6 +1586,7 @@ def editSubUser(request, id):
     if request.method == 'POST':
         contact_name = request.POST['contact_name']
         email = request.POST['email']
+
         phone_no = request.POST['phone_no']
         Type = request.POST['Type']
         access_rights = request.POST['access_rights']

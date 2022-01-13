@@ -101,11 +101,16 @@ class UserPermission(models.Model):
     role = models.CharField(max_length=250)
     is_active = models.BooleanField(default=False)
     is_edit = models.BooleanField(default=False)
+    is_member = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, blank=False)
     updated_at = models.DateTimeField(auto_now=True, blank=False)
 
+class AppData(models.Model):
+    key = models.CharField(max_length=100)
+    value = models.TextField()
+
     def _str_(self):
-        return str(self.user_key)
+        return str(self.key)
 
 
 class MembersDeatilsValue(models.Model):
