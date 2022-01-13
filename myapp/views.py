@@ -1295,9 +1295,9 @@ def simple_uploadIncome_Expense_Ledger(request):
         new_income = request.FILES['myfile']
 
         imported_data = dataset.load(new_income.read(), format='xlsx')
-        # print(imported_data)
         excelValue = []
         for data in imported_data:
+            
             value = Income_Expense_LedgerValue1.objects.create(
                 society_key=request.user.userpermission.society_key,
                 dateOn=data[0],
@@ -1431,7 +1431,7 @@ def simple_uploadIncome_Expense_Ledger(request):
             valueUpdate.save()
             updateBalanceValueUploadFile(valueUpdate.closing_balance_cash
                                          , valueUpdate.closing_balance_bank, request)
-        # value.save()
+        value.save()
 
     return redirect('showincome_expense_ledger')
 

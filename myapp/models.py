@@ -130,7 +130,7 @@ class MembersDeatilsValue(models.Model):
 
 class Income_Expense_LedgerValue1(models.Model):
     society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
-    dateOn = models.DateField()
+    dateOn = models.DateField(blank = True)
     type = models.CharField(max_length=100)
     amount = models.FloatField(max_length=100)
     category_header = models.CharField(max_length=100, null=True, blank=True)
