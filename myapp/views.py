@@ -168,7 +168,7 @@ def login(request):
     if user_permission:
         if user_permission.is_active and user_permission.is_member:
             return redirect('loginpage')
-        elif user_permission.is_active:
+        elif user_permission.is_active and user_permission.society_key.is_active:
             auth.login(request, user)
             return redirect('index')
         else:
@@ -1295,21 +1295,31 @@ def simple_uploadIncome_Expense_Ledger(request):
         new_income = request.FILES['myfile']
 
         imported_data = dataset.load(new_income.read(), format='xlsx')
+
+        data_range = 0
+        for data_col in imported_data['date']:
+            if data_col is None:
+                break
+            else:
+                data_range += 1
+
+        data = imported_data
+
         excelValue = []
-        for data in imported_data:
-            
+        for data_obj in range(data_range):
             value = Income_Expense_LedgerValue1.objects.create(
                 society_key=request.user.userpermission.society_key,
-                dateOn=data[0],
-                type=data[1],
-                amount=data[2],
-                category_header=data[3],
-                from_or_to_account=data[4],
-                transaction_type=data[5],
-                transaction_details=data[6],
-                voucherNo_or_invoiceNo=data[7],
-                remark=data[8],
+                dateOn=data[data_obj][0],
+                type=data[data_obj][1],
+                amount=data[data_obj][2],
+                category_header=data[data_obj][3],
+                from_or_to_account=data[data_obj][4],
+                transaction_type=data[data_obj][5],
+                transaction_details=data[data_obj][6],
+                voucherNo_or_invoiceNo=data[data_obj][7],
+                remark=data[data_obj][8],
             )
+
             excelValue.append(value)
 
         for valueUpdate in excelValue:
@@ -1332,7 +1342,6 @@ def simple_uploadIncome_Expense_Ledger(request):
             amount1 = float(valueUpdate.amount)
 
             balance_set = BalanceValue.objects.get(society_key=request.user.userpermission.society_key, account='Cash')
-            print('-----balance_set---', balance_set)
             bal_amount = float(balance_set.balance_amount)
 
             valueUpdate.opening_balance_cash = bal_amount
@@ -1434,6 +1443,7 @@ def simple_uploadIncome_Expense_Ledger(request):
         value.save()
 
     return redirect('showincome_expense_ledger')
+
 
 
 def updateBalanceValueUploadFile(cbc, cbb, request):

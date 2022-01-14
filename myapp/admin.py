@@ -20,4 +20,6 @@ admin.site.register(MembersDeatilsValue)
 
 admin.site.register(Income_Expense_LedgerValue1)
 
+admin.site.register(Society)
+
 admin.site.register(FileStoreValue1)

@@ -55,6 +55,9 @@ class Society(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=False)
     updated_at = models.DateTimeField(auto_now=True, blank=False)
 
+    def __str__(self):
+        return  self.society_name
+
 
 class ExpenseCategory(models.Model):
     society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
