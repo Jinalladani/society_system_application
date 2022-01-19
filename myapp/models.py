@@ -97,7 +97,7 @@ class AppData(models.Model):
     key = models.CharField(max_length=100)
     value = models.TextField()
 
-    def _str_(self):
+    def __str__(self):
         return str(self.key)
 
 

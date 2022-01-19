@@ -10,7 +10,7 @@ from tablib import Dataset
 from .models import ExpenseCategory, IncomeCategory, Income_Expense_LedgerValue1, \
     BalanceValue, \
     Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue, Society, UserPermission, AssentCategory1, \
-    Asset_InventoryCategoryValue1
+    Asset_InventoryCategoryValue1, AppData
 from .resource import ExpenseResource, IncomeResource, Members_VendoorsResource, Income_Expense_LedgerResource, \
     MembersDetailsResource, AssentInventoryResource, AssentCategoryResource
 from django.shortcuts import render, redirect
@@ -229,11 +229,16 @@ def send_otp(request):
 
 
 def sendmail(subject, template, to, context):
+
+    email_user = AppData.objects.get(key="EMAIL_HOST_USER")
+    email_password = AppData.objects.get(key = "EMAIL_HOST_PASSWORD")
+
+    EMAIL_HOST_USER = email_user
+    EMAIL_HOST_PASSWORD = email_password
     template_str = template + '.html'
     html_message = render_to_string(template_str, {'data': context})
     plain_message = strip_tags(html_message)
-    from_email = 'bonrix@gmail.com'
-    send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    send_mail(subject, plain_message, EMAIL_HOST_USER, [to], html_message=html_message)
 
 
 def reset_password(request):
