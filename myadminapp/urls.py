@@ -28,5 +28,8 @@ urlpatterns = [
     path('editSocietyList/<int:id>', views.editSocietyList),
     path('updateSociety_list/<int:id>', views.updateSociety_list),
     path('destroySociety_list/<int:id>', views.destroySociety_list),
+    path('appData_list',views.appData_list,name="appData_list"),
+    path('editappData/<int:id>',views.editappData,name="editappData"),
+    path('addNewaddData',views.addNewaddData,name="addNewaddData"),
 ]
 

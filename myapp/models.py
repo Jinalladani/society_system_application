@@ -22,21 +22,6 @@ from accounts.models import User
 #         return self.name
 
 
-class SocietyDeatils(models.Model):
-    user_key = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
-    email = models.EmailField(unique=True)
-    phone_no = models.CharField(max_length=10, blank=True, null=True)
-    contact_name = models.CharField(max_length=500)
-    society_name = models.CharField(max_length=500)
-    society_address = models.CharField(max_length=500)
-    city = models.CharField(max_length=200)
-    pin_code = models.CharField(max_length=10)
-    state = models.CharField(max_length=100, default='Gujarat')
-    country = models.CharField(max_length=100)
-    society_registration_number = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=False)
-    updated_at = models.DateTimeField(auto_now=True, blank=False)
 
 
 class Society(models.Model):

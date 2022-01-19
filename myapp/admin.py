@@ -4,9 +4,10 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # Register your models here.
 from myapp.models import *
 
+admin.site.register(UserPermission)
+
 admin.site.register(AppData)
 
-admin.site.register(SocietyDeatils)
 
 admin.site.register(ExpenseCategory)
 

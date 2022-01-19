@@ -1,8 +1,7 @@
 from django.contrib import auth
 from django.shortcuts import render, redirect
-from myapp.models import Society
+from myapp.models import Society,AppData
 from accounts.models import User
-from .forms import SocietyForm
 
 
 # Create your views here.
@@ -10,10 +9,10 @@ def dashbord(request):
     NoOfSociety = Society.objects.count()
     print(NoOfSociety)
 
-    activeSociety = Society.objects.filter(is_active=1).count()
+    activeSociety = Society.objects.filter(is_active=True).count()
     print(activeSociety)
 
-    deactiveSociety = Society.objects.filter(is_active=0).count()
+    deactiveSociety = Society.objects.filter(is_active=False).count()
     print(deactiveSociety)
 
     # topData = society.objects.filter()
@@ -110,3 +109,33 @@ def destroySociety_list(request, id):
     society_list = Society.objects.get(id=id)
     society_list.delete()
     return redirect("society_list")
+
+
+def appData_list(request):
+    appdata= AppData.objects.all()
+    return render(request,'myadminapp/appData.html',{'appdata':appdata})
+
+
+def addNewaddData(request):
+    if request.method == "POST":
+        key = request.POST['key']
+        value = request.POST['value']
+
+        AppData.objects.create(key=key,value=value)
+        return redirect('appData_list')
+
+
+    return render(request,'myadminapp/addNewaddData.html')
+
+
+def editappData(request,id):
+    appdata = AppData.objects.get(id=id)
+    if request.method == "POST":
+        key = request.POST['key']
+        value = request.POST['value']
+        appdata.key = key
+        appdata.value = value
+        appdata.save()
+        return redirect('appData_list')
+
+    return render(request,'myadminapp/editappData.html',{'appdata':appdata})

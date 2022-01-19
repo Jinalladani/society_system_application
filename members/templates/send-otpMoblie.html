@@ -83,10 +83,9 @@
 
 
 	<!--Step 1 : Adding HTML-->
-	<form action="{% url 'send_otpMoblie'  %}" method="post">
+	<form action="{% url 'send_otpMoblie' phone_no  %}" method="post">
 		{% csrf_token %}
-		<input type="hidden" name="generateotp" value="{{otp}}">
-		<input type="hidden" name="phone_no" value="{{phone_no}}">
+
         <h1 align="center">OTP Verification </h1>
 		<div class="imgcontainer">
 			<img src="{% static 'images/bonrix crm.png' %}"

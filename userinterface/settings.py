@@ -106,6 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'accounts.User'
 COGNITO_USER_MODEL = "accounts.User"
 
+Smsurl = "http://quicksms.highspeedsms.com/sendsms/sendsms.php?username=BREbonrix&password=sales55&type=TEXT&sender=BONRIX&mobile={phone_no}&message=Your%20OTP%20for%20login%20verification%20is%20:=%20{otp}"
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -124,6 +127,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'societyfunds@gmail.com'
 EMAIL_HOST_PASSWORD = 'Bonrix@#123'
 EMAIL_PORT = 587
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

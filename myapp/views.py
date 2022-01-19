@@ -179,7 +179,9 @@ def login(request):
             return redirect('index')
         else:
             return redirect('loginpage')
+
     return render(request, 'login.html')
+
 
 
 def register(request):
@@ -219,7 +221,6 @@ def send_otp(request):
 
     if uid:
         uid.update(otp = generate_otp)
-        # uid.save()  # update
         sendmail(" Forgot Password ", "mail_template", email, {'otp': generate_otp, 'uid': uid})
         return render(request, 'reset_password.html', {'email': email, 'otp': generate_otp})
     else:
