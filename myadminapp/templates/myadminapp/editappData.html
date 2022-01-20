@@ -43,7 +43,7 @@
                 <div class="title">Update Balance Details</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/editappData/{{appdata.id}}">
+                    <form method="POST" class="post-form" action="/myadmin/editappData/{{appdata.id}}">
                         {% csrf_token %}
                         <div class="container">
                             <br>
@@ -51,7 +51,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Key:</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="key" id="key" disabled
+                                        <input type="text" class="form-control" name="key" id="key" readonly
                                                maxlength="100" value="{{ appdata.key }}">
                                     </div>
                                 </div>
