@@ -41,7 +41,7 @@
                 <div class="title">Update Expense Category Details</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="updateSociety_list/{{society_list.id}}">
+                    <form method="POST" class="post-form" action="/myadmin/editSocietyList/{{society_list.id}}">
                         {% csrf_token %}
                         <div class="container">
                             <br>
@@ -49,15 +49,15 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Email:</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" disabled name="category_name" id="id_name"
-                                               required maxlength="100" value="{{ society_list.email }}"/>
+                                        <input type="text" class="form-control"  name="email" id="id_name"
+                                               required maxlength="100" value="{{ society_list.email }}" readonly/>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Phone No:</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" disabled name="phone_no"
+                                        <input type="text" class="form-control" readonly name="phone_no"
                                                id="id_phone_no"
                                                required maxlength="100" value="{{ society_list.phone_no }}"/>
                                     </div>

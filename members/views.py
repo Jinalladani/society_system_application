@@ -37,7 +37,8 @@ def memberLoginPage(request):
             OtpSender.objects.create(number=phone_no, otp_data=random_otp)
             return redirect('send_otpMoblie', phone_no)
 
-    return render(request, 'memberLogin.html')
+    message="Number does not exist"
+    return render(request, 'memberLogin.html',{'message':message})
 
 
 def send_otpMoblie(request, number, *args, **kwargs):

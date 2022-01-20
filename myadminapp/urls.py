@@ -26,7 +26,6 @@ urlpatterns = [
     path('society_list',views.society_list,name='society_list'),
     path('statusChange<int:id>',views.statusChange),
     path('editSocietyList/<int:id>', views.editSocietyList),
-    path('updateSociety_list/<int:id>', views.updateSociety_list),
     path('destroySociety_list/<int:id>', views.destroySociety_list),
     path('appData_list',views.appData_list,name="appData_list"),
     path('editappData/<int:id>',views.editappData,name="editappData"),

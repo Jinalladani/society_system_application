@@ -82,26 +82,36 @@ def adminlogin(request):
         return render(request, 'myadminapp/loginadmin.html')
 
 
-# def logout(request):
-#     if request.method == 'POST':
-#         auth.logout(request)
-#     return redirect('loginadminpage')
-
-
 def editSocietyList(request, id):
-    print("edit ------------")
     society_list = Society.objects.get(id=id)
-    return render(request, 'myadminapp/editSociety_list.html', {'society_list': society_list})
 
+    if request.method == 'POST':
+        email = request.POST['email']
+        phone_no = request.POST['phone_no']
+        contact_name = request.POST['contact_name']
+        society_name = request.POST['society_name']
+        society_address = request.POST['society_address']
+        city = request.POST['city']
+        pin_code = request.POST['pin_code']
+        state = request.POST['state']
+        country = request.POST['country']
+        society_registration_number = request.POST['society_registration_number']
 
-def updateSociety_list(request, id):
-    print("update -------------")
-    society_list = Society.objects.get(id=id)
-    form = SocietyForm(request.POST, instance=society_list)
-    if form.is_valid():
-        form.save()
+        society_list.email = email
+        society_list.phone_no = phone_no
+        society_list.contact_name = contact_name
+        society_list.society_name = society_name
+        society_list.society_address = society_address
+        society_list.city = city
+        society_list.pin_code = pin_code
+        society_list.state = state
+        society_list.country = country
+        society_list.society_registration_number = society_registration_number
+        society_list.save()
         return redirect("society_list")
+
     return render(request, 'myadminapp/editSociety_list.html', {'society_list': society_list})
+
 
 
 def destroySociety_list(request, id):
