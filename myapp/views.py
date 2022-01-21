@@ -151,34 +151,36 @@ def societyProfile(request):
 
 
 def login(request):
-    email = request.POST['email']
-    password = request.POST['password']
 
-    user = auth.authenticate(email=email, password=password)
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
 
-    if user is None:
-        message = "Enter Valid Data"
-        data = {
-            'message': message
-        }
-        return render(request, 'login.html', data)
+        user = auth.authenticate(email=email, password=password)
 
-    user_permission = UserPermission.objects.get(user_key=user)
+        if user is None:
+            message = "Enter Valid Data"
+            data = {
+                'message': message
+            }
+            return render(request, 'login.html', data)
 
-    if user_permission:
-        if user_permission.is_active and user_permission.is_member:
-            return redirect('loginpage')
-        elif user_permission.is_active and user_permission.society_key.is_active:
-            auth.login(request, user)
-            return redirect('index')
+        user_permission = UserPermission.objects.get(user_key=user)
+
+        if user_permission:
+            if user_permission.is_active and user_permission.is_member:
+                return redirect('login')
+            elif user_permission.is_active and user_permission.society_key.is_active:
+                auth.login(request, user)
+                return redirect('index')
+            else:
+                return redirect('login')
         else:
-            return redirect('loginpage')
-    else:
-        if user:
-            auth.login(request, user)
-            return redirect('index')
-        else:
-            return redirect('loginpage')
+            if user:
+                auth.login(request, user)
+                return redirect('index')
+            else:
+                return redirect('login')
 
     return render(request, 'login.html')
 
@@ -206,7 +208,7 @@ def register(request):
 
         UserPermission.objects.create(society_key=society_obj, user_key=uid, is_society_admin=True, is_active=True)
 
-        return redirect('loginpage')
+        return redirect('login')
     return render(request, 'login.html')
 
 
@@ -254,7 +256,7 @@ def reset_password(request):
                 uid.password = make_password(password)
                 uid.save()
                 message = "password reset succesfully"
-                return redirect('loginpage')
+                return redirect('login')
             else:
                 message = "invalid otp or password"
                 return render(request, 'reset_password.html', {'message': message})
@@ -266,7 +268,7 @@ def reset_password(request):
 def logout(request):
     if request.method == 'POST':
         auth.logout(request)
-    return redirect('loginpage')
+    return redirect('login')
 
 
 def ExpensiveCategory(request):
@@ -1907,8 +1909,6 @@ def simple_uploadAssentInventoryCategory(request):
             excelValue.append(value)
 
         for valueUpdate in excelValue:
-            print("--------------date ", valueUpdate.itemName)
-            print("-------------- list", valueUpdate.assetCategory)
 
             valueUpdate.totalCost = float(valueUpdate.purchasePrice) * float(valueUpdate.quantity)
             valueUpdate.marketValue = float(valueUpdate.deprecatedPrice) * float(valueUpdate.quantity)

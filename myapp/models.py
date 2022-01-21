@@ -3,27 +3,6 @@ from django.contrib.auth.models import AbstractUser, User
 from accounts.models import User
 
 
-# class Society(models.Model):
-#     user_key = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
-#     email = models.EmailField(unique=True)
-#     phone_no = models.CharField(max_length=10, blank=True, null=True)
-#     contact_name = models.CharField(max_length=500)
-#     society_name = models.CharField(max_length=500)
-#     society_address = models.CharField(max_length=500)
-#     city = models.CharField(max_length=200)
-#     pin_code = models.CharField(max_length=10)
-#     state = models.CharField(max_length=100, default='Gujarat')
-#     country = models.CharField(max_length=100)
-#     is_active = models.BooleanField(default=True)
-#     created_at = models.DateTimeField(auto_now_add=True, blank=False)
-#     updated_at = models.DateTimeField(auto_now=True, blank=False)
-#
-#     def __str__(self):
-#         return self.name
-
-
-
-
 class Society(models.Model):
     user_key = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE)
     email = models.EmailField(unique=True, blank=True, null=True)
@@ -41,21 +20,21 @@ class Society(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=False)
 
     def __str__(self):
-        return  self.society_name
+        return self.society_name
 
 
 class ExpenseCategory(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    society_key = models.ForeignKey(Society, on_delete=models.CASCADE, null=True)
     category_name = models.CharField(max_length=200)
 
 
 class AssentCategory1(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    society_key = models.ForeignKey(Society, on_delete=models.CASCADE, null=True)
     category_name = models.CharField(max_length=200)
 
 
 class Asset_InventoryCategoryValue1(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    society_key = models.ForeignKey(Society, on_delete=models.CASCADE, null=True)
     itemName = models.CharField(max_length=200, null=True, blank=True)
     assetCategory = models.CharField(max_length=200, null=True, blank=True)
     quantity = models.FloatField(max_length=200, null=True, blank=True)
@@ -67,23 +46,23 @@ class Asset_InventoryCategoryValue1(models.Model):
 
 
 class IncomeCategory(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    society_key = models.ForeignKey(Society, on_delete=models.CASCADE, null=True)
     category_name = models.CharField(max_length=200)
 
 
 class BalanceValue(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    society_key = models.ForeignKey(Society, on_delete=models.CASCADE, null=True)
     account = models.CharField(max_length=100)
     balance_amount = models.FloatField(max_length=500)
 
 
 class Members_Vendor_Account(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    society_key = models.ForeignKey(Society, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
 
 
 class UserPermission(models.Model):
-    user_key = models.OneToOneField(User, on_delete=models.CASCADE, null = True, blank = True)
+    user_key = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     society_key = models.ForeignKey(Society, blank=True, null=True, on_delete=models.CASCADE)
     is_society_admin = models.BooleanField(default=False)
     role = models.CharField(max_length=250)
@@ -92,6 +71,7 @@ class UserPermission(models.Model):
     is_member = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, blank=False)
     updated_at = models.DateTimeField(auto_now=True, blank=False)
+
 
 class AppData(models.Model):
     key = models.CharField(max_length=100)
@@ -102,7 +82,7 @@ class AppData(models.Model):
 
 
 class MembersDeatilsValue(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    society_key = models.ForeignKey(Society, on_delete=models.CASCADE, null=True)
     flatNo = models.CharField(max_length=200)
     primaryName = models.CharField(max_length=200, null=True, blank=True)
     primaryContactNo = models.CharField(max_length=10, null=True, blank=True)
@@ -116,9 +96,10 @@ class MembersDeatilsValue(models.Model):
     def _str_(self):
         return str(self.society_key)
 
+
 class Income_Expense_LedgerValue1(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
-    dateOn = models.DateField(blank = True)
+    society_key = models.ForeignKey(Society, on_delete=models.CASCADE, null=True)
+    dateOn = models.DateField(blank=True)
     type = models.CharField(max_length=100)
     amount = models.FloatField(max_length=100)
     category_header = models.CharField(max_length=100, null=True, blank=True)
@@ -135,11 +116,15 @@ class Income_Expense_LedgerValue1(models.Model):
     entry_time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return  str(self.society_key)
+        return str(self.society_key)
+
+
+def get_upload_path(instance, filename):
+    return '{0}/{1}'.format(instance.society_key, filename)
 
 
 class FileStoreValue1(models.Model):
-    society_key = models.ForeignKey(Society, on_delete=models.SET_NULL, null=True)
+    society_key = models.ForeignKey(Society, on_delete=models.CASCADE, null=True)
     income_Expense_LedgerId = models.ForeignKey(Income_Expense_LedgerValue1, on_delete=models.CASCADE)
     text = models.CharField(max_length=100, null=True, blank=True)
-    type_file = models.FileField(upload_to='filestore/', verbose_name='file', null=True, blank=True)
+    type_file = models.FileField(upload_to=get_upload_path, verbose_name='file', null=True, blank=True)

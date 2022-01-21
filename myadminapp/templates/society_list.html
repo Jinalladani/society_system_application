@@ -1,4 +1,4 @@
-{% extends 'myadminapp/bash.html' %}
+{% extends 'adminbash.html' %}
 {% load static %}
 {% block content %}
 <link
@@ -51,21 +51,9 @@
 
                                 <hr>
 
-<!--                                <select name="contact_name" id="contact_name"-->
-<!--                                        style="margin:0 0 10px 10px;padding:8px; width:230px">-->
-<!--                                    <option value="NULL">&#45;&#45;search contact_name &#45;&#45;</option>-->
-<!--                                    {% for sl in society_list%}-->
-<!--                                    <option value="{{sl.contact_name}}">{{sl.contact_name}}</option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
-
-<!--                                <select name="society_name" id="society_name"-->
-<!--                                        style="margin:0 0 10px 10px;padding:8px; width:230px">-->
-<!--                                    <option value="NULL">&#45;&#45;search society_name &#45;&#45;</option>-->
-<!--                                    {% for sl in society_list%}-->
-<!--                                    <option value="{{sl.society_name}}">{{sl.society_name}}</option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
+                                <input type="text" name="city" placeholder="Search email..."
+                                       id="city"
+                            style="margin:0 0 10px 10px;padding:8px; width:250px">
 
                                 <input type="text" name="contact_name" placeholder="Search contact_name..."
                                        id="contact_name"
@@ -75,18 +63,10 @@
                                        id="society_name"
                             style="margin:0 0 10px 10px;padding:8px; width:250px">
 
-
-                                <input type="text" name="city" placeholder="Search city..."
-                                       id="city"
-                            style="margin:0 0 10px 10px;padding:8px; width:250px">
-
-
                                 <input class="btn btn-primary" type="submit" name="search" value="search"
                                        style="border:2px solid black;margin:0 0 0 10px;padding:8px 25px">
                                 <input class="btn btn-primary" id="clear_btn" type="submit" name="clear" value="clear"
                                        style="border:2px solid black;margin:0 0 0 10px;padding:8px 25px">
-<!--                                <input class="btn btn-primary" id="clear_btn" type="btn" value="clear"-->
-<!--                                       style="border:2px solid black;margin:0 0 0 10px;padding:8px 0px">-->
 
                                 <hr>
                                 <thead>
@@ -94,11 +74,8 @@
                                 <th>email</th>
                                 <th>moblie no</th>
                                 <th>Society Name</th>
-                                <th>society address</th>
-                                <th>city</th>
-                                <th>state</th>
-                                <th>Country</th>
                                 <th>Status</th>
+                                <th>Society Details</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                                 </thead>
@@ -109,17 +86,17 @@
                                     <td>{{sl.email}}</td>
                                     <td>{{sl.phone_no}}</td>
                                     <td>{{sl.society_name}}</td>
-                                    <td>{{sl.society_address}}</td>
-                                    <td>{{sl.city}}</td>
-                                    <td>{{sl.state}}</td>
-                                    <td>{{sl.country}}</td>
+
                                     {% if sl.is_active %}
-                                    <td><a class="btn btn-success" name="active" href="statusChange{{sl.id}}">
+                                    <td align="center"><a class="btn btn-success" name="active"
+                                                      href="statusChange{{sl.id}}">
                                         Active</a></td>
                                     {% else %}
-                                    <td><a class="btn btn-danger" name="active"
+                                    <td align="center"><a class="btn btn-danger" name="active"
                                            href="statusChange{{sl.id}}">Inactive</a></td>
                                     {% endif %}
+                                    <td align="center"><a  class="btn btn-primary" name="view"
+                                           href="viewSocietyProfile/{{sl.id}}">View</a></td>
                                     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a
                                             href="editSocietyList/{{ sl.id }}"
                                             class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"

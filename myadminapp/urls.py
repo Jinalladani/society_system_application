@@ -20,7 +20,7 @@ from myapp.check_me import check_user
 
 urlpatterns = [
     path('',views.loginadminpage,name="loginadminpage"),
-    path('dashbord',views.dashbord , name="dashbord"),
+    path('admindashbord',views.admindashbord , name="admindashbord"),
     path('adminlogin',views.adminlogin,name="adminlogin"),
     # path('logout', views.logout, name='logout'),
     path('society_list',views.society_list,name='society_list'),
@@ -30,5 +30,6 @@ urlpatterns = [
     path('appData_list',views.appData_list,name="appData_list"),
     path('editappData/<int:id>',views.editappData,name="editappData"),
     path('addNewaddData',views.addNewaddData,name="addNewaddData"),
+    path('viewSocietyProfile/<int:id>',views.viewSocietyProfile,name="viewSocietyProfile"),
 ]
 

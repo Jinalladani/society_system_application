@@ -73,19 +73,21 @@
                                 </thead>
                                 {% csrf_token %}
                                 {% for md in membersMembersDetails %}
+
                                 <tr id="{{md.id}}">
                                     <td><input type="checkbox" name="memberdetails_id[]" value="{{md.id}}"
                                                id="delete_memberdetails"/></td>
                                     <!--     <td>{{ md.id }}</td>-->
                                     <td>{{ md.flatNo}}</td>
                                     <td>{{ md.primaryName }}</td>
-                                    <td>{{ md.primaryContactNo }}</td>
-                                    <td>{{ md.secondaryName }}</td>
-                                    <td>{{ md.secondaryContactNo }}</td>
-                                    <td>{{ md.accountingName }}</td>
-                                    <td>{{ md.whatsappContactNo }}</td>
-                                    <td>{{ md.email }}</td>
+                                    <td>{% if md.primaryContactNo is None %}{% else%}{{ md.primaryContactNo }}{% endif %}</td>
+                                    <td>{% if md.secondaryName is None %}{% else%}{{ md.secondaryName }}{% endif %}</td>
+                                    <td>{% if md.secondaryContactNo is None %}{% else%}{{ md.secondaryContactNo }}{% endif %}</td>
+                                    <td>{% if md.accountingName is None %}{% else%}{{ md.accountingName }}{% endif %}</td>
+                                    <td>{% if md.whatsappContactNo is None %}{% else %}{{ md.whatsappContactNo }}{% endif %}</td>
+                                    <td>{% if md.email is None %} {% else %}{{ md.email }}{% endif %}</td>
                                     <td>{{ md.residence }}</td>
+
                                     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><a
                                             href="/editMembersDetails/{{ md.id }}"
                                             class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"

@@ -1,4 +1,4 @@
-{% extends 'bash.html' %}
+{% extends 'adminbash.html' %}
 {% load static %}
 {% block content %}
 <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -19,7 +19,7 @@
     <nav>
         <div class="sidebar-button">
             <i class='bx bx-menu sidebarBtn'></i>
-            <span class="dashboard">SOCIETY PROFILE</span>
+            <span class="dashboard">SOCIETY DETAILS</span>
         </div>
         <div class="search-box">
             <input type="text" placeholder="Search...">
@@ -41,7 +41,7 @@
 
         <div class="sales-boxes">
             <div class="recent-sales box">
-                <div class="title">Society Profile</div>
+                <div class="title">Society Details</div>
                 <hr>
                 <div class="sales-details">
                     <form method="post">
@@ -74,7 +74,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4 col-form-label">Society Contact Number:</label>
                                             <div class="col-sm-4">
-                                                {{user.phone_no}}
+                                                {{socDeatils.phone_no}}
                                             </div>
                                         </div>
 
@@ -83,7 +83,7 @@
                                         <div class="form-group row">
                                             <label class="col-sm-4 col-form-label">Society Contact Email:</label>
                                             <div class="col-sm-4">
-                                                {{user.email}}
+                                                {{socDeatils.email}}
                                             </div>
                                         </div>
 
@@ -132,14 +132,6 @@
                                             </div>
                                         </div>
 
-                                        <hr>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-4 col-form-label">Download Files: </label>
-                                            <div class="col-sm-4">
-                                                <button class="btn btn-primary">Click Here</button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </table>

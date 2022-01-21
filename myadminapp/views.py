@@ -1,11 +1,11 @@
 from django.contrib import auth
 from django.shortcuts import render, redirect
-from myapp.models import Society,AppData
+from myapp.models import Society,AppData , UserPermission
 from accounts.models import User
 
 
 # Create your views here.
-def dashbord(request):
+def admindashbord(request):
     NoOfSociety = Society.objects.count()
     print(NoOfSociety)
 
@@ -17,7 +17,7 @@ def dashbord(request):
 
     # topData = society.objects.filter()
 
-    return render(request, 'myadminapp/dashbord.html',
+    return render(request, 'admindashbord.html',
                   {'NoOfSociety': NoOfSociety, 'activeSociety': activeSociety, 'deactiveSociety': deactiveSociety})
 
 
@@ -25,23 +25,23 @@ def society_list(request):
     if request.method == 'POST':
         contact_name = request.POST['contact_name']
         society_name = request.POST['society_name']
-        city = request.POST['city']
-        print(contact_name, society_name, city)
+        email = request.POST['city']
 
-        society_list = Society.objects.all()
+        if contact_name:
+            society_list = Society.objects.filter(contact_name__startswith=contact_name)
+        if society_name:
+            society_list = Society.objects.filter(society_name__startswith=society_name)
+        if email:
+            society_list = Society.objects.filter(email__startswith=email)
+        return render(request, 'society_list.html', {'society_list': society_list})
 
-        if contact_name != "NULL":
-            society_list = Society.filter(contact_name=contact_name)
-        if society_name != "NULL":
-            society_list = Society.filter(society_name=society_name)
-        if city != "NULL":
-            society_list = Society.filter(city=city)
-        print(society_list)
-        return render(request, 'myadminapp/society_list.html', {'society_list': society_list})
-    else:
-        society_list = Society.objects.all()
-        print("else")
-        return render(request, 'myadminapp/society_list.html', {'society_list': society_list})
+    society_list = Society.objects.all()
+    return render(request, 'society_list.html', {'society_list': society_list})
+
+
+def viewSocietyProfile(request,id):
+    socDeatils = Society.objects.get(id=id)
+    return render(request, 'viewSocietyProfile.html',{'socDeatils':socDeatils})
 
 
 def statusChange(request, id):
@@ -52,19 +52,19 @@ def statusChange(request, id):
             User_Society_detail.is_active = False
             User_Society_detail.save()
             society_list = Society.objects.all()
-            return render(request, 'myadminapp/society_list.html', {'society_list': society_list})
+            return render(request, 'society_list.html', {'society_list': society_list})
         else:
             User_Society_detail.is_active = True
             User_Society_detail.save()
             society_list = Society.objects.all()
-            return render(request, 'myadminapp/society_list.html', {'society_list': society_list})
+            return render(request, 'society_list.html', {'society_list': society_list})
     else:
         society_list = Society.objects.all()
-        return render(request, 'myadminapp/society_list.html', {'society_list': society_list})
+        return render(request, 'society_list.html', {'society_list': society_list})
 
 
 def loginadminpage(request):
-    return render(request, 'myadminapp/loginadmin.html')
+    return render(request, 'loginadmin.html')
 
 
 def adminlogin(request):
@@ -78,8 +78,8 @@ def adminlogin(request):
             if user:
                 print("stafff-------------")
                 auth.login(request, user)
-                return redirect('dashbord')
-        return render(request, 'myadminapp/loginadmin.html')
+                return redirect('admindashbord')
+        return render(request, 'loginadmin.html')
 
 
 def editSocietyList(request, id):
@@ -110,20 +110,30 @@ def editSocietyList(request, id):
         society_list.save()
         return redirect("society_list")
 
-    return render(request, 'myadminapp/editSociety_list.html', {'society_list': society_list})
+    return render(request, 'editSociety_list.html', {'society_list': society_list})
 
 
 
 def destroySociety_list(request, id):
-    print("destroy category-----------")
     society_list = Society.objects.get(id=id)
+
+    user_data = UserPermission.objects.filter(society_key = society_list.id)
+
+    total_user = []
+    for user in user_data:
+        total_user.append(user.user_key.id)
+
+    user_io = User.objects.filter(pk__in = total_user).delete()
     society_list.delete()
+
+
     return redirect("society_list")
+
 
 
 def appData_list(request):
     appdata= AppData.objects.all()
-    return render(request,'myadminapp/appData.html',{'appdata':appdata})
+    return render(request,'appData.html',{'appdata':appdata})
 
 
 def addNewaddData(request):
@@ -135,7 +145,7 @@ def addNewaddData(request):
         return redirect('appData_list')
 
 
-    return render(request,'myadminapp/addNewaddData.html')
+    return render(request,'addNewaddData.html')
 
 
 def editappData(request,id):
@@ -148,4 +158,4 @@ def editappData(request,id):
         appdata.save()
         return redirect('appData_list')
 
-    return render(request,'myadminapp/editappData.html',{'appdata':appdata})
+    return render(request,'editappData.html',{'appdata':appdata})

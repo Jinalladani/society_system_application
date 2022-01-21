@@ -174,9 +174,8 @@
                                     <td>{{IELVal.from_or_to_account}}</td>
                                     <td>{{IELVal.transaction_type}}</td>
                                     <td>{{IELVal.transaction_details}}</td>
-                                    <td>{{IELVal.voucherNo_or_invoiceNo}}</td>
-                                    <!--        <td><img src="{{IELVal.image}}"></td>-->
-                                    <td>{{IELVal.remark}}</td>
+                                    <td>{% if IELVal.voucherNo_or_invoiceNo is None %}{% else %}{{IELVal.voucherNo_or_invoiceNo}}{% endif %}</td>
+                                    <td>{% if IELVal.remark is None %}{% else %}{{IELVal.remark}}{% endif %}</td>
                                     <td>{{IELVal.opening_balance_cash}}</td>
                                     <td>{{IELVal.closing_balance_cash}}</td>
                                     <td>{{IELVal.opening_balance_bank}}</td>

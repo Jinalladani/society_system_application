@@ -16,11 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myapp import views
-from .check_me import check_user
+from .check_me import check_user, login_user
 
 urlpatterns = [
-    path('', views.loginpage, name="loginpage"),
-    path('login', views.login, name="login"),
+    path('login', login_user(views.login), name="login"),
     path('logout', views.logout, name="logout"),
     path('societyProfile', views.societyProfile, name="societyProfile"),
     path('registrationpage', views.registrationpage, name="registrationpage"),
@@ -28,7 +27,7 @@ urlpatterns = [
     path('forgot_password', views.forgot_password),
     path('send_otp', views.send_otp, name="send-otp"),
     path('reset_password', views.reset_password, name="reset-password"),
-    path('index', check_user( views.index), name="index"),
+    path('', check_user( views.index), name="index"),
 
     path('ExpensiveCategory', views.ExpensiveCategory, name="ExpensiveCategory"),
     path('editExpensiveCategory/<int:id>', views.editExpensiveCategory, name='editExpensiveCategory'),
