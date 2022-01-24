@@ -435,42 +435,48 @@ nav .profile-details i{
     </div>
       <ul class="nav-links">
         <li>
-          <a href="{% url 'index' %}" class="active">
+          {% url 'index' as main_dash %}
+          <a href="{% url 'index' %}" {% if request.path == main_dash %} class="active" {% endif %}>
             <i class='bx bx-grid-alt' ></i>
             <span class="links_name">Dashboard</span>
           </a>
         </li>
 
         <li>
-          <a href="{% url 'societyProfile' %}">
+           {% url 'societyProfile' as society_profile %}
+          <a href="{% url 'societyProfile' %}" {% if request.path == society_profile %} class="active"{% endif %}>
             <i class="fas fa-address-card"></i>
             <span class="links_name">Society Profile</span>
           </a>
         </li>
 
         <li>
-          <a href="{% url 'showBalance' %}">
+          {% url 'showBalance' as show_Balance %}
+          <a href="{% url 'showBalance' %}" {% if request.path == show_Balance %} class="active"{% endif %}>
             <i class='bx bx-book-alt' ></i>
             <span class="links_name">Balance</span>
           </a>
         </li>
 
         <li>
-          <a href="{% url 'showincome_expense_ledger' %}">
+          {% url 'showincome_expense_ledger' as show_income_expense_ledger %}
+          <a href="{% url 'showincome_expense_ledger' %}" {% if request.path == show_income_expense_ledger %} class="active"{% endif %}>
             <i class='bx bx-message' ></i>
             <span class="links_name">Income/Expense Ledger</span>
           </a>
         </li>
 
         <li>
-          <a href="{% url 'showMembersDetails' %}">
+          {% url 'showMembersDetails' as showMembers_Details %}
+          <a href="{% url 'showMembersDetails' %}" {% if request.path == showMembers_Details %} class="active"{% endif %}>
             <i class='bx bx-user' ></i>
             <span class="links_name">Members Details</span>
           </a>
         </li>
         {% if request.user.userpermission.is_society_admin %}
         <li>
-          <a href="{% url 'showSubUser' %}">
+          {% url 'showSubUser' as showSub_User %}
+          <a href="{% url 'showSubUser' %}" {% if request.path == showSub_User %} class="active"{% endif %}>
             <i class='bx bx-user' ></i>
             <span class="links_name">Add Sub User</span>
           </a>
@@ -478,33 +484,38 @@ nav .profile-details i{
         {% endif %}
 
         <li>
-          <a href="{% url 'showMembers_vendor' %}">
+          {% url 'showMembers_vendor' as show_Members_vendor %}
+          <a href="{% url 'showMembers_vendor' %}" {% if request.path == show_Members_vendor %} class="active"{% endif %}>
             <i class='bx bx-coin-stack' ></i>
             <span class="links_name">Members-Vendor</span>
           </a>
         </li>
 
         <li>
-          <a href="{% url 'ExpensiveCategory' %}">
+          {% url 'ExpensiveCategory' as Expensive_Category %}
+          <a href="{% url 'ExpensiveCategory' %}" {% if request.path == Expensive_Category %} class="active"{% endif %}>
             <i class='bx bx-list-ul' ></i>
             <span class="links_name">Expense Category</span>
           </a>
         </li>
         <li>
-          <a href="{% url 'IncomeCategoryshow' %}">
+          {% url 'IncomeCategoryshow' as Income_Categoryshow %}
+          <a href="{% url 'IncomeCategoryshow' %}" {% if request.path == Income_Categoryshow %} class="active"{% endif %}>
             <i class='bx bx-list-ul' ></i>
             <span class="links_name">Income Category</span>
           </a>
         </li>
 
         <li>
-          <a href="{% url 'AssetCategory' %}">
+          {% url 'AssetCategory' as Asset_Category %}
+          <a href="{% url 'AssetCategory' %}" {% if request.path == Asset_Category %} class="active"{% endif %}>
             <i class='bx bx-list-ul' ></i>
             <span class="links_name">Asset Category</span>
           </a>
         </li>
         <li>
-          <a href="{% url 'Asset_InventoryCategory' %}">
+          {% url 'Asset_InventoryCategory' as Asset_Inventory_Category %}
+          <a href="{% url 'Asset_InventoryCategory' %}" {% if request.path == Asset_Inventory_Category %} class="active"{% endif %}>
             <i class='bx bx-list-ul' ></i>
             <span class="links_name">Asset Inventory Category</span>
           </a>

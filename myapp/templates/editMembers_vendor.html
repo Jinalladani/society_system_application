@@ -43,7 +43,7 @@
                 <div class="title">Update Members-Vendor Details</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/editMembers_vendor/{{membersVendor.id}}">
+                    <form method="POST" class="post-form" action="{% url 'editMembers_vendor' membersVendor.id %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>

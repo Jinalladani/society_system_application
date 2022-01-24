@@ -42,7 +42,7 @@
                 <div class="title">Update Members Details</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/editMembersDetails/{{membersDetails.id}}">
+                    <form method="POST" class="post-form" action="{% url 'editMembersDetails' membersDetails.id %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>
@@ -119,9 +119,19 @@
                                     <label class="col-sm-3 col-form-label">Residence</label>
                                     <div class="col-sm-3">
                                         <select class="form-control" name="assetCategory">
-                                        <option selected  value="{{ membersDetails.residence }}">{{ membersDetails.residence }}</option>
+                                            <option selected  value="{{ membersDetails.residence }}">{{ membersDetails.residence }}</option>
+
+                                            {% if membersDetails.residence == "Rented" %}
+                                            <option value="OMF">OMF</option>
+                                            <option value="Wenter">Wenter</option>
+                                            {% elif membersDetails.residence == "OMF"  %}
                                             <option value="Rented">Rented</option>
                                             <option value="Wenter">Wenter</option>
+                                            {% elif membersDetails.residence == "Wenter"  %}
+                                            <option value="Rented">Rented</option>
+                                            <option value="OMF">OMF</option>
+                                            {% endif %}
+
                                         </select>
                                     </div>
                                 </div>

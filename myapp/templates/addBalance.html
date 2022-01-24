@@ -39,13 +39,11 @@
                 <div class="title">New Balance Added</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/addnewBalance">
+                    <form method="POST" class="post-form" action="{% url 'addnewBalance' %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>
                             <div class="form-group row">
-
-
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Balance Name:</label>
                                     <div class="col-sm-6">

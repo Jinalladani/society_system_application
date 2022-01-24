@@ -1917,3 +1917,37 @@ def simple_uploadAssentInventoryCategory(request):
 
         return redirect('Asset_InventoryCategory')
 
+
+def download_zipfile(request, id):
+    from io import BytesIO
+    import zipfile
+    import os
+    from django.conf import settings
+
+    society_data = Society.objects.get(pk=id)
+
+    all_file = FileStoreValue1.objects.filter(society_key=id)
+
+    zip_file = []
+    path = settings.MEDIA_ROOT
+
+    for file in all_file:
+        zip_file.append(file)
+
+    filelist = zip_file
+    byte_data = BytesIO()
+    zip_name = "%s.zip" % society_data.society_name
+    zip_file = zipfile.ZipFile(byte_data, 'w')
+
+    for file in filelist:
+        filename = os.path.basename(os.path.normpath(file.type_file.path))
+        zip_file.write(file.type_file.path, filename)
+    zip_file.close()
+
+    response = HttpResponse(byte_data.getvalue(), content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename=%s' % zip_name
+
+    zip_file.printdir()
+
+    return response
+

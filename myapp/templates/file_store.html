@@ -12,6 +12,7 @@
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
+
 </style>
 
 <section class="home-section">
@@ -27,9 +28,10 @@
         <div class="profile-details">
             <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
             <form action="{% url 'logout' %}" method="post" id="my_form">
-            {% csrf_token %}
-            <button type="submit" ></button>
-            <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"style="margin-left:10px; text-decoration:none;"> Logout </a>
+                {% csrf_token %}
+                <button type="submit"></button>
+                <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"
+                   style="margin-left:10px; text-decoration:none;"> Logout </a>
 
             </form>
         </div>
@@ -42,7 +44,7 @@
                 <hr>
                 <div class="sales-details">
                     <form method="POST" class="post-form"
-                          action="/updateIncome_expense_ledger/{{income_expense_ledger.id}}">
+                          action="{% url 'updateIncome_expense_ledger' income_expense_ledger.id %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>
@@ -65,15 +67,15 @@
                                         <button>upload</button>
                                     </div>
                                 </div>
-                                </div>
+                            </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-1 col-form-label"></label>
-                                    <div class="col-sm-4">
-                                        <button type="submit" class="btn btn-success btn-lg">Update</button>
-                                    </div>
+                            <div class="form-group row">
+                                <label class="col-sm-1 col-form-label"></label>
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-success btn-lg">Update</button>
                                 </div>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>

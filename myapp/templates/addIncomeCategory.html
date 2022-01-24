@@ -44,7 +44,7 @@
                 <div class="title">New Income Category Added</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/addnewIncomeCategory">
+                    <form method="POST" class="post-form" action="{% url 'addnewIncomeCategory' %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>

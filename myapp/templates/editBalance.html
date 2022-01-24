@@ -42,7 +42,7 @@
                 <div class="title">Update Balance Details</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/editBalance/{{balancecategory.id}}">
+                    <form method="POST" class="post-form" action="{% url 'editBalance' balancecategory.id %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>

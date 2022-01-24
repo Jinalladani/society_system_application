@@ -84,7 +84,7 @@
 
 
 	<!--Step 1 : Adding HTML-->
-	<form action="/login" method="post">
+	<form action="{% url 'login' %}" method="post">
         <h1 align="center">Login Form</h1>
 
 		{% csrf_token %}

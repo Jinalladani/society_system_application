@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.shortcuts import render, redirect
-from myapp.models import Society,AppData , UserPermission
+from myapp.models import Society,AppData , UserPermission, FileStoreValue1
 from accounts.models import User
 
 
@@ -114,10 +114,14 @@ def editSocietyList(request, id):
 
 
 
-def destroySociety_list(request, id):
+def destroySociety_list(request):
+
+    id = request.POST['id']
     society_list = Society.objects.get(id=id)
 
     user_data = UserPermission.objects.filter(society_key = society_list.id)
+
+    file_obj = FileStoreValue1.objects.filter(society_key = society_list).delete()
 
     total_user = []
     for user in user_data:
@@ -159,3 +163,4 @@ def editappData(request,id):
         return redirect('appData_list')
 
     return render(request,'editappData.html',{'appdata':appdata})
+

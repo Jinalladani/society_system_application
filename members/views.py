@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from myapp.models import MembersDeatilsValue, UserPermission, Society, AppData
 from accounts.models import User
 from django.db.models import Q
+from django.contrib import messages
 from django.utils.crypto import get_random_string
 import requests
 from random import randint
@@ -23,22 +24,31 @@ def memberLoginPage(request):
         if member_data:
             random_otp = randint(000000, 999999)
 
+
             url_path = AppData.objects.filter(key__icontains = "SMSURL")
+
+
             if url_path:
                 url = url_path.get(key__icontains="SMSURL")
                 final_url = url.value.format(phone_no=phone_no, otp=random_otp)
+                requests.get(final_url)
             else:
-                url = Smsurl
-                final_url = url.format(phone_no=phone_no, otp=random_otp)
+                create_url = AppData.objects.create(key="SMSURL", value=Smsurl)
+                url = AppData.objects.get(key__icontains="SMSURL")
+                print(url)
+                final_url = url.value.format(phone_no=phone_no, otp=random_otp)
+                requests.get(final_url)
 
 
-            requests.get(final_url)
 
             OtpSender.objects.create(number=phone_no, otp_data=random_otp)
             return redirect('send_otpMoblie', phone_no)
+        else:
+            message = "Number does not exist"
+            return render(request, 'memberLogin.html',{'message':message})
 
-    message="Number does not exist"
-    return render(request, 'memberLogin.html',{'message':message})
+
+    return render(request, 'memberLogin.html')
 
 
 def send_otpMoblie(request, number, *args, **kwargs):
@@ -61,13 +71,14 @@ def send_otpMoblie(request, number, *args, **kwargs):
 
             user_data = User.objects.filter(phone_no=number)
 
-            print(user_data)
+            user_permission = UserPermission.objects.filter(user_key__in = user_data)
 
-            if user_data is not None:
+
+
+            if user_data:
                 user_data = User.objects.filter(phone_no=number)
                 user_data.update(password=make_password(otp))
                 user = user_data.get(phone_no=number)
-
                 user_permission = UserPermission.objects.get(user_key=user)
                 if user_permission:
                     if user_permission.is_active:
@@ -115,8 +126,8 @@ def send_otpMoblie(request, number, *args, **kwargs):
                         return redirect('loginpage')
 
         else:
-            print(number)
-            print("not same")
+            messages.success(request, 'Please Enter Valid Otp', extra_tags='wrong_otp')
+            return redirect('send_otpMoblie', number)
 
     return render(request, 'send-otpMoblie.html', {'phone_no': number})
 

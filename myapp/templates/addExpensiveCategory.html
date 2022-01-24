@@ -43,7 +43,7 @@
                 <div class="title">New Expense Category Added</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/addnewExpensiveCategory">
+                    <form method="POST" class="post-form" action="{% url 'addnewExpensiveCategory' %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>

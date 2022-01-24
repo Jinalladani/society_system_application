@@ -41,7 +41,7 @@
         <div class="recent-sales box">
           <div class="title">Income-Expense-ledger List</div>
           <div class="sales-details">
-            <form method="post" class="post-form" action="/income_expense_ledgerValue" enctype="multipart/form-data">
+            <form method="post" class="post-form" action="{% url 'income_expense_ledgerValue' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="container">
                 <br>

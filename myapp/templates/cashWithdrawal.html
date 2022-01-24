@@ -41,7 +41,7 @@
         <div class="recent-sales box">
           <div class="title">CASH WITHDRAWAL(BANK TO CASH)</div>
           <div class="sales-details">
-            <form method="post" class="post-form" action="/cashWithdrawEntryValue">
+            <form method="post" class="post-form" action="{% url 'cashWithdrawEntryValue' %}">
                 {% csrf_token %}
                 <div class="container">
                 <br>
@@ -60,18 +60,6 @@
                            <input type="text" name="amount" id="amount" style="padding:5px; width:300px">
                         </div>
                     </div>
-
-<!--                    <div class="form-group row">-->
-<!--                        <label class="col-sm-3 col-form-label">FromOrToAccount  :</label>-->
-<!--                        <div class="col-sm-6">-->
-<!--                          <select class="col-sm-4" name="members_value" id="members_value"  style="padding:5px; width:300px">-->
-<!--                              <option selected>&#45;&#45;&#45;&#45;select&#45;&#45;&#45;&#45;</option>-->
-<!--                            {% for inc in contextMember.memberValue %}-->
-<!--                            <option>{{inc.name}}</option>-->
-<!--                                {% endfor %}-->
-<!--                          </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
 
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Transaction Details:</label>

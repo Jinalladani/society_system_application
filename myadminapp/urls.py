@@ -17,17 +17,18 @@ from django.contrib import admin
 from django.urls import path
 from myadminapp import views
 from myapp.check_me import check_user
+from .check_me import  check_user, login_user
 
 urlpatterns = [
-    path('',views.loginadminpage,name="loginadminpage"),
-    path('admindashbord',views.admindashbord , name="admindashbord"),
-    path('adminlogin',views.adminlogin,name="adminlogin"),
+    path('',login_user(views.loginadminpage),name="loginadminpage"),
+    path('admindashbord', views.admindashbord , name="admindashbord"),
+    path('adminlogin',login_user(views.adminlogin),name="adminlogin"),
     # path('logout', views.logout, name='logout'),
-    path('society_list',views.society_list,name='society_list'),
+    path('society_list',check_user(views.society_list),name='society_list'),
     path('statusChange<int:id>',views.statusChange),
     path('editSocietyList/<int:id>', views.editSocietyList),
-    path('destroySociety_list/<int:id>', views.destroySociety_list),
-    path('appData_list',views.appData_list,name="appData_list"),
+    path('destroySociety_list/', views.destroySociety_list, name='removesociety'),
+    path('appData_list',check_user(views.appData_list),name="appData_list"),
     path('editappData/<int:id>',views.editappData,name="editappData"),
     path('addNewaddData',views.addNewaddData,name="addNewaddData"),
     path('viewSocietyProfile/<int:id>',views.viewSocietyProfile,name="viewSocietyProfile"),

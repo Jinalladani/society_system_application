@@ -42,7 +42,7 @@
                 <hr>
                 <div class="sales-details">
                     <form method="POST" class="post-form"
-                          action="/editIncome_expense_ledger/{{income_expense_ledger.id}}">
+                          action="{% url 'editIncome_expense_ledger' income_expense_ledger.id %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>

@@ -44,7 +44,7 @@
                 <div class="title">New Members-Vendor Added</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/addnewMembers_vendor">
+                    <form method="POST" class="post-form" action="{% url 'addnewMembers_vendor' %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>

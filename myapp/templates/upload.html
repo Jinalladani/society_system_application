@@ -42,7 +42,7 @@
 
                 <div class="title">Income-Expense Ledger Upload File</div>
                 <div class="sales-details">
-                    <form action="simple_uploadIncome_Expense_Ledger" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'simple_uploadIncome_Expense_Ledger' %}" method="post" enctype="multipart/form-data">
                         <div class="table-responsive">
                             <table style="width:100%s" class="table table-striped table-bordered" width="100%">
                                 {% csrf_token %}
@@ -66,7 +66,7 @@
                 <hr>
                 <div class="title">Expense Upload File</div>
                 <div class="sales-details">
-                    <form action="simple_upload" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'simple_upload' %}" method="post" enctype="multipart/form-data">
                         <div class="table-responsive">
                             <table id="bootstrapdatatable" style="width:100%s"
                                    class="table table-striped table-bordered" width="100%">
@@ -92,7 +92,7 @@
                 <hr>
                 <div class="title">Income Upload File</div>
                 <div class="sales-details">
-                    <form action="simple_uploadIncome" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'simple_uploadIncome' %}" method="post" enctype="multipart/form-data">
                         <div class="table-responsive">
                             <table style="width:100%s" class="table table-striped table-bordered" width="100%">
                                 {% csrf_token %}
@@ -116,7 +116,7 @@
                 <hr>
                 <div class="title">Members-Vendors Upload File</div>
                 <div class="sales-details">
-                    <form action="simple_uploadMembers_Vendors" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'simple_uploadMembers_Vendors' %}" method="post" enctype="multipart/form-data">
                         <div class="table-responsive">
                             <table style="width:100%s" class="table table-striped table-bordered" width="100%">
                                 {% csrf_token %}
@@ -139,7 +139,7 @@
                  <hr>
                 <div class="title">Members Details Upload File</div>
                 <div class="sales-details">
-                    <form action="simple_uploadMembersDetails" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'simple_uploadMembersDetails' %}" method="post" enctype="multipart/form-data">
                         <div class="table-responsive">
                             <table style="width:100%s" class="table table-striped table-bordered" width="100%">
                                 {% csrf_token %}
@@ -162,7 +162,7 @@
                 <hr>
                 <div class="title">Assent Category Upload File</div>
                 <div class="sales-details">
-                    <form action="simple_uploadAssentCategory" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'simple_uploadAssentCategory' %}" method="post" enctype="multipart/form-data">
                         <div class="table-responsive">
                             <table style="width:100%s" class="table table-striped table-bordered" width="100%">
                                 {% csrf_token %}
@@ -173,10 +173,6 @@
                                     <button style="margin-top:-59px;margin-left:335px;" class="btn btn-primary"
                                             type="submit">Upload
                                     </button>
-<!--                                    <a href="{% static 'excel/Member_Details.xlsx' %}" download="excel">-->
-<!--                                        <button style="margin-top:-59px;margin-left:100px;" class="btn btn-primary"-->
-<!--                                                type="button">Download Sample Excel</button>-->
-<!--                                     </a>-->
                                 </tr>
                             </table>
                         </div>
@@ -185,7 +181,7 @@
                 <hr>
                 <div class="title">Assent Inventory Category Upload File</div>
                 <div class="sales-details">
-                    <form action="simple_uploadAssentInventoryCategory" method="post" enctype="multipart/form-data">
+                    <form action="{% url 'simple_uploadAssentInventoryCategory' %}" method="post" enctype="multipart/form-data">
                         <div class="table-responsive">
                             <table style="width:100%s" class="table table-striped table-bordered" width="100%">
                                 {% csrf_token %}

@@ -43,7 +43,7 @@
                 <div class="title">Update Asset Category Details</div>
                 <hr>
                 <div class="sales-detais">
-                    <form method="POST" class="post-form" action="/editAssetCategory/{{AssetCategory.id}}">
+                    <form method="POST" class="post-form" action="{% url 'editAssetCategory' AssetCategory.id %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>

@@ -435,20 +435,23 @@ nav .profile-details i{
     </div>
       <ul class="nav-links">
         <li>
-          <a href="admindashbord" class="active">
+            {% url 'admindashbord' as admin_dashbord %}
+          <a href="admindashbord" {% if request.path == admin_dashbord %} class="active" {% endif %}>
             <i class='bx bx-grid-alt' ></i>
             <span class="links_name">Dashboard</span>
           </a>
         </li>
 
         <li>
-          <a href="society_list">
+            {% url 'society_list' as soc_list %}
+          <a href="society_list" {% if request.path == soc_list %} class="active" {% endif %}>
             <i class="fas fa-address-card"></i>
             <span class="links_name">Society List</span>
           </a>
         </li>
           <li>
-          <a href="appData_list">
+              {% url 'appData_list' as app_Data_list %}
+          <a href="appData_list" {% if request.path == app_Data_list %} class="active" {% endif %}>
             <i class="fas fa-address-card"></i>
             <span class="links_name">AppSetting List</span>
           </a>
@@ -510,7 +513,7 @@ nav .profile-details i{
 <!--        </li>-->
 <!--        <li class="log_out">-->
 <!--          <a href="/logout">-->
-<!--            <i class='bx bx-log-out'></i>-->
+<!--            <i class='bx bx-ety-out'></i>-->
 <!--            <span class="links_name">Log out</span>-->
 <!--          </a>-->
 <!--        </li>-->

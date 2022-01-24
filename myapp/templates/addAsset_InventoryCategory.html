@@ -43,7 +43,7 @@
                 <div class="title">New Asset Inventory Category Added</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="/addNewRecordAssent_Inventory">
+                    <form method="POST" class="post-form" action="{% url 'addNewRecordAssent_Inventory' %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>

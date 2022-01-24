@@ -83,7 +83,7 @@
 
 
 	<!--Step 1 : Adding HTML-->
-	<form action="/send_otp" method="post">
+	<form action="{% url 'send_otp' %}" method="post">
         <h1 align="center">OTP Verified Form</h1>
 		{% csrf_token %}
 		<div class="imgcontainer">

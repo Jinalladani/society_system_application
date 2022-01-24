@@ -5,7 +5,7 @@ def check_user(function):
     def wrapper(request, *args, **kwargs):
         user = request.user
         if not user.is_authenticated:
-            return redirect('login')
+            return redirect('loginadminpage')
 
         elif user.is_authenticated:
             return function(request, *args, **kwargs)
@@ -17,7 +17,7 @@ def check_user(function):
 def login_user(function):
     def wrapper(request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('index')
+            return redirect('admindashbord')
         else:
             return function(request, *args, **kwargs)
 
