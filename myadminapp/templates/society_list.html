@@ -121,6 +121,13 @@
 </section>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script>
+$(document).ready(function(){
+     $('#clear_btn').click(function(){
+        //alert('hi');
+        //return redirect(url + '/showincome_expense_ledger');
+        window.location.replace("/showincome_expense_ledger");
+
+     })
 
     $(document).ready(function(){
     $('#deleteall_btn').click(function(){
