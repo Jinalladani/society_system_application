@@ -8,7 +8,7 @@ class Society(models.Model):
     email = models.EmailField(unique=True, blank=True, null=True)
     phone_no = models.CharField(max_length=10, blank=True, null=True)
     contact_name = models.CharField(max_length=500)
-    society_name = models.CharField(max_length=500)
+    society_name = models.CharField(unique=True, max_length=500)
     society_address = models.CharField(max_length=500)
     city = models.CharField(max_length=200)
     pin_code = models.CharField(max_length=10)
@@ -90,7 +90,7 @@ class MembersDeatilsValue(models.Model):
     secondaryContactNo = models.CharField(max_length=10, null=True, blank=True)
     accountingName = models.CharField(max_length=200, null=True, blank=True)
     whatsappContactNo = models.CharField(max_length=10, null=True, blank=True)
-    email = models.EmailField(unique=True, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
     residence = models.CharField(max_length=100)
 
     def _str_(self):
