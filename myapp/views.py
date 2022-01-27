@@ -201,15 +201,20 @@ def register(request):
         society_registration_number = request.POST['society_registration_number']
         uid = User.objects.create(email=email, password=password, phone_no=phone_no)
 
-        society_obj = Society.objects.create(society_name=society_name, society_address=society_address,
+        society_name = Society.objects.filter(society_name__iexact=society_name)
+        if society_name:
+            message = "Please Change Your Society Name"
+            return render(request, 'registration.html',{'message':message})
+        else:
+            society_obj = Society.objects.create(society_name=society_name, society_address=society_address,
                                              city=city, pin_code=pin_code, state=state, country=country,
                                              society_registration_number=society_registration_number,
                                              contact_name=contact_name, email=email,  phone_no=phone_no)
 
-        UserPermission.objects.create(society_key=society_obj, user_key=uid, is_society_admin=True, is_active=True)
+            UserPermission.objects.create(society_key=society_obj, user_key=uid, is_society_admin=True, is_active=True)
 
-        return redirect('login')
-    return render(request, 'login.html')
+            return redirect('login')
+    return render(request, 'registration.html')
 
 
 def forgot_password(request):
