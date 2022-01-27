@@ -109,7 +109,7 @@ def editSocietyList(request, id):
         society_list.country = country
         society_list.society_registration_number = society_registration_number
         society_list.save()
-        return redirect("society_list")
+        return redirect("society_list1")
 
     return render(request, 'editSociety_list.html', {'society_list': society_list})
 
@@ -134,7 +134,7 @@ def destroySociety_list(request):
     society_list.delete()
 
 
-    return redirect("society_list")
+    return redirect("society_list1")
 
 
 
