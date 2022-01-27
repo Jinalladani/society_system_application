@@ -443,8 +443,8 @@ nav .profile-details i{
         </li>
 
         <li>
-            {% url 'society_list' as soc_list %}
-          <a href="society_list" {% if request.path == soc_list %} class="active" {% endif %}>
+            {% url 'society_list1' as soc_list %}
+          <a href="society_list1" {% if request.path == soc_list %} class="active" {% endif %}>
             <i class="fas fa-address-card"></i>
             <span class="links_name">Society List</span>
           </a>

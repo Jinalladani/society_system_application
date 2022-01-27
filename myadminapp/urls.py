@@ -24,7 +24,7 @@ urlpatterns = [
     path('admindashbord', views.admindashbord , name="admindashbord"),
     path('adminlogin',login_user(views.adminlogin),name="adminlogin"),
     # path('logout', views.logout, name='logout'),
-    path('society_list',check_user(views.society_list),name='society_list'),
+    path('society_list1',check_user(views.society_list1),name='society_list1'),
     path('statusChange<int:id>',views.statusChange),
     path('editSocietyList/<int:id>', views.editSocietyList),
     path('destroySociety_list/', views.destroySociety_list, name='removesociety'),

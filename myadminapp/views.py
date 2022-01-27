@@ -21,12 +21,13 @@ def admindashbord(request):
                   {'NoOfSociety': NoOfSociety, 'activeSociety': activeSociety, 'deactiveSociety': deactiveSociety})
 
 
-def society_list(request):
+def society_list1(request):
     if request.method == 'POST':
         contact_name = request.POST['contact_name']
         society_name = request.POST['society_name']
         email = request.POST['city']
 
+        society_list = Society.objects.all()
         if contact_name:
             society_list = Society.objects.filter(contact_name__startswith=contact_name)
         if society_name:
@@ -117,6 +118,8 @@ def editSocietyList(request, id):
 def destroySociety_list(request):
 
     id = request.POST['id']
+    print(id)
+    print("===========")
     society_list = Society.objects.get(id=id)
 
     user_data = UserPermission.objects.filter(society_key = society_list.id)
