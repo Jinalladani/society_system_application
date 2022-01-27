@@ -201,8 +201,8 @@ def register(request):
         society_registration_number = request.POST['society_registration_number']
         uid = User.objects.create(email=email, password=password, phone_no=phone_no)
 
-        society_name = Society.objects.filter(society_name__iexact=society_name)
-        if society_name:
+        society_name_data = Society.objects.filter(society_name__iexact=society_name)
+        if society_name_data:
             message = "Please Change Your Society Name"
             return render(request, 'registration.html',{'message':message})
         else:
