@@ -128,3 +128,14 @@ class FileStoreValue1(models.Model):
     income_Expense_LedgerId = models.ForeignKey(Income_Expense_LedgerValue1, on_delete=models.CASCADE)
     text = models.CharField(max_length=100, null=True, blank=True)
     type_file = models.FileField(upload_to=get_upload_path, verbose_name='file', null=True, blank=True)
+
+
+class MessageTemplate(models.Model):
+    title = models.CharField(max_length=250)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+# class SmsSender(models.Model):
+#     message_key = models.ForeignKey(MessageTemplate, on_delete=models.CASCADE, null = True, blank = True)

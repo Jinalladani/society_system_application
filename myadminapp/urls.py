@@ -32,5 +32,9 @@ urlpatterns = [
     path('editappData/<int:id>',views.editappData,name="editappData"),
     path('addNewaddData',views.addNewaddData,name="addNewaddData"),
     path('viewSocietyProfile/<int:id>',views.viewSocietyProfile,name="viewSocietyProfile"),
+    path('sms_templatesList',views.sms_templatesList,name="sms_templatesList"),
+    path('addsms_templates',views.addsms_templates,name="addsms_templates"),
+    path('editsms_templates/<int:id>',views.editsms_templates,name="editsms_templates"),
+    path('deletesms_templates/<int:id>',views.deletesms_templates,name="deletesms_templates"),
 ]
 

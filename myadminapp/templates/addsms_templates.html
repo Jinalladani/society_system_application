@@ -21,7 +21,7 @@
     <nav>
         <div class="sidebar-button">
             <i class='bx bx-menu sidebarBtn'></i>
-            <span class="dashboard">APP DATA LIST</span>
+            <span class="dashboard">SMS TEMPLATES</span>
         </div>
         <div class="search-box">
             <input type="text" placeholder="Search...">
@@ -40,26 +40,25 @@
     <div class="home-content">
         <div class="sales-boxes">
             <div class="recent-sales box">
-                <div class="title">Add AppData</div>
+                <div class="title">Add SMS Template</div>
                 <hr>
                 <div class="sales-details">
-                    <form method="POST" class="post-form" action="addNewaddData">
+                    <form method="POST" class="post-form" action="{% url 'addsms_templates' %}">
                         {% csrf_token %}
                         <div class="container">
                             <br>
                             <div class="form-group row">
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Key:</label>
+                                    <label class="col-sm-2 col-form-label">Title:</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="key" id="key"
+                                        <input type="text" class="form-control" name="title" id="title"
                                                maxlength="100" >
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Value:</label>
+                                    <label class="col-sm-2 col-form-label">Description :</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" name="value" id="value"
-                                               required maxlength="254"/>
+                                        <textarea class="form-control" name="description" id="description" rows="4"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">

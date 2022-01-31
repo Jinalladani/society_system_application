@@ -453,17 +453,18 @@ nav .profile-details i{
               {% url 'appData_list' as app_Data_list %}
           <a href="appData_list" {% if request.path == app_Data_list %} class="active" {% endif %}>
             <i class="fas fa-address-card"></i>
-            <span class="links_name">AppSetting List</span>
+            <span class="links_name">App Setting List</span>
           </a>
         </li>
 
-<!--        <li>-->
-<!--          <a href="ExpensiveCategory">-->
-<!--            <i class='bx bx-list-ul' ></i>-->
-<!--            <span class="links_name">Expense Category</span>-->
-<!--          </a>-->
-<!--        </li>-->
-<!--        <li>-->
+        <li>
+            {% url 'sms_templatesList' as sms_template_sList %}
+          <a href="sms_templatesList" {% if request.path == sms_template_sList %} class="active" {% endif %}>
+            <i class='bx bx-list-ul' ></i>
+            <span class="links_name">SMS templates List</span>
+          </a>
+        </li>
+        <li>
 <!--          <a href="IncomeCategoryshow">-->
 <!--            <i class='bx bx-list-ul' ></i>-->
 <!--            <span class="links_name">Income Category</span>-->

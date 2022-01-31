@@ -10,7 +10,7 @@ from tablib import Dataset
 from .models import ExpenseCategory, IncomeCategory, Income_Expense_LedgerValue1, \
     BalanceValue, \
     Members_Vendor_Account, FileStoreValue1, MembersDeatilsValue, Society, UserPermission, AssentCategory1, \
-    Asset_InventoryCategoryValue1, AppData
+    Asset_InventoryCategoryValue1, AppData, MessageTemplate
 from .resource import ExpenseResource, IncomeResource, Members_VendoorsResource, Income_Expense_LedgerResource, \
     MembersDetailsResource, AssentInventoryResource, AssentCategoryResource
 from django.shortcuts import render, redirect
@@ -33,7 +33,6 @@ def index(request):
         current_year = request.POST['datepicker']
     else:
         current_year = today_date.year
-
 
     contentBalance = {
         'balanceValue': balance
@@ -87,7 +86,6 @@ def index(request):
     total_exp = []
     total_inco = []
 
-
     j = 1
     for i in range(12):
         totalExpense = Income_Expense_LedgerValue1.objects.filter(society_key=request.user.userpermission.society_key,
@@ -109,7 +107,6 @@ def index(request):
         else:
             total_inco.append(totalIncome['amount__sum'])
         j += 1
-
 
     return render(request, 'index.html',
                   {'contentBalance': contentBalance, 'totalExpenseAmount': totalExpenseAmount,
@@ -151,7 +148,6 @@ def societyProfile(request):
 
 
 def login(request):
-
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -185,7 +181,6 @@ def login(request):
     return render(request, 'login.html')
 
 
-
 def register(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -204,12 +199,12 @@ def register(request):
         society_name_data = Society.objects.filter(society_name__iexact=society_name)
         if society_name_data:
             message = "Please Change Your Society Name"
-            return render(request, 'registration.html',{'message':message})
+            return render(request, 'registration.html', {'message': message})
         else:
             society_obj = Society.objects.create(society_name=society_name, society_address=society_address,
-                                             city=city, pin_code=pin_code, state=state, country=country,
-                                             society_registration_number=society_registration_number,
-                                             contact_name=contact_name, email=email,  phone_no=phone_no)
+                                                 city=city, pin_code=pin_code, state=state, country=country,
+                                                 society_registration_number=society_registration_number,
+                                                 contact_name=contact_name, email=email, phone_no=phone_no)
 
             UserPermission.objects.create(society_key=society_obj, user_key=uid, is_society_admin=True, is_active=True)
 
@@ -227,7 +222,7 @@ def send_otp(request):
     uid = User.objects.filter(email=email)
 
     if uid:
-        uid.update(otp = generate_otp)
+        uid.update(otp=generate_otp)
         sendmail(" Forgot Password ", "mail_template", email, {'otp': generate_otp, 'uid': uid})
         return render(request, 'reset_password.html', {'email': email, 'otp': generate_otp})
     else:
@@ -236,9 +231,8 @@ def send_otp(request):
 
 
 def sendmail(subject, template, to, context):
-
     email_user = AppData.objects.get(key="EMAIL_HOST_USER")
-    email_password = AppData.objects.get(key = "EMAIL_HOST_PASSWORD")
+    email_password = AppData.objects.get(key="EMAIL_HOST_PASSWORD")
 
     EMAIL_HOST_USER = email_user
     EMAIL_HOST_PASSWORD = email_password
@@ -1458,7 +1452,6 @@ def simple_uploadIncome_Expense_Ledger(request):
     return redirect('showincome_expense_ledger')
 
 
-
 def updateBalanceValueUploadFile(cbc, cbb, request):
     caseObject = BalanceValue.objects.get(account='Cash', society_key=request.user.userpermission.society_key)
     print("cbc -------------", cbc)
@@ -1569,7 +1562,7 @@ def destroyFile(request, id):
 def showSubUser(request):
     print("allExpensiveCategory-----------")
     allsubUser = UserPermission.objects.filter(society_key=request.user.userpermission.society_key,
-                                               is_society_admin=False, is_member = False)
+                                               is_society_admin=False, is_member=False)
     context = {
         'subUser': allsubUser
     }
@@ -1914,7 +1907,6 @@ def simple_uploadAssentInventoryCategory(request):
             excelValue.append(value)
 
         for valueUpdate in excelValue:
-
             valueUpdate.totalCost = float(valueUpdate.purchasePrice) * float(valueUpdate.quantity)
             valueUpdate.marketValue = float(valueUpdate.deprecatedPrice) * float(valueUpdate.quantity)
 
@@ -1956,3 +1948,84 @@ def download_zipfile(request, id):
 
     return response
 
+
+def send_sms(request):
+    import requests
+    message_obj = MessageTemplate.objects.all()
+
+    if request.method == 'POST':
+        title = request.POST['title']
+        number_type = request.POST['number']
+        time = request.POST['time']
+        date = request.POST['date']
+        location = request.POST['location']
+
+        memeber_data = MembersDeatilsValue.objects.filter(society_key=request.user.userpermission.society_key)
+        message_data = MessageTemplate.objects.get(title__iexact=title)
+
+        if number_type == 'secondaryContactNo':
+            for number in memeber_data:
+                if number.secondaryContactNo:
+                    dau = message_data.description.format(date=date, time=time, place=location)
+                    final_sms_data = dau.replace(' ', '%20')
+                    url = AppData.objects.get(key__icontains="SMS_TEMPLATE_URL")
+                    final_url = url.value.format(final_sms_data=final_sms_data, number=number.secondaryContactNo)
+                    print(final_url)
+                    requests.get(final_url)
+                    message="success"
+                    return redirect('send_sms',{'message':message})
+                else:
+                    return render(request, 'send_sms.html',{'message_obj':message_obj})
+        if number_type == 'primaryContactNo':
+            for number in memeber_data:
+                if number.primaryContactNo:
+                    dau = message_data.description.format(date=date, time=time, place=location)
+                    final_sms_data = dau.replace(' ', '%20')
+                    url = AppData.objects.get(key__icontains="SMS_TEMPLATE_URL")
+                    final_url = url.value.format(final_sms_data=final_sms_data, number=number.primaryContactNo)
+                    print(final_url)
+                    requests.get(final_url)
+                    return redirect('showMembersDetails')
+                else:
+                    return render(request, 'send_sms.html',{'message_obj':message_obj})
+        if number_type == 'whatsappContactNo':
+            for number in memeber_data:
+                if number.whatsappContactNo:
+                    dau = message_data.description.format(date=date, time=time, place=location)
+                    final_sms_data = dau.replace(' ', '%20')
+                    url = AppData.objects.get(key__icontains="SMS_TEMPLATE_URL")
+                    final_url = url.value.format(final_sms_data=final_sms_data, number=number.whatsappContactNo)
+                    print(final_url)
+                    requests.get(final_url)
+                else:
+                    pass
+        all_number = []
+        if number_type == 'allContactNo':
+            for number in memeber_data:
+                if number.whatsappContactNo:
+                    if number.whatsappContactNo in all_number:
+                        pass
+                    else:
+                        all_number.append(number.whatsappContactNo)
+                if number.secondaryContactNo:
+                    if number.secondaryContactNo in all_number:
+                        pass
+                    else:
+                        all_number.append(number.secondaryContactNo)
+                if number.primaryContactNo:
+                    if number.primaryContactNo:
+                        pass
+                    else:
+                        all_number.append(number.primaryContactNo)
+                for number1 in all_number:
+                    dau = message_data.description.format(date=date, time=time, place=location)
+                    final_sms_data = dau.replace(' ', '%20')
+                    url = AppData.objects.get(key__icontains="SMS_TEMPLATE_URL")
+                    final_url = url.value.format(final_sms_data = final_sms_data, number = number1)
+                    print(final_url)
+                    requests.get(final_url)
+        else:
+            return render(request, 'send_sms.html', {'message_obj': message_obj})
+        print("if")
+    print("not if")
+    return render(request, 'send_sms.html',{'message_obj':message_obj})

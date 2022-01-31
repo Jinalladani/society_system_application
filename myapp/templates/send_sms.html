@@ -1,0 +1,109 @@
+{% extends 'bash.html' %}
+{% load static %}
+{% block content %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<style>
+.home-content .sales-boxes .recent-sales{
+  width: 100%;
+  background: #fff;
+  padding: 20px 30px;
+  margin: 0 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+</style>
+
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">MEMBERS DETAILS </span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <i class="fa fa-user" aria-hidden="true" style="margin-left:40px;"></i>
+            <form action="{% url 'logout' %}" method="post" id="my_form">
+                {% csrf_token %}
+                <button type="submit"></button>
+                <a href="javascript:{}" onclick="document.getElementById('my_form').submit();"
+                   style="margin-left:10px; text-decoration:none;"> Logout </a>
+
+            </form>
+        </div>
+    </nav>
+
+    <div class="home-content">
+        <div class="sales-boxes">
+            <div class="recent-sales box">
+                <div class="title">Members List</div>
+                <div class="sales-details">
+                    <form action="{% url 'send_sms' %}" method="post">
+                        {% csrf_token %}
+                <div class="container">
+                <br>
+                    {% if message %}
+		<p align="center" style="padding:10px;color:#f44336;font-size:20px;margin:20px 40px;border:1px solid #f44336;">{{message}}</p>
+		{% endif %}
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"> Message Title  :</label>
+                        <div class="col-sm-6">
+                          <select id="title" name="title" style="padding:5px; width:300px">
+                            <option selected disabled>--Selected--</option>
+                              {% for message in message_obj %}
+                            <option value="{{message.title}}">{{message.title}}</option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"> Select Number :</label>
+                        <div class="col-sm-6">
+                          <select id="number" name="number" style="padding:5px; width:300px">
+                            <option selected disabled>--Selected--</option>
+                            <option value="primaryContactNo">Primary Contact No</option>
+                              <option value="secondaryContactNo"> secondary Contact No</option>
+                              <option value="whatsappContactNo">Whatsapp Contact No</option>
+                              <option value="allContactNo">All No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Date:</label>
+                            <div class="col-sm-6">
+                                <input type="date" name="date" id="date" style="padding:5px; width:300px">
+                            </div>
+                        </div>
+
+                    <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Time:</label>
+                            <div class="col-sm-6">
+                                <input type="time" id="appt" name="time">
+                            </div>
+                        </div>
+
+                    <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Location:</label>
+                            <div class="col-sm-6">
+                                <input type="text"  name="location"  style="padding:5px; width:300px">
+                            </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-1 col-form-label"></label>
+                        <div class="col-sm-4">
+                            <button type="submit" class="btn btn-primary" >Submit</button>
+                        </div>
+                    </div>
+                </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

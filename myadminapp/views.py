@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.shortcuts import render, redirect
-from myapp.models import Society,AppData , UserPermission, FileStoreValue1
+from myapp.models import Society, AppData, UserPermission, FileStoreValue1, MessageTemplate
 from accounts.models import User
 
 
@@ -40,9 +40,9 @@ def society_list1(request):
     return render(request, 'society_list.html', {'society_list': society_list})
 
 
-def viewSocietyProfile(request,id):
+def viewSocietyProfile(request, id):
     socDeatils = Society.objects.get(id=id)
-    return render(request, 'viewSocietyProfile.html',{'socDeatils':socDeatils})
+    return render(request, 'viewSocietyProfile.html', {'socDeatils': socDeatils})
 
 
 def statusChange(request, id):
@@ -114,33 +114,29 @@ def editSocietyList(request, id):
     return render(request, 'editSociety_list.html', {'society_list': society_list})
 
 
-
 def destroySociety_list(request):
-
     id = request.POST['id']
     print(id)
     print("===========")
     society_list = Society.objects.get(id=id)
 
-    user_data = UserPermission.objects.filter(society_key = society_list.id)
+    user_data = UserPermission.objects.filter(society_key=society_list.id)
 
-    file_obj = FileStoreValue1.objects.filter(society_key = society_list).delete()
+    file_obj = FileStoreValue1.objects.filter(society_key=society_list).delete()
 
     total_user = []
     for user in user_data:
         total_user.append(user.user_key.id)
 
-    user_io = User.objects.filter(pk__in = total_user).delete()
+    user_io = User.objects.filter(pk__in=total_user).delete()
     society_list.delete()
-
 
     return redirect("society_list1")
 
 
-
 def appData_list(request):
-    appdata= AppData.objects.all()
-    return render(request,'appData.html',{'appdata':appdata})
+    appdata = AppData.objects.all()
+    return render(request, 'appData.html', {'appdata': appdata})
 
 
 def addNewaddData(request):
@@ -148,14 +144,13 @@ def addNewaddData(request):
         key = request.POST['key']
         value = request.POST['value']
 
-        AppData.objects.create(key=key,value=value)
+        AppData.objects.create(key=key, value=value)
         return redirect('appData_list')
 
+    return render(request, 'addNewaddData.html')
 
-    return render(request,'addNewaddData.html')
 
-
-def editappData(request,id):
+def editappData(request, id):
     appdata = AppData.objects.get(id=id)
     if request.method == "POST":
         key = request.POST['key']
@@ -165,5 +160,39 @@ def editappData(request,id):
         appdata.save()
         return redirect('appData_list')
 
-    return render(request,'editappData.html',{'appdata':appdata})
+    return render(request, 'editappData.html', {'appdata': appdata})
 
+
+def sms_templatesList(request):
+    sms_templatesList = MessageTemplate.objects.all()
+    return render(request, 'sms_templatesList.html', {'sms_templatesList': sms_templatesList})
+
+
+def addsms_templates(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+
+        MessageTemplate.objects.create(title=title, description=description)
+        return redirect('sms_templatesList')
+
+    return render(request, 'addsms_templates.html')
+
+
+def editsms_templates(request, id):
+    sms_templateData = MessageTemplate.objects.get(id=id)
+    if request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+
+        sms_templateData.title=title
+        sms_templateData.description=description
+        sms_templateData.save()
+        return redirect('sms_templatesList')
+
+    return render(request, 'editsms_templates.html', {'sms_templateData': sms_templateData})
+
+
+def deletesms_templates(request,id):
+    sms_templateData = MessageTemplate.objects.get(id=id).delete()
+    return redirect('sms_templatesList')

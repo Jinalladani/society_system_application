@@ -73,8 +73,6 @@ def send_otpMoblie(request, number, *args, **kwargs):
 
             user_permission = UserPermission.objects.filter(user_key__in = user_data)
 
-
-
             if user_data:
                 user_data = User.objects.filter(phone_no=number)
                 user_data.update(password=make_password(otp))
