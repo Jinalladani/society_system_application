@@ -1952,13 +1952,14 @@ def download_zipfile(request, id):
 def send_sms(request):
     import requests
     message_obj = MessageTemplate.objects.all()
+    print(message_obj)
 
     if request.method == 'POST':
         title = request.POST['title']
         number_type = request.POST['number']
-        time = request.POST['time']
-        date = request.POST['date']
-        location = request.POST['location']
+        description = request.POST['description']
+        # date = request.POST['date']
+        # location = request.POST['location']
 
         memeber_data = MembersDeatilsValue.objects.filter(society_key=request.user.userpermission.society_key)
         message_data = MessageTemplate.objects.get(title__iexact=title)
@@ -1966,39 +1967,39 @@ def send_sms(request):
         if number_type == 'secondaryContactNo':
             for number in memeber_data:
                 if number.secondaryContactNo:
-                    dau = message_data.description.format(date=date, time=time, place=location)
+                    dau = message_data.description.format()
                     final_sms_data = dau.replace(' ', '%20')
                     url = AppData.objects.get(key__icontains="SMS_TEMPLATE_URL")
                     final_url = url.value.format(final_sms_data=final_sms_data, number=number.secondaryContactNo)
                     print(final_url)
                     requests.get(final_url)
-                    message="success"
-                    return redirect('send_sms',{'message':message})
+                    return redirect('showMembersDetails')
                 else:
-                    return render(request, 'send_sms.html',{'message_obj':message_obj})
+                    return render(request, 'send_sms.html', {'message_obj': message_obj})
         if number_type == 'primaryContactNo':
             for number in memeber_data:
                 if number.primaryContactNo:
-                    dau = message_data.description.format(date=date, time=time, place=location)
-                    final_sms_data = dau.replace(' ', '%20')
+                    dau = message_data.description
+                    final_sms_data = description.replace(' ', '%20')
                     url = AppData.objects.get(key__icontains="SMS_TEMPLATE_URL")
                     final_url = url.value.format(final_sms_data=final_sms_data, number=number.primaryContactNo)
                     print(final_url)
                     requests.get(final_url)
                     return redirect('showMembersDetails')
                 else:
-                    return render(request, 'send_sms.html',{'message_obj':message_obj})
+                    return render(request, 'send_sms.html', {'message_obj': message_obj})
         if number_type == 'whatsappContactNo':
             for number in memeber_data:
                 if number.whatsappContactNo:
-                    dau = message_data.description.format(date=date, time=time, place=location)
+                    dau = message_data.description.format()
                     final_sms_data = dau.replace(' ', '%20')
                     url = AppData.objects.get(key__icontains="SMS_TEMPLATE_URL")
                     final_url = url.value.format(final_sms_data=final_sms_data, number=number.whatsappContactNo)
                     print(final_url)
                     requests.get(final_url)
+                    return redirect('showMembersDetails')
                 else:
-                    pass
+                    return render(request, 'send_sms.html', {'message_obj': message_obj})
         all_number = []
         if number_type == 'allContactNo':
             for number in memeber_data:
@@ -2018,14 +2019,14 @@ def send_sms(request):
                     else:
                         all_number.append(number.primaryContactNo)
                 for number1 in all_number:
-                    dau = message_data.description.format(date=date, time=time, place=location)
+                    dau = message_data.description.format()
                     final_sms_data = dau.replace(' ', '%20')
                     url = AppData.objects.get(key__icontains="SMS_TEMPLATE_URL")
-                    final_url = url.value.format(final_sms_data = final_sms_data, number = number1)
+                    final_url = url.value.format(final_sms_data=final_sms_data, number=number1)
                     print(final_url)
                     requests.get(final_url)
         else:
             return render(request, 'send_sms.html', {'message_obj': message_obj})
         print("if")
     print("not if")
-    return render(request, 'send_sms.html',{'message_obj':message_obj})
+    return render(request, 'send_sms.html', {'message_obj': message_obj})
