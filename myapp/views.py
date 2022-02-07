@@ -2023,6 +2023,7 @@ def send_sms(request):
                     final_url = url.value.format(final_sms_data=final_sms_data, number=number1)
                     print(final_url)
                     requests.get(final_url)
+                    return redirect('showMembersDetails')
         else:
             return render(request, 'send_sms.html', {'message_obj': message_obj})
 
