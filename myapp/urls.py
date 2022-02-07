@@ -128,5 +128,8 @@ urlpatterns = [
     path('send_sms',check_user(views.send_sms),name="send_sms"),
     path('get_message',check_user(views.get_message),name='get_message'),
 
+    path('showincome_with_id/<str>', views.showincome_with_id, name='showincome_with_id'),
+    path('showmembers_with_id/<str>',views.showmembers_with_id,name='showmembers_with_id'),
+
 
 ]

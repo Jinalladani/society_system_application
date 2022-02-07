@@ -164,7 +164,7 @@
                                 <th>Delete</th>
                                 </thead>
                                 {% csrf_token %}
-                                {% for IELVal in income_expense_ledger %}
+                                {% for IELVal in context.income_expense_ledger %}
                                 <tr id="{{IELVal.id}}">
                                     <td><input type="checkbox" name="income_expense_ledger[]" value="{{IELVal.id}}"
                                                id="delete_income_expense_ledger"/></td>
@@ -197,6 +197,24 @@
                                     </p></td>
                                 </tr>
                                 {% endfor %}
+                                {% if totalExpenseAmount.amount__sum %}
+                                <tr>
+                                    <td colspan="4"><b>Total Expense : </b></td>
+                                    <td colspan="14"><b>{{totalExpenseAmount.amount__sum}}</b></td>
+                                </tr>
+                                {% endif %}
+                                {% if totalIncomeAmount.amount__sum %}
+                                <tr>
+                                    <td colspan="4"><b>Total Income : </b></td>
+                                    <td colspan="14"><b>{{totalIncomeAmount.amount__sum}}</b></td>
+                                </tr>
+                                {% endif %}
+                                {% if totalAmount %}
+                                <tr>
+                                    <td colspan="4"><b>Total Amount : </b></td>
+                                    <td colspan="14"><b>{{totalAmount}}</b></td>
+                                </tr>
+                                {% endif %}
                             </table>
                         </div>
                     </form>
@@ -303,7 +321,7 @@
                                 <th>Files</th>
                                 </thead>
                                 {% csrf_token %}
-                                {% for IELVal in income_expense_ledger %}
+                                {% for IELVal in context.income_expense_ledger %}
                                 <tr id="{{IELVal.id}}">
                                     <td><input type="checkbox" name="income_expense_ledger[]" value="{{IELVal.id}}"
                                                id="delete_income_expense_ledger"/></td>
@@ -325,6 +343,7 @@
 
                                 </tr>
                                 {% endfor %}
+
                             </table>
                         </div>
                     </form>

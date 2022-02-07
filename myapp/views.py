@@ -54,6 +54,7 @@ def index(request):
     expenseAmountSum = Income_Expense_LedgerValue1.objects.values('category_header').filter(
         society_key=request.user.userpermission.society_key, type='Expense').annotate(
         totalamount=Sum('amount'))
+    print("============================dsfsf")
     print(expenseAmountSum)
 
     listIncome = IncomeCategory.objects.filter(society_key=request.user.userpermission.society_key)
@@ -467,6 +468,8 @@ def showincome_expense_ledger(request):
 
             return response
 
+
+
         return render(request, 'showIncome_expense_ledger.html',
                       {'income_expense_ledger': income_expense_ledger, 'contextMember': contextMember, 'type': type,
                        'dateOn': dateOn, 'to_date': to_date, 'amount': amount, 't_type': transaction_type,
@@ -476,15 +479,27 @@ def showincome_expense_ledger(request):
         print("allincome_expense_ledger-----------")
         allincome_expense_ledger = Income_Expense_LedgerValue1.objects.filter(
             society_key=request.user.userpermission.society_key)
-        # paginator = Paginator(allincome_expense_ledger, 10)
-        # page_number = request.GET.get('page')
-        # page_obj = paginator.get_page(page_number)
+
+        totalExpenseAmount = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Expense').aggregate(Sum('amount'))
+        print("=====================", totalExpenseAmount)
+
+        totalIncomeAmount = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Income').aggregate(
+            Sum('amount'))
+        print(totalIncomeAmount)
+
+        totalAmount = totalExpenseAmount['amount__sum'] + totalIncomeAmount['amount__sum']
+        print(totalAmount)
 
         context = {
             'income_expense_ledger': allincome_expense_ledger
         }
         print(context)
-        return render(request, 'showIncome_expense_ledger.html', context)
+        return render(request, 'showIncome_expense_ledger.html', {'context':context,'totalExpenseAmount':totalExpenseAmount,
+                                                                  'totalIncomeAmount':totalIncomeAmount,'totalAmount':totalAmount})
 
 
 def addincome_expense_ledger(request):
@@ -2044,4 +2059,22 @@ def get_message(request):
             return JsonResponse(data_dict)
 
     return JsonResponse({'status':False})
+
+
+def showincome_with_id(request, str):
+    show_income = Income_Expense_LedgerValue1.objects.filter(category_header = str)
+
+    context = {
+        'income_expense_ledger':show_income,
+    }
+    return render(request, 'showincome_expense_ledger.html',{'context':context})
+
+
+def showmembers_with_id(request, str):
+    show_members = Income_Expense_LedgerValue1.objects.filter(from_or_to_account = str)
+
+    context = {
+        'income_expense_ledger':show_members,
+    }
+    return render(request, 'showincome_expense_ledger.html',{'context':context})
 

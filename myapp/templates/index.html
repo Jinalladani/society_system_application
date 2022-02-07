@@ -85,15 +85,31 @@
             </div>
         </div>
 
+
+        <div class="sales-boxes" style="width:2250px;margin-right:-100px">
+            <div class="recent-sales box">
+                <div class="title">MONTHLY EXPENSE-INCOME
+                    <form action="{% url 'index' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="number" min="1900" max="2099" step="1" value="{{current_year}}" id="datepicker"
+                               name="datepicker"/>
+                        <button type="submit" id="fetchYearData">Fetch Data</button>
+                    </form>
+                </div>
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <br>
+
         <div class="sales-boxes">
             <div class="recent-sales box">
-                <div class="title">EXPENSE DEATILS</div>
+                <div class="title">EXPENSE DETAILS</div>
                 <br>
                 <div class="sales-details">
                     <ul class="details">
                         <li class="topic">Category</li>
                         {% for listExp in expenseAmountSum %}
-                        <li>{{listExp.category_header}}</li>
+                        <li><a href="{% url 'showincome_with_id' listExp.category_header %}" style="font-size:16px">{{listExp.category_header}}</a> </li>
                         <hr>
                         {% endfor %}
                     </ul>
@@ -114,7 +130,7 @@
                     <ul class="details">
                         <li class="topic">Category</li>
                         {% for listInc in incomeAmountSum %}
-                        <li>{{listInc.category_header}}</li>
+                        <li><a href="{% url 'showincome_with_id' listInc.category_header %}"  style="font-size:16px">{{listInc.category_header}}</a></li>
                         <hr>
                         {% endfor %}
                     </ul>
@@ -138,7 +154,7 @@
                         <li class="topic">Members(from or to account)</li>
                         <hr style="border: 1px solid;">
                         {% for topExp in topExpense %}
-                        <li>{{topExp.from_or_to_account}}</li>
+                        <li><a href="{% url 'showmembers_with_id' topExp.from_or_to_account %}" style="font-size:16px">{{topExp.from_or_to_account}}</a></li>
 
                         {% endfor %}
                     </ul>
@@ -146,7 +162,7 @@
                         <li class="topic">Category Header</li>
                         <hr style="border: 1px solid;">
                         {% for topExp in topExpense %}
-                        <li>{{topExp.category_header}}</li>
+                        <li><a href="{% url 'showincome_with_id' topExp.category_header %}"  style="font-size:16px">{{topExp.category_header}}</a></li>
                         {% endfor %}
                     </ul>
                     <ul class="details">
@@ -176,14 +192,14 @@
                         <li class="topic">Members(from or to account)</li>
                         <hr style="border: 1px solid;">
                         {% for topInc in topIncome %}
-                        <li>{{topInc.from_or_to_account}}</li>
+                        <li><a href="{% url 'showmembers_with_id' topInc.from_or_to_account %}" style="font-size:16px">{{topInc.from_or_to_account}}</a></li>
                         {% endfor %}
                     </ul>
                     <ul class="details">
                         <li class="topic">Category Header</li>
                         <hr style="border: 1px solid;">
                         {% for topInc in topIncome %}
-                        <li>{{topInc.category_header}}</li>
+                        <li><a href="{% url 'showincome_with_id' topInc.category_header %}"  style="font-size:16px">{{topInc.category_header}}</a></li>
                         {% endfor %}
                     </ul>
                     <ul class="details">
@@ -212,7 +228,7 @@
                     <ul class="details">
                         <li class="topic">Members</li>
                         {% for topMember in topMemberExpense %}
-                        <li>{{topMember.from_or_to_account}}</li>
+                        <li><a href="{% url 'showmembers_with_id' topMember.from_or_to_account %}" style="font-size:16px">{{topMember.from_or_to_account}}</a></li>
                         <hr>
                         {% endfor %}
                     </ul>
@@ -232,7 +248,7 @@
                     <ul class="details">
                         <li class="topic">Members</li>
                         {% for topMember in topMemberIncome %}
-                        <li>{{topMember.from_or_to_account}}</li>
+                        <li><a href="{% url 'showmembers_with_id' topMember.from_or_to_account %}" style="font-size:16px">{{topMember.from_or_to_account}}</a></li>
                         <hr>
                         {% endfor %}
                     </ul>
@@ -248,19 +264,7 @@
         </div>
 
         <br>
-        <div class="sales-boxes" style="width:2250px;margin-right:-100px">
-            <div class="recent-sales box">
-                <div class="title">MONTHLY EXPENSE-INCOME
-                    <form action="{% url 'index' %}" method="POST">
-                        {% csrf_token %}
-                        <input type="number" min="1900" max="2099" step="1" value="{{current_year}}" id="datepicker"
-                               name="datepicker"/>
-                        <button type="submit" id="fetchYearData">Fetch Data</button>
-                    </form>
-                </div>
-                <canvas id="myChart"></canvas>
-            </div>
-        </div>
+
 
     </div>
 </section>
