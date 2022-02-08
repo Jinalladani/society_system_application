@@ -24,6 +24,7 @@ from django.core.paginator import Paginator
 from datetime import datetime, date
 from django.http import JsonResponse
 
+
 def index(request):
     balance = BalanceValue.objects.filter(society_key=request.user.userpermission.society_key)
 
@@ -442,7 +443,11 @@ def showincome_expense_ledger(request):
             income_expense_ledger = income_expense_ledger.filter(from_or_to_account=from_or_to_account)
         if voucherNo_or_invoiceNo != "":
             income_expense_ledger = income_expense_ledger.filter(voucherNo_or_invoiceNo=voucherNo_or_invoiceNo)
+        print("==============================================================")
         print(income_expense_ledger)
+        context = {
+            'income_expense_ledger': income_expense_ledger
+        }
 
         if 'export' in request.POST:
             response = HttpResponse(content_type='text/csv')
@@ -468,10 +473,8 @@ def showincome_expense_ledger(request):
 
             return response
 
-
-
         return render(request, 'showIncome_expense_ledger.html',
-                      {'income_expense_ledger': income_expense_ledger, 'contextMember': contextMember, 'type': type,
+                      {'context': context, 'contextMember': contextMember, 'type': type,
                        'dateOn': dateOn, 'to_date': to_date, 'amount': amount, 't_type': transaction_type,
                        'c_header': category_header,
                        's_member': from_or_to_account, 'v_number': voucherNo_or_invoiceNo})
@@ -494,12 +497,19 @@ def showincome_expense_ledger(request):
         totalAmount = totalExpenseAmount['amount__sum'] + totalIncomeAmount['amount__sum']
         print(totalAmount)
 
+        allmembersValue = Members_Vendor_Account.objects.filter(society_key=request.user.userpermission.society_key)
+        contextMember = {
+            'memberValue': allmembersValue
+        }
+        print(contextMember)
+
         context = {
             'income_expense_ledger': allincome_expense_ledger
         }
         print(context)
-        return render(request, 'showIncome_expense_ledger.html', {'context':context,'totalExpenseAmount':totalExpenseAmount,
-                                                                  'totalIncomeAmount':totalIncomeAmount,'totalAmount':totalAmount})
+        return render(request, 'showIncome_expense_ledger.html',
+                      {'context': context, 'contextMember': contextMember, 'totalExpenseAmount': totalExpenseAmount,
+                       'totalIncomeAmount': totalIncomeAmount, 'totalAmount': totalAmount})
 
 
 def addincome_expense_ledger(request):
@@ -2051,30 +2061,29 @@ def get_message(request):
 
         data_dict = {}
 
-        message_data = MessageTemplate.objects.filter(name__iexact = type_info)
+        message_data = MessageTemplate.objects.filter(name__iexact=type_info)
         for message in message_data:
             data_dict['desc'] = message.desc
 
         if message_data:
             return JsonResponse(data_dict)
 
-    return JsonResponse({'status':False})
+    return JsonResponse({'status': False})
 
 
 def showincome_with_id(request, str):
-    show_income = Income_Expense_LedgerValue1.objects.filter(category_header = str)
+    show_income = Income_Expense_LedgerValue1.objects.filter(category_header=str)
 
     context = {
-        'income_expense_ledger':show_income,
+        'income_expense_ledger': show_income,
     }
-    return render(request, 'showincome_expense_ledger.html',{'context':context})
+    return render(request, 'showIncome_expense_ledger.html', {'context': context})
 
 
 def showmembers_with_id(request, str):
-    show_members = Income_Expense_LedgerValue1.objects.filter(from_or_to_account = str)
+    show_members = Income_Expense_LedgerValue1.objects.filter(from_or_to_account=str)
 
     context = {
-        'income_expense_ledger':show_members,
+        'income_expense_ledger': show_members,
     }
-    return render(request, 'showincome_expense_ledger.html',{'context':context})
-
+    return render(request, 'showIncome_expense_ledger.html', {'context': context})
