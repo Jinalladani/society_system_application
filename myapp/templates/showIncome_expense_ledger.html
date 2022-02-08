@@ -197,22 +197,28 @@
                                     </p></td>
                                 </tr>
                                 {% endfor %}
-                                {% if totalExpenseAmount.amount__sum %}
+                                {% if totalIncomeAmount %}
                                 <tr>
-                                    <td colspan="4"><b>Total Expense : </b></td>
-                                    <td colspan="14"><b>{{totalExpenseAmount.amount__sum}}</b></td>
+                                    <td colspan="3"><b>Total Income : </b></td>
+                                    <td colspan="2"><b>{{totalIncomeAmount.amount__sum}}</b></td>
+                                    <td colspan="2"><b>Total Bank Balance : </b></td>
+                                    <td colspan="2"><b>{{totalBankAmount.amount__sum}}</b></td>
                                 </tr>
                                 {% endif %}
-                                {% if totalIncomeAmount.amount__sum %}
+                                {% if totalExpenseAmount %}
                                 <tr>
-                                    <td colspan="4"><b>Total Income : </b></td>
-                                    <td colspan="14"><b>{{totalIncomeAmount.amount__sum}}</b></td>
+                                    <td colspan="3"><b>Total Expense : </b></td>
+                                    <td colspan="2"><b>{{totalExpenseAmount.amount__sum}}</b></td>
+                                    <td colspan="2"><b>Total Cash Balance : </b></td>
+                                    <td colspan="2"><b>{{totalCashAmount.amount__sum}}</b></td>
                                 </tr>
                                 {% endif %}
-                                {% if totalAmount %}
+                                {% if Income_ExpenseAmount  %}
                                 <tr>
-                                    <td colspan="4"><b>Total Amount : </b></td>
-                                    <td colspan="14"><b>{{totalAmount}}</b></td>
+                                    <td colspan="3"><b>Income - Expense : </b></td>
+                                    <td colspan="2"><b>{{Income_ExpenseAmount}}</b></td>
+                                    <td colspan="2"><b>Total : </b></td>
+                                    <td colspan="2"><b>{{totalAmount}}</b></td>
                                 </tr>
                                 {% endif %}
                             </table>

@@ -449,6 +449,36 @@ def showincome_expense_ledger(request):
             'income_expense_ledger': income_expense_ledger
         }
 
+        totalExpenseAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
+                                                          type='Expense').aggregate(Sum('amount'))
+        print("---===----", totalExpenseAmount)
+
+        totalIncomeAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
+                                                         type='Income').aggregate(Sum('amount'))
+        print("---===----", totalIncomeAmount)
+
+        # totalCashInAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
+        #                                                  type='CASH IN').aggregate(Sum('amount'))
+        # print("---===----", totalCashInAmount)
+
+        # Income_ExpenseAmount = totalIncomeAmount['amount__sum'] - totalExpenseAmount['amount__sum']
+        # print(Income_ExpenseAmount)
+
+        totalBankAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
+                                                       transaction_type='Bank').aggregate(Sum('amount'))
+        print("---===----", totalBankAmount)
+
+        totalCashAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
+                                                       transaction_type='Cash').aggregate(Sum('amount'))
+        print("---===----", totalCashAmount)
+        if totalBankAmount['amount__sum'] is None:
+            totalBankAmount['amount__sum'] = 0
+        if totalCashAmount['amount__sum'] is None:
+            totalCashAmount['amount__sum'] = 0
+
+        totalAmount = totalBankAmount['amount__sum'] + totalCashAmount['amount__sum']
+        print(totalAmount)
+
         if 'export' in request.POST:
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = 'attachment; filename=ledger' + str(datetime.datetime.now()) + '.csv'
@@ -477,7 +507,12 @@ def showincome_expense_ledger(request):
                       {'context': context, 'contextMember': contextMember, 'type': type,
                        'dateOn': dateOn, 'to_date': to_date, 'amount': amount, 't_type': transaction_type,
                        'c_header': category_header,
-                       's_member': from_or_to_account, 'v_number': voucherNo_or_invoiceNo})
+                       's_member': from_or_to_account, 'v_number': voucherNo_or_invoiceNo,
+                       'totalExpenseAmount': totalExpenseAmount,
+                       'totalIncomeAmount': totalIncomeAmount, 'totalAmount': totalAmount,
+                       'totalBankAmount': totalBankAmount,
+                       'totalCashAmount': totalCashAmount
+                       })
     else:
         print("allincome_expense_ledger-----------")
         allincome_expense_ledger = Income_Expense_LedgerValue1.objects.filter(
@@ -494,7 +529,20 @@ def showincome_expense_ledger(request):
             Sum('amount'))
         print(totalIncomeAmount)
 
-        totalAmount = totalExpenseAmount['amount__sum'] + totalIncomeAmount['amount__sum']
+        Income_ExpenseAmount = totalIncomeAmount['amount__sum'] - totalExpenseAmount['amount__sum']
+        print(Income_ExpenseAmount)
+
+        totalBankAmount = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key,
+            transaction_type='Bank').aggregate(Sum('amount'))
+        print("=====================", totalBankAmount)
+
+        totalCashAmount = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key,
+            transaction_type='Cash').aggregate(Sum('amount'))
+        print("=====================", totalCashAmount)
+
+        totalAmount = totalBankAmount['amount__sum'] + totalCashAmount['amount__sum']
         print(totalAmount)
 
         allmembersValue = Members_Vendor_Account.objects.filter(society_key=request.user.userpermission.society_key)
@@ -509,7 +557,9 @@ def showincome_expense_ledger(request):
         print(context)
         return render(request, 'showIncome_expense_ledger.html',
                       {'context': context, 'contextMember': contextMember, 'totalExpenseAmount': totalExpenseAmount,
-                       'totalIncomeAmount': totalIncomeAmount, 'totalAmount': totalAmount})
+                       'totalIncomeAmount': totalIncomeAmount, 'totalAmount': totalAmount,
+                       'totalBankAmount': totalBankAmount,
+                       'totalCashAmount': totalCashAmount, 'Income_ExpenseAmount': Income_ExpenseAmount})
 
 
 def addincome_expense_ledger(request):
