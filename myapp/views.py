@@ -449,35 +449,69 @@ def showincome_expense_ledger(request):
             'income_expense_ledger': income_expense_ledger
         }
 
-        totalExpenseAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
-                                                          type='Expense').aggregate(Sum('amount'))
-        print("---===----", totalExpenseAmount)
+        totalExpenseAmount = income_expense_ledger.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Expense').aggregate(Sum('amount'))
+        print("=====================", totalExpenseAmount)
 
-        totalIncomeAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
-                                                         type='Income').aggregate(Sum('amount'))
-        print("---===----", totalIncomeAmount)
+        totalIncomeAmount = income_expense_ledger.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Income').aggregate(
+            Sum('amount'))
+        print(totalIncomeAmount)
 
-        # totalCashInAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
-        #                                                  type='CASH IN').aggregate(Sum('amount'))
-        # print("---===----", totalCashInAmount)
+        Income_ExpenseAmount = 0
+        if totalIncomeAmount['amount__sum'] == None or totalExpenseAmount['amount__sum'] == None:
+            pass
+        else:
+            Income_ExpenseAmount = totalIncomeAmount['amount__sum'] - totalExpenseAmount['amount__sum']
 
-        # Income_ExpenseAmount = totalIncomeAmount['amount__sum'] - totalExpenseAmount['amount__sum']
-        # print(Income_ExpenseAmount)
+        print(Income_ExpenseAmount)
 
-        totalBankAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
-                                                       transaction_type='Bank').aggregate(Sum('amount'))
-        print("---===----", totalBankAmount)
+        totalBankExpenseAmount = income_expense_ledger.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Expense', transaction_type='Bank', ).aggregate(
+            Sum('amount'))
+        print(totalBankExpenseAmount)
 
-        totalCashAmount = income_expense_ledger.filter(society_key=request.user.userpermission.society_key,
-                                                       transaction_type='Cash').aggregate(Sum('amount'))
-        print("---===----", totalCashAmount)
-        if totalBankAmount['amount__sum'] is None:
-            totalBankAmount['amount__sum'] = 0
-        if totalCashAmount['amount__sum'] is None:
-            totalCashAmount['amount__sum'] = 0
+        totalBankIncomeAmount = income_expense_ledger.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Income', transaction_type='Bank').aggregate(
+            Sum('amount'))
+        print(totalBankIncomeAmount)
 
-        totalAmount = totalBankAmount['amount__sum'] + totalCashAmount['amount__sum']
-        print(totalAmount)
+        Income_ExpensBankeAmount = 0
+        if totalBankIncomeAmount['amount__sum'] == None or totalBankExpenseAmount['amount__sum'] == None:
+            pass
+        else:
+            Income_ExpensBankeAmount = totalBankIncomeAmount['amount__sum'] - totalBankExpenseAmount['amount__sum']
+
+        print(Income_ExpensBankeAmount)
+
+        totalCashExpenseAmount = income_expense_ledger.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Expense', transaction_type='Cash', ).aggregate(
+            Sum('amount'))
+        print(totalCashExpenseAmount)
+
+        totalCashIncomeAmount = income_expense_ledger.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Income', transaction_type='Cash').aggregate(
+            Sum('amount'))
+        print(totalCashIncomeAmount)
+
+        Income_ExpensCashAmount = 0
+        if totalCashIncomeAmount['amount__sum'] == None or totalCashExpenseAmount['amount__sum'] == None:
+            pass
+        else:
+            Income_ExpensCashAmount = totalCashIncomeAmount['amount__sum'] - totalCashExpenseAmount['amount__sum']
+
+        print(Income_ExpensCashAmount)
+
+        totalCashAmount = income_expense_ledger.filter(
+            society_key=request.user.userpermission.society_key,
+            transaction_type='Cash').aggregate(Sum('amount'))
+        print("=====================", totalCashAmount)
 
         if 'export' in request.POST:
             response = HttpResponse(content_type='text/csv')
@@ -509,10 +543,12 @@ def showincome_expense_ledger(request):
                        'c_header': category_header,
                        's_member': from_or_to_account, 'v_number': voucherNo_or_invoiceNo,
                        'totalExpenseAmount': totalExpenseAmount,
-                       'totalIncomeAmount': totalIncomeAmount, 'totalAmount': totalAmount,
-                       'totalBankAmount': totalBankAmount,
-                       'totalCashAmount': totalCashAmount
-                       })
+                       'totalIncomeAmount': totalIncomeAmount, 'Income_ExpenseAmount': Income_ExpenseAmount,
+                       'totalBankExpenseAmount': totalBankExpenseAmount, 'totalBankIncomeAmount': totalBankIncomeAmount,
+                       'totalCashExpenseAmount': totalCashExpenseAmount, 'totalCashIncomeAmount': totalCashIncomeAmount,
+                       'Income_ExpensBankeAmount': Income_ExpensBankeAmount,
+                       'Income_ExpensCashAmount': Income_ExpensCashAmount,
+                       'totalCashAmount': totalCashAmount})
     else:
         print("allincome_expense_ledger-----------")
         allincome_expense_ledger = Income_Expense_LedgerValue1.objects.filter(
@@ -529,21 +565,58 @@ def showincome_expense_ledger(request):
             Sum('amount'))
         print(totalIncomeAmount)
 
-        Income_ExpenseAmount = totalIncomeAmount['amount__sum'] - totalExpenseAmount['amount__sum']
+        Income_ExpenseAmount = 0
+        if totalIncomeAmount['amount__sum'] == None or totalExpenseAmount['amount__sum'] == None:
+            pass
+        else:
+            Income_ExpenseAmount = totalIncomeAmount['amount__sum'] - totalExpenseAmount['amount__sum']
+
         print(Income_ExpenseAmount)
 
-        totalBankAmount = Income_Expense_LedgerValue1.objects.filter(
+        totalBankExpenseAmount = Income_Expense_LedgerValue1.objects.filter(
             society_key=request.user.userpermission.society_key,
-            transaction_type='Bank').aggregate(Sum('amount'))
-        print("=====================", totalBankAmount)
+            type='Expense', transaction_type='Bank', ).aggregate(
+            Sum('amount'))
+        print(totalBankExpenseAmount)
+
+        totalBankIncomeAmount = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Income', transaction_type='Bank').aggregate(
+            Sum('amount'))
+        print(totalBankIncomeAmount)
+
+        Income_ExpensBankeAmount = 0
+        if totalBankIncomeAmount['amount__sum'] == None or totalBankExpenseAmount['amount__sum'] == None:
+            pass
+        else:
+            Income_ExpensBankeAmount = totalBankIncomeAmount['amount__sum'] - totalBankExpenseAmount['amount__sum']
+
+        print(Income_ExpensBankeAmount)
+
+        totalCashExpenseAmount = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Expense', transaction_type='Cash', ).aggregate(
+            Sum('amount'))
+        print(totalCashExpenseAmount)
+
+        totalCashIncomeAmount = Income_Expense_LedgerValue1.objects.filter(
+            society_key=request.user.userpermission.society_key,
+            type='Income', transaction_type='Cash').aggregate(
+            Sum('amount'))
+        print(totalCashIncomeAmount)
+
+        Income_ExpensCashAmount = 0
+        if totalCashIncomeAmount['amount__sum'] == None or totalCashExpenseAmount['amount__sum'] == None:
+            pass
+        else:
+            Income_ExpensCashAmount = totalCashIncomeAmount['amount__sum'] - totalCashExpenseAmount['amount__sum']
+
+        print(Income_ExpensCashAmount)
 
         totalCashAmount = Income_Expense_LedgerValue1.objects.filter(
             society_key=request.user.userpermission.society_key,
             transaction_type='Cash').aggregate(Sum('amount'))
         print("=====================", totalCashAmount)
-
-        totalAmount = totalBankAmount['amount__sum'] + totalCashAmount['amount__sum']
-        print(totalAmount)
 
         allmembersValue = Members_Vendor_Account.objects.filter(society_key=request.user.userpermission.society_key)
         contextMember = {
@@ -557,9 +630,12 @@ def showincome_expense_ledger(request):
         print(context)
         return render(request, 'showIncome_expense_ledger.html',
                       {'context': context, 'contextMember': contextMember, 'totalExpenseAmount': totalExpenseAmount,
-                       'totalIncomeAmount': totalIncomeAmount, 'totalAmount': totalAmount,
-                       'totalBankAmount': totalBankAmount,
-                       'totalCashAmount': totalCashAmount, 'Income_ExpenseAmount': Income_ExpenseAmount})
+                       'totalIncomeAmount': totalIncomeAmount, 'Income_ExpenseAmount': Income_ExpenseAmount,
+                       'totalBankExpenseAmount': totalBankExpenseAmount, 'totalBankIncomeAmount': totalBankIncomeAmount,
+                       'totalCashExpenseAmount': totalCashExpenseAmount, 'totalCashIncomeAmount': totalCashIncomeAmount,
+                       'Income_ExpensBankeAmount': Income_ExpensBankeAmount,
+                       'Income_ExpensCashAmount': Income_ExpensCashAmount,
+                       'totalCashAmount': totalCashAmount})
 
 
 def addincome_expense_ledger(request):
@@ -2124,16 +2200,278 @@ def get_message(request):
 def showincome_with_id(request, str):
     show_income = Income_Expense_LedgerValue1.objects.filter(category_header=str)
 
+
+
+
+    totalExpenseAmount = show_income.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Expense').aggregate(Sum('amount'))
+    print("=====================", totalExpenseAmount)
+
+    totalIncomeAmount = show_income.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Income').aggregate(
+        Sum('amount'))
+    print(totalIncomeAmount)
+
+    Income_ExpenseAmount = 0
+    if totalIncomeAmount['amount__sum'] == None or totalExpenseAmount['amount__sum'] == None:
+        pass
+    else:
+        Income_ExpenseAmount = totalIncomeAmount['amount__sum'] - totalExpenseAmount['amount__sum']
+
+    print(Income_ExpenseAmount)
+
+    totalBankExpenseAmount = show_income.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Expense', transaction_type='Bank', ).aggregate(
+        Sum('amount'))
+    print(totalBankExpenseAmount)
+
+    totalBankIncomeAmount = show_income.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Income', transaction_type='Bank').aggregate(
+        Sum('amount'))
+    print(totalBankIncomeAmount)
+
+    Income_ExpensBankeAmount = 0
+    if totalBankIncomeAmount['amount__sum'] == None or totalBankExpenseAmount['amount__sum'] == None:
+        pass
+    else:
+        Income_ExpensBankeAmount = totalBankIncomeAmount['amount__sum'] - totalBankExpenseAmount['amount__sum']
+
+    print(Income_ExpensBankeAmount)
+
+    totalCashExpenseAmount = show_income.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Expense', transaction_type='Cash', ).aggregate(
+        Sum('amount'))
+    print(totalCashExpenseAmount)
+
+    totalCashIncomeAmount = show_income.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Income', transaction_type='Cash').aggregate(
+        Sum('amount'))
+    print(totalCashIncomeAmount)
+
+    Income_ExpensCashAmount = 0
+    if totalCashIncomeAmount['amount__sum'] == None or totalCashExpenseAmount['amount__sum'] == None:
+        pass
+    else:
+        Income_ExpensCashAmount = totalCashIncomeAmount['amount__sum'] - totalCashExpenseAmount['amount__sum']
+
+    print(Income_ExpensCashAmount)
+
+    totalCashAmount = show_income.filter(
+        society_key=request.user.userpermission.society_key,
+        transaction_type='Cash').aggregate(Sum('amount'))
+    print("=====================", totalCashAmount)
+
     context = {
         'income_expense_ledger': show_income,
     }
-    return render(request, 'showIncome_expense_ledger.html', {'context': context})
+
+    allmembersValue = Members_Vendor_Account.objects.filter(society_key=request.user.userpermission.society_key)
+    contextMember = {
+        'memberValue': allmembersValue
+    }
+    print(contextMember)
+
+    return render(request, 'showIncome_expense_ledger.html',
+                  {'context': context, 'totalExpenseAmount': totalExpenseAmount,
+                   'totalIncomeAmount': totalIncomeAmount, 'Income_ExpenseAmount': Income_ExpenseAmount,
+                   'totalBankExpenseAmount': totalBankExpenseAmount, 'totalBankIncomeAmount': totalBankIncomeAmount,
+                   'totalCashExpenseAmount': totalCashExpenseAmount, 'totalCashIncomeAmount': totalCashIncomeAmount,
+                   'Income_ExpensBankeAmount': Income_ExpensBankeAmount,
+                   'Income_ExpensCashAmount': Income_ExpensCashAmount,
+                   'totalCashAmount': totalCashAmount, 'contextMember':contextMember,'c_header':str})
 
 
 def showmembers_with_id(request, str):
     show_members = Income_Expense_LedgerValue1.objects.filter(from_or_to_account=str)
 
+    totalExpenseAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Expense').aggregate(Sum('amount'))
+    print("=====================", totalExpenseAmount)
+
+    totalIncomeAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Income').aggregate(
+        Sum('amount'))
+    print(totalIncomeAmount)
+
+    Income_ExpenseAmount = 0
+    if totalIncomeAmount['amount__sum'] == None or totalExpenseAmount['amount__sum'] == None:
+        pass
+    else:
+        Income_ExpenseAmount = totalIncomeAmount['amount__sum'] - totalExpenseAmount['amount__sum']
+
+    print(Income_ExpenseAmount)
+
+    totalBankExpenseAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Expense', transaction_type='Bank', ).aggregate(
+        Sum('amount'))
+    print(totalBankExpenseAmount)
+
+    totalBankIncomeAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Income', transaction_type='Bank').aggregate(
+        Sum('amount'))
+    print(totalBankIncomeAmount)
+
+    Income_ExpensBankeAmount = 0
+    if totalBankIncomeAmount['amount__sum'] == None or totalBankExpenseAmount['amount__sum'] == None:
+        pass
+    else:
+        Income_ExpensBankeAmount = totalBankIncomeAmount['amount__sum'] - totalBankExpenseAmount['amount__sum']
+
+    print(Income_ExpensBankeAmount)
+
+    totalCashExpenseAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Expense', transaction_type='Cash', ).aggregate(
+        Sum('amount'))
+    print(totalCashExpenseAmount)
+
+    totalCashIncomeAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Income', transaction_type='Cash').aggregate(
+        Sum('amount'))
+    print(totalCashIncomeAmount)
+
+    Income_ExpensCashAmount = 0
+    if totalCashIncomeAmount['amount__sum'] is None or totalCashExpenseAmount['amount__sum'] is None:
+        pass
+    else:
+        Income_ExpensCashAmount = totalCashIncomeAmount['amount__sum'] - totalCashExpenseAmount['amount__sum']
+
+    print(Income_ExpensCashAmount)
+
+    totalCashAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        transaction_type='Cash').aggregate(Sum('amount'))
+    print("=====================", totalCashAmount)
+
     context = {
         'income_expense_ledger': show_members,
     }
-    return render(request, 'showIncome_expense_ledger.html', {'context': context})
+
+    allmembersValue = Members_Vendor_Account.objects.filter(society_key=request.user.userpermission.society_key)
+    contextMember = {
+        'memberValue': allmembersValue
+    }
+    print(contextMember)
+
+    return render(request, 'showIncome_expense_ledger.html', {'context': context,
+                                                              'totalExpenseAmount': totalExpenseAmount,
+                                                              'totalIncomeAmount': totalIncomeAmount,
+                                                              'Income_ExpenseAmount': Income_ExpenseAmount,
+                                                              'totalBankExpenseAmount': totalBankExpenseAmount,
+                                                              'totalBankIncomeAmount': totalBankIncomeAmount,
+                                                              'totalCashExpenseAmount': totalCashExpenseAmount,
+                                                              'totalCashIncomeAmount': totalCashIncomeAmount,
+                                                              'Income_ExpensBankeAmount': Income_ExpensBankeAmount,
+                                                              'Income_ExpensCashAmount': Income_ExpensCashAmount,
+                                                              'totalCashAmount': totalCashAmount,'contextMember':contextMember,
+                                                              's_member': str
+                                                              })
+
+def showmembers_with_bank(request, str, cheader):
+
+    print("LMAO")
+    print(str)
+    print(cheader)
+
+
+    show_members = Income_Expense_LedgerValue1.objects.filter(from_or_to_account=str, category_header = cheader)
+
+    totalExpenseAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Expense').aggregate(Sum('amount'))
+    print("=====================", totalExpenseAmount)
+
+    totalIncomeAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Income').aggregate(
+        Sum('amount'))
+    print(totalIncomeAmount)
+
+    Income_ExpenseAmount = 0
+    if totalIncomeAmount['amount__sum'] == None or totalExpenseAmount['amount__sum'] == None:
+        pass
+    else:
+        Income_ExpenseAmount = totalIncomeAmount['amount__sum'] - totalExpenseAmount['amount__sum']
+
+    print(Income_ExpenseAmount)
+
+    totalBankExpenseAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Expense', transaction_type='Bank', ).aggregate(
+        Sum('amount'))
+    print(totalBankExpenseAmount)
+
+    totalBankIncomeAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Income', transaction_type='Bank').aggregate(
+        Sum('amount'))
+    print(totalBankIncomeAmount)
+
+    Income_ExpensBankeAmount = 0
+    if totalBankIncomeAmount['amount__sum'] == None or totalBankExpenseAmount['amount__sum'] == None:
+        pass
+    else:
+        Income_ExpensBankeAmount = totalBankIncomeAmount['amount__sum'] - totalBankExpenseAmount['amount__sum']
+
+    print(Income_ExpensBankeAmount)
+
+    totalCashExpenseAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Expense', transaction_type='Cash', ).aggregate(
+        Sum('amount'))
+    print(totalCashExpenseAmount)
+
+    totalCashIncomeAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        type='Income', transaction_type='Cash').aggregate(
+        Sum('amount'))
+    print(totalCashIncomeAmount)
+
+    Income_ExpensCashAmount = 0
+    if totalCashIncomeAmount['amount__sum'] is None or totalCashExpenseAmount['amount__sum'] is None:
+        pass
+    else:
+        Income_ExpensCashAmount = totalCashIncomeAmount['amount__sum'] - totalCashExpenseAmount['amount__sum']
+
+    print(Income_ExpensCashAmount)
+
+    totalCashAmount = show_members.filter(
+        society_key=request.user.userpermission.society_key,
+        transaction_type='Cash').aggregate(Sum('amount'))
+    print("=====================", totalCashAmount)
+
+    context = {
+        'income_expense_ledger': show_members,
+    }
+
+    allmembersValue = Members_Vendor_Account.objects.filter(society_key=request.user.userpermission.society_key)
+    contextMember = {
+        'memberValue': allmembersValue
+    }
+    print(contextMember)
+
+    return render(request, 'showIncome_expense_ledger.html', {'context': context,
+                                                              'totalExpenseAmount': totalExpenseAmount,
+                                                              'totalIncomeAmount': totalIncomeAmount,
+                                                              'Income_ExpenseAmount': Income_ExpenseAmount,
+                                                              'totalBankExpenseAmount': totalBankExpenseAmount,
+                                                              'totalBankIncomeAmount': totalBankIncomeAmount,
+                                                              'totalCashExpenseAmount': totalCashExpenseAmount,
+                                                              'totalCashIncomeAmount': totalCashIncomeAmount,
+                                                              'Income_ExpensBankeAmount': Income_ExpensBankeAmount,
+                                                              'Income_ExpensCashAmount': Income_ExpensCashAmount,
+                                                              'totalCashAmount': totalCashAmount,
+                                                              'contextMember':contextMember,'c_header':cheader,
+                                                              's_member':str
+                                                              })

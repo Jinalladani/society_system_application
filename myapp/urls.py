@@ -130,6 +130,7 @@ urlpatterns = [
 
     path('showincome_with_id/<str>', views.showincome_with_id, name='showincome_with_id'),
     path('showmembers_with_id/<str>',views.showmembers_with_id,name='showmembers_with_id'),
+    path('showmembers_with_bank/<str>/<cheader>', views.showmembers_with_bank,name='showmembers_with_bank'),
 
 
 ]

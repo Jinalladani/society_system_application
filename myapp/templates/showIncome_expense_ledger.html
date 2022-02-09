@@ -197,32 +197,94 @@
                                     </p></td>
                                 </tr>
                                 {% endfor %}
-                                {% if totalIncomeAmount %}
-                                <tr>
-                                    <td colspan="3"><b>Total Income : </b></td>
-                                    <td colspan="2"><b>{{totalIncomeAmount.amount__sum}}</b></td>
-                                    <td colspan="2"><b>Total Bank Balance : </b></td>
-                                    <td colspan="2"><b>{{totalBankAmount.amount__sum}}</b></td>
-                                </tr>
-                                {% endif %}
-                                {% if totalExpenseAmount %}
-                                <tr>
-                                    <td colspan="3"><b>Total Expense : </b></td>
-                                    <td colspan="2"><b>{{totalExpenseAmount.amount__sum}}</b></td>
-                                    <td colspan="2"><b>Total Cash Balance : </b></td>
-                                    <td colspan="2"><b>{{totalCashAmount.amount__sum}}</b></td>
-                                </tr>
-                                {% endif %}
-                                {% if Income_ExpenseAmount  %}
-                                <tr>
-                                    <td colspan="3"><b>Income - Expense : </b></td>
-                                    <td colspan="2"><b>{{Income_ExpenseAmount}}</b></td>
-                                    <td colspan="2"><b>Total : </b></td>
-                                    <td colspan="2"><b>{{totalAmount}}</b></td>
-                                </tr>
-                                {% endif %}
+<!--                                {% if totalIncomeAmount %}-->
+<!--                                <tr>-->
+<!--                                    <td colspan="3"><b>Total Income : </b></td>-->
+<!--                                    {% if totalIncomeAmount.amount__sum is None %}-->
+<!--                                    <td colspan="2"><b>0</b></td>-->
+<!--                                    {% else %}-->
+<!--                                    <td colspan="2"><b>{{totalIncomeAmount.amount__sum}}</b></td>-->
+<!--                                    {% endif %}-->
+<!--                                    <td colspan="2"><b>Total Bank Balance : </b></td>-->
+<!--                                    <td colspan="2"><b>{{totalBankAmount.amount__sum}}</b></td>-->
+<!--                                </tr>-->
+<!--                                {% endif %}-->
+<!--                                {% if totalExpenseAmount %}-->
+<!--                                <tr>-->
+<!--                                    <td colspan="3"><b>Total Expense : </b></td>-->
+<!--                                    {% if totalExpenseAmount.amount__sum is None %}-->
+<!--                                    <td colspan="2"><b>0</b></td>-->
+<!--                                    {% else %}-->
+<!--                                    <td colspan="2"><b>{{totalExpenseAmount.amount__sum}}</b></td>-->
+<!--                                    {% endif %}-->
+<!--                                    <td colspan="2"><b>Total Cash Balance : </b></td>-->
+<!--                                    <td colspan="2"><b>{{totalCashAmount.amount__sum}}</b></td>-->
+<!--                                </tr>-->
+<!--                                {% endif %}-->
+<!--                                {% if Income_ExpenseAmount  %}-->
+<!--                                <tr>-->
+<!--                                    <td colspan="3"><b>Income - Expense : </b></td>-->
+<!--                                    <td colspan="2"><b>{{Income_ExpenseAmount}}</b></td>-->
+<!--                                    <td colspan="2"><b>Total : </b></td>-->
+<!--                                    <td colspan="2"><b>{{totalAmount}}</b></td>-->
+<!--                                </tr>-->
+<!--                                {% endif %}-->
                             </table>
                         </div>
+                        <table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Bank</th>
+      <th scope="col">Cash</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Income</th>
+        {% if totalBankIncomeAmount.amount__sum is None %}
+        <td>0</td>
+        {% else %}
+      <td>{{totalBankIncomeAmount.amount__sum}}</td>
+        {% endif %}
+        {% if totalCashIncomeAmount.amount__sum is None %}
+      <td>0</td>
+        {% else %}
+        <td>{{totalCashIncomeAmount.amount__sum}}</td>
+        {% endif %}
+        {% if totalIncomeAmount.amount__sum is None %}
+      <td>0</td>
+        {% else %}
+        <td>{{totalIncomeAmount.amount__sum}}</td>
+        {% endif %}
+    </tr>
+    <tr>
+      <th scope="row">Expense</th>
+        {% if totalBankExpenseAmount.amount__sum is None %}
+        <td>0</td>
+        {% else %}
+      <td>{{totalBankExpenseAmount.amount__sum}}</td>
+        {% endif %}
+        {% if totalCashExpenseAmount.amount__sum is None %}
+      <td>0</td>
+        {% else %}
+        <td>{{totalCashExpenseAmount.amount__sum}}</td>
+        {% endif %}
+        {% if totalExpenseAmount.amount__sum is None %}
+      <td>0</td>
+        {% else %}
+        <td>{{totalExpenseAmount.amount__sum}}</td>
+        {% endif %}
+    </tr>
+  <tr>
+      <th scope="row">income-Expense</th>
+      <td>{{Income_ExpensBankeAmount}}</td>
+      <td>{{Income_ExpensCashAmount}}</td>
+      <td>{{Income_ExpenseAmount}}</td>
+    </tr>
+  </tbody>
+                        </table>
                     </form>
                 </div>
             </div>
@@ -349,9 +411,62 @@
 
                                 </tr>
                                 {% endfor %}
-
                             </table>
                         </div>
+                        <table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Bank</th>
+      <th scope="col">Cash</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Income</th>
+        {% if totalBankIncomeAmount.amount__sum is None %}
+        <td>0</td>
+        {% else %}
+      <td>{{totalBankIncomeAmount.amount__sum}}</td>
+        {% endif %}
+        {% if totalCashIncomeAmount.amount__sum is None %}
+      <td>0</td>
+        {% else %}
+        <td>{{totalCashIncomeAmount.amount__sum}}</td>
+        {% endif %}
+        {% if totalIncomeAmount.amount__sum is None %}
+      <td>0</td>
+        {% else %}
+        <td>{{totalIncomeAmount.amount__sum}}</td>
+        {% endif %}
+    </tr>
+    <tr>
+      <th scope="row">Expense</th>
+        {% if totalBankExpenseAmount.amount__sum is None %}
+        <td>0</td>
+        {% else %}
+      <td>{{totalBankExpenseAmount.amount__sum}}</td>
+        {% endif %}
+        {% if totalCashExpenseAmount.amount__sum is None %}
+      <td>0</td>
+        {% else %}
+        <td>{{totalCashExpenseAmount.amount__sum}}</td>
+        {% endif %}
+        {% if totalExpenseAmount.amount__sum is None %}
+      <td>0</td>
+        {% else %}
+        <td>{{totalExpenseAmount.amount__sum}}</td>
+        {% endif %}
+    </tr>
+  <tr>
+      <th scope="row">Income-Expense</th>
+      <td>{{Income_ExpensBankeAmount}}</td>
+      <td>{{Income_ExpensCashAmount}}</td>
+      <td>{{Income_ExpenseAmount}}</td>
+    </tr>
+  </tbody>
+                        </table>
                     </form>
                 </div>
             </div>
