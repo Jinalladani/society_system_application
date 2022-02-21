@@ -122,8 +122,9 @@ USE_TZ = True
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'societyfunds@gmail.com'
-EMAIL_HOST_PASSWORD = 'Bonrix@#123'
+EMAIL_HOST_PASSWORD = '12345'
 EMAIL_PORT = 587
+
 
 
 STATIC_URL = '/static/'
